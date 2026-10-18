@@ -585,6 +585,7 @@ function loadScript(src){ return new Promise((res,rej)=>{ if($(`script[src="${sr
 async function copy(t){ try{ await navigator.clipboard.writeText(String(t??'')); }catch(e){ const a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select(); document.execCommand('copy'); a.remove(); } toast('Copiado'); }
 const P={
   search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>', plus:'<path d="M12 4v16M4 12h16"/>', x:'<path d="M5 5l14 14M19 5 5 19"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
   refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/>',
   copy:'<rect x="8" y="8" width="12" height="12"/><path d="M16 8V4H4v12h4"/>', eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
   eyeoff:'<path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6 0 10 7 10 7a17 17 0 0 1-3 3.8M6.3 6.3C3.6 8.1 2 12 2 12s4 7 10 7a9 9 0 0 0 4.6-1.3"/>',
@@ -720,7 +721,7 @@ function buildNav(){
    + [['calendar','Calendario'],['notes','Notas'],['links','Links'],['vault','Contraseñas'],['finances','Finanzas'],['calc','Calculadora']].map(([k,l])=>`<button class="tab ${v===k?'on':''}" data-v="${k}">${l}</button>`).join('');
   tabs.scrollLeft=sl; $('#navset').classList.toggle('on',v==='settings');
 }
-function go(v){ endEdit(false); closePicker(); closePal(); S.view=v; render(); $('#view').scrollTop=0; if(isMobile()) scrollTo(0,0); const t=$('#tabs .tab.on'); if(t){ const tb=$('#tabs'); tb.scrollLeft=t.offsetLeft-tb.clientWidth/2+t.offsetWidth/2; } }
+function go(v){ S.bioTried=false; endEdit(false); closePicker(); closePal(); S.view=v; render(); $('#view').scrollTop=0; if(isMobile()) scrollTo(0,0); const t=$('#tabs .tab.on'); if(t){ const tb=$('#tabs'); tb.scrollLeft=t.offsetLeft-tb.clientWidth/2+t.offsetWidth/2; } }
 function render(){
   S.dirty=false; const v=S.view; buildNav();
   const view=$('#view'); view.onclick=null; view.className='';
@@ -1678,7 +1679,7 @@ function importSheets(json){ const o=typeof json==='string'?JSON.parse(json):jso
    ===================================================================== */
 const b64e=u8=>{ let s=''; for(const b of u8) s+=String.fromCharCode(b); return btoa(s); };
 const b64d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
-async function deriveKey(pass,salt,iter){ const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']); return crypto.subtle.deriveKey({name:'PBKDF2',salt:b64d(salt),iterations:iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']); }
+async function deriveKey(pass,salt,iter){ const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']); return crypto.subtle.deriveKey({name:'PBKDF2',salt:b64d(salt),iterations:iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},true,['encrypt','decrypt']); }
 async function encObj(key,obj){ const iv=crypto.getRandomValues(new Uint8Array(12)); const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(JSON.stringify(obj))); return {iv:b64e(iv),ct:b64e(new Uint8Array(ct))}; }
 async function decObj(key,{iv,ct}){ const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(iv)},key,b64d(ct)); return JSON.parse(new TextDecoder().decode(pt)); }
 async function decOne(id){ const it=S.items.get(id); if(!it||!S.vault.key) return; if(it.deleted){ S.vault.dec.delete(id); return scheduleRender(); } try{ S.vault.dec.set(id,await decObj(S.vault.key,it.data)); }catch(e){} scheduleRender(); }
@@ -1686,21 +1687,60 @@ async function unlockVault(pass){
   const meta=S.items.get(VAULT_META_ID);
   if(!meta||meta.deleted){ const salt=b64e(crypto.getRandomValues(new Uint8Array(16))), iter=310000; const key=await deriveKey(pass,salt,iter); create('vaultmeta',{salt,iter,check:await encObj(key,'mgg-ok')},VAULT_META_ID); S.vault.key=key; }
   else { const key=await deriveKey(pass,meta.data.salt,meta.data.iter); try{ if(await decObj(key,meta.data.check)!=='mgg-ok') throw 0; }catch(e){ throw new Error('Contraseña maestra incorrecta'); } S.vault.key=key; }
+  await openVault(S.vault.key);
+}
+async function openVault(key){ S.vault.key=key;
   S.vault.dec.clear(); S.vault.last=Date.now(); await Promise.all(all('secret').map(async s=>{ try{ S.vault.dec.set(s.id,await decObj(S.vault.key,s.data)); }catch(e){} }));
   await loadFin();
 }
-function lockVault(){ S.vault.key=null; S.vault.dec.clear(); S.vault.show.clear(); FIN=null; if(S.view==='vault'||S.view==='finances') render(); }
-setInterval(()=>{ if(S.vault.key&&Date.now()-S.vault.last>5*60e3){ lockVault(); toast('Contraseñas bloqueadas'); } },15000);
+function lockVault(){ S.bioTried=true; S.vault.key=null; S.vault.dec.clear(); S.vault.show.clear(); FIN=null; if(S.view==='vault'||S.view==='finances') render(); }
+const lockMin=()=>+ls.get('mgg.lockMin',15);
+setInterval(()=>{ const m=lockMin(); if(S.vault.key&&m>0&&Date.now()-S.vault.last>m*60e3){ lockVault(); toast('Bloqueado por inactividad'); } },15000);
+/* ---- Face ID / Windows Hello (WebAuthn). Con PRF la clave queda atada al biométrico; si no, se guarda cifrada con una clave no exportable del dispositivo ---- */
+const bioKey=()=>'mgg.bio.'+(S.uid||'local');
+const bioGet=()=>ls.get(bioKey(),null);
+const bioOK=()=>!!(window.PublicKeyCredential&&navigator.credentials&&window.isSecureContext);
+const bioName=()=>/iPhone|iPad|iPod/.test(navigator.userAgent)?'Face ID':/Mac/.test(navigator.userAgent)?'Touch ID':/Windows/.test(navigator.userAgent)?'Windows Hello':'huella o Face ID';
+async function bioPrfKey(prf){ const base=await crypto.subtle.importKey('raw',prf,'HKDF',false,['deriveKey']); return crypto.subtle.deriveKey({name:'HKDF',hash:'SHA-256',salt:new Uint8Array(32),info:new TextEncoder().encode('mgg-vault-bio')},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']); }
+async function bioAssert(credId,salt){ const r=await navigator.credentials.get({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),rpId:location.hostname,allowCredentials:[{type:'public-key',id:b64d(credId)}],userVerification:'required',timeout:60000,extensions:salt?{prf:{eval:{first:b64d(salt)}}}:{}}});
+  const ex=(r.getClientExtensionResults&&r.getClientExtensionResults())||{}; return ex.prf&&ex.prf.results&&ex.prf.results.first?new Uint8Array(ex.prf.results.first):null; }
+async function bioEnroll(){
+  if(!S.vault.key) throw new Error('Desbloquea primero con la contraseña maestra');
+  const raw=new Uint8Array(await crypto.subtle.exportKey('raw',S.vault.key)), salt=crypto.getRandomValues(new Uint8Array(32));
+  const cred=await navigator.credentials.create({publicKey:{rp:{name:'To Do List',id:location.hostname},user:{id:crypto.getRandomValues(new Uint8Array(16)),name:S.email||'To Do List',displayName:'To Do List'},challenge:crypto.getRandomValues(new Uint8Array(32)),
+    pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'preferred'},timeout:60000,extensions:{prf:{eval:{first:salt}}}}});
+  const credId=b64e(new Uint8Array(cred.rawId)), ex=(cred.getClientExtensionResults&&cred.getClientExtensionResults())||{};
+  let prf=ex.prf&&ex.prf.results&&ex.prf.results.first?new Uint8Array(ex.prf.results.first):null;
+  if(!prf&&ex.prf&&ex.prf.enabled){ try{ prf=await bioAssert(credId,b64e(salt)); }catch(e){} }
+  const iv=crypto.getRandomValues(new Uint8Array(12)); let rec;
+  if(prf){ const k=await bioPrfKey(prf); rec={mode:'prf',credId,salt:b64e(salt),iv:b64e(iv),ct:b64e(new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},k,raw)))}; }
+  else { const dk=await crypto.subtle.generateKey({name:'AES-GCM',length:256},false,['encrypt','decrypt']); await IDB.put('bio-'+credId,dk); rec={mode:'dev',credId,iv:b64e(iv),ct:b64e(new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},dk,raw)))}; }
+  rec.at=new Date().toISOString(); ls.set(bioKey(),rec); return rec.mode; }
+async function bioUnlock(){ const rec=bioGet(); if(!rec) return;
+  const prf=await bioAssert(rec.credId,rec.mode==='prf'?rec.salt:null); let k;
+  if(rec.mode==='prf'){ if(!prf) throw new Error(bioName()+' no devolvió la clave. Usa la contraseña.'); k=await bioPrfKey(prf); }
+  else { k=await IDB.get('bio-'+rec.credId); if(!k) throw new Error('Este dispositivo perdió la clave. Entra con la contraseña y vuelve a activar '+bioName()+'.'); }
+  let raw; try{ raw=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(rec.iv)},k,b64d(rec.ct)); }catch(e){ throw new Error('No se pudo descifrar. Entra con la contraseña.'); }
+  const key=await crypto.subtle.importKey('raw',raw,{name:'AES-GCM'},true,['encrypt','decrypt']);
+  const meta=S.items.get(VAULT_META_ID); try{ if(await decObj(key,meta.data.check)!=='mgg-ok') throw 0; }catch(e){ ls.del?ls.del(bioKey()):localStorage.removeItem(bioKey()); throw new Error('La contraseña maestra cambió. Entra con ella y vuelve a activar '+bioName()+'.'); }
+  await openVault(key); }
+function bioOffer(){ if(!bioOK()||bioGet()||ls.get('mgg.bio.no.'+(S.uid||'local'),false)) return;
+  PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable?.().then(ok=>{ if(!ok) return;
+    confirm2(`¿Desbloquear con ${bioName()}?`,`La próxima vez que Contraseñas o Finanzas estén bloqueadas en este dispositivo, podrás abrirlas con ${bioName()} en vez de escribir la contraseña maestra.`,async()=>{ try{ const m=await bioEnroll(); toast(bioName()+' activado'+(m==='prf'?'':' en este dispositivo')); render(); }catch(e){ if(e.name!=='NotAllowedError') toast(e.message); } },'Activar');
+    ls.set('mgg.bio.no.'+(S.uid||'local'),true); }).catch(()=>{}); }
 ['keydown','pointerdown'].forEach(ev=>document.addEventListener(ev,()=>{ if(S.vault.key) S.vault.last=Date.now(); },true));
 async function saveSecret(id,obj){ const enc=await encObj(S.vault.key,obj); if(id){ const it=S.items.get(id); it.data=enc; put(it); S.vault.dec.set(id,obj); } else { const it=create('secret',enc); S.vault.dec.set(it.id,obj); } }
 function renderLock(v){ const meta=S.items.get(VAULT_META_ID), setup=!meta||meta.deleted;
 
-    v.innerHTML=`<div class="lock"><h2>${setup?'Contraseña maestra':'Bloqueado'}</h2>${S.view==='finances'?'<p class="mut" style="font-size:12.5px;margin:0 0 6px">Finanzas usa la misma contraseña maestra que Contraseñas.</p>':''}<p class="mut" style="font-size:12.5px;margin:0 0 20px">${setup?'Todo se cifra en tu dispositivo antes de subirse. Si la olvidas, no hay forma de recuperar las contraseñas.':'Se bloquea solo tras 5 minutos sin actividad.'}</p>
+    v.innerHTML=`<div class="lock"><h2>${setup?'Contraseña maestra':'Bloqueado'}</h2>${S.view==='finances'?'<p class="mut" style="font-size:12.5px;margin:0 0 6px">Finanzas usa la misma contraseña maestra que Contraseñas.</p>':''}<p class="mut" style="font-size:12.5px;margin:0 0 20px">${setup?'Todo se cifra en tu dispositivo antes de subirse. Si la olvidas, no hay forma de recuperar las contraseñas.':(lockMin()>0?`Se bloquea solo tras ${lockMin()} min sin actividad.`:'Se bloquea al cerrar la app.')}</p>
+     ${!setup&&bioGet()&&bioOK()?`<button class="btn pri" id="vbio" style="width:100%;justify-content:center;margin-bottom:14px">${I('lock')}Desbloquear con ${bioName()}</button><p class="mut up" style="font-size:10px;text-align:center;margin:0 0 10px">o con la contraseña</p>`:''}
      <input class="inp" type="password" id="vp" placeholder="CONTRASEÑA MAESTRA" autocomplete="current-password">${setup?'<input class="inp" type="password" id="vp2" placeholder="REPÍTELA" style="margin-top:8px" autocomplete="new-password">':''}
-     <button class="btn pri" id="vgo" style="width:100%;justify-content:center;margin-top:14px">${setup?'Crear':'Desbloquear'}</button><p id="verr" style="color:var(--bad);font-size:12px;min-height:16px"></p></div>`;
+     <button class="btn ${!setup&&bioGet()&&bioOK()?'':'pri'}" id="vgo" style="width:100%;justify-content:center;margin-top:14px">${setup?'Crear':'Desbloquear'}</button><p id="verr" style="color:var(--bad);font-size:12px;min-height:16px"></p></div>`;
     const go_=async()=>{ const p=$('#vp').value; if(!p) return; if(setup){ if(p.length<8) return $('#verr').textContent='Mínimo 8 caracteres'; if(p!==$('#vp2').value) return $('#verr').textContent='No coinciden'; }
-      $('#vgo').textContent='Descifrando…'; try{ await unlockVault(p); render(); }catch(e){ $('#verr').textContent=e.message; $('#vgo').textContent=setup?'Crear':'Desbloquear'; } };
-    $('#vgo').onclick=go_; $$('#vp,#vp2').forEach(x=>x.onkeydown=e=>{ if(e.key==='Enter') go_(); }); setTimeout(()=>$('#vp')?.focus(),50); }
+      $('#vgo').textContent='Descifrando…'; try{ await unlockVault(p); render(); setTimeout(bioOffer,400); }catch(e){ $('#verr').textContent=e.message; $('#vgo').textContent=setup?'Crear':'Desbloquear'; } };
+    $('#vgo').onclick=go_; $$('#vp,#vp2').forEach(x=>x.onkeydown=e=>{ if(e.key==='Enter') go_(); });
+    const vb=$('#vbio'); if(vb){ const run=async()=>{ vb.disabled=true; try{ await bioUnlock(); render(); }catch(e){ vb.disabled=false; if(e.name!=='NotAllowedError'&&e.name!=='AbortError') $('#verr').textContent=e.message; } }; vb.onclick=run; if(!S.bioTried){ S.bioTried=true; run(); } }
+    else setTimeout(()=>$('#vp')?.focus(),50); }
 function rVault(){
   const v=$('#view');
   if(!S.vault.key) return renderLock(v);
@@ -1996,6 +2036,9 @@ function rSettings(){
      <div class="row wrap" style="margin-top:12px"><button class="btn sm" id="shnew">${I('plus')}Nueva chuleta</button><label class="btn sm" style="cursor:pointer">Importar .json<input type="file" id="i_sh" accept=".json,application/json" hidden></label></div><p id="i_shmsg" style="margin-top:10px"></p></section>
    <section><h3 class="sec">Más importaciones</h3><p>Fotos de las tareas (.json) y datos de Finanzas (.json, necesita la contraseña maestra desbloqueada).</p>
      <div class="row wrap"><label class="btn sm" style="cursor:pointer">Fotos de tareas<input type="file" id="i_pics" accept=".json" hidden></label><label class="btn sm" style="cursor:pointer">Finanzas<input type="file" id="i_fin" accept=".json" hidden></label></div><p id="i_more" style="margin-top:10px">${esc(S.moreMsg||'')}</p></section>
+   <section><h3 class="sec">Seguridad</h3><p>Contraseñas y Finanzas se abren con la contraseña maestra${bioOK()?` o con ${bioName()} en este dispositivo`:''}.</p>
+     <div class="g2"><div><label class="f">Bloquear tras</label><select class="inp" id="p_lock">${[[5,'5 min sin actividad'],[15,'15 min sin actividad'],[30,'30 min sin actividad'],[60,'1 hora sin actividad'],[0,'Solo al cerrar la app']].map(([v,t])=>`<option value="${v}" ${lockMin()===v?'selected':''}>${t}</option>`).join('')}</select></div>
+     <div><label class="f">${bioOK()?bioName()+' en este dispositivo':'Biometría'}</label>${!bioOK()?'<p class="mut" style="font-size:12px;margin:8px 0 0">No disponible en este navegador</p>':bioGet()?`<div class="row" style="margin-top:4px"><span style="color:var(--ok);font-size:12.5px">● Activado</span><button class="btn sm" id="p_biooff">Desactivar</button></div>`:`<button class="btn sm" id="p_bioon" style="margin-top:4px">${S.vault.key?'Activar':'Desbloquea primero para activar'}</button>`}</div></div></section>
    <section><h3 class="sec">Exportar</h3><p>Tareas en CSV (punto y coma, fechas dd/mm/aaaa) o copia completa sin contraseñas.</p><div class="row wrap"><button class="btn" id="x_csv">Tareas CSV</button><button class="btn" id="x_json">Copia completa JSON</button></div></section>
    <section><h3 class="sec">Preferencias</h3><div class="g2"><div><label class="f">Días libres al año</label><input class="inp" type="number" id="p_vac" value="${setting('vacDays',23)}"></div><div><label class="f">Tema</label><select class="inp" id="p_th"><option value="light">Claro</option><option value="dark" ${document.documentElement.dataset.theme==='dark'?'selected':''}>Oscuro</option></select></div></div></section>
    <section><h3 class="sec">Atajos · Tareas y chuletas</h3><div class="sc"><kbd>← ↑ → ↓</kbd><span>Moverse (Mayús = rango en chuletas · Ctrl = ir al extremo)</span><kbd>F2</kbd><span>Editar · o empieza a escribir</span><kbd>Enter / Tab</kbd><span>Confirmar y bajar / derecha</span><kbd>Alt+Enter</kbd><span>Salto de línea en la celda</span><kbd>Supr</kbd><span>Vaciar celda(s)</span><kbd>Ctrl+Z / Ctrl+Y</kbd><span>Deshacer / rehacer</span><kbd>Ctrl+C / X / V</kbd><span>Copiar / cortar / pegar (también desde Excel)</span><kbd>Ctrl+B / I / U</kbd><span>Negrita / cursiva / subrayado</span><kbd>Ctrl+clic</kbd><span>Abrir la URL de una celda</span><kbd>Ctrl+Enter</kbd><span>Nueva tarea</span><kbd>Ctrl+E</kbd><span>Ficha de la tarea</span><kbd>N O S F</kbd><span>Status: Not started / Ongoing / Standby / Finished</span></div></section>
@@ -2004,6 +2047,9 @@ function rSettings(){
   if(S.cloud) $('#c_out').onclick=async()=>{ await S.cloud.auth.signOut(); location.reload(); };
   $('#p_vac').onchange=e=>setSetting('vacDays',+e.target.value||23);
   $('#shnew').onclick=()=>addSheet();
+  $('#p_lock').onchange=e=>{ ls.set('mgg.lockMin',+e.target.value); if(S.vault.key) S.vault.last=Date.now(); toast('Guardado'); };
+  $('#p_biooff')&&($('#p_biooff').onclick=()=>{ const r=bioGet(); if(r) IDB.del('bio-'+r.credId); localStorage.removeItem(bioKey()); render(); });
+  $('#p_bioon')&&($('#p_bioon').onclick=async()=>{ if(!S.vault.key) return go('vault'); try{ const m=await bioEnroll(); toast(bioName()+' activado'); render(); }catch(e){ if(e.name!=='NotAllowedError') toast(e.message); } });
   $('#i_pics').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; const m={set textContent(t){ S.moreMsg=t; const el=$('#i_more'); if(el) el.textContent=t; }}; m.textContent='Importando fotos…';
     try{ const o=JSON.parse(await f.text()); if(o.type!=='mgg-taskpics') throw new Error('No es un archivo de fotos de tareas'); const by=new Map(all('task').map(t=>[(t.data.list||'INSTRA')+'#'+t.data.n,t])); let n=0,miss=0;
       for(const x of o.items){ const t=by.get(x.list+'#'+x.n); if(!t){ miss++; continue; } if((t.data.att||[]).some(a=>a.src==='xlsx')) continue; const bin=Uint8Array.from(atob(x.b64),c=>c.charCodeAt(0)); await addMedia(t.id,new Blob([bin],{type:x.mime}),'image',{src:'xlsx'}); n++; m.textContent=`Importando fotos… ${n}`; }
