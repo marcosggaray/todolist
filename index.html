@@ -450,6 +450,14 @@ td.r .fi{text-align:right;width:96px}
 .grid tr.fixh .cx{max-height:calc(var(--rh) - 17px);overflow:hidden}
 .grid tr.fixh .cx.clip{-webkit-mask-image:linear-gradient(#000 calc(100% - 12px),transparent);mask-image:linear-gradient(#000 calc(100% - 12px),transparent)}
 body.colrs,body.colrs *{cursor:col-resize!important;user-select:none} body.rowrs,body.rowrs *{cursor:row-resize!important;user-select:none}
+.shw #shpics{position:absolute;left:0;top:0;width:0;height:0;z-index:4}
+.shp{position:absolute;touch-action:none;cursor:move;user-select:none;-webkit-user-select:none}
+.shp img{width:100%;height:100%;display:block;pointer-events:none;background:#f2f2f2;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.shp.on{outline:2px solid #217346;outline-offset:1px}
+.shp .h{display:none;position:absolute;right:-7px;bottom:-7px;width:13px;height:13px;background:#fff;border:2px solid #217346;border-radius:50%;cursor:nwse-resize}
+.shp .x{display:none;position:absolute;top:-11px;right:-11px;width:22px;height:22px;border-radius:50%;border:0;background:var(--ink);color:#fff;cursor:pointer;font-size:15px;line-height:22px;padding:0}
+.shp.on .h,.shp.on .x{display:block}
+@media (pointer:coarse){ .shp .h{width:22px;height:22px;right:-11px;bottom:-11px} .shp .x{width:28px;height:28px;line-height:28px} }
 /* ---------- calendario v6 ---------- */
 .calw{grid-template-columns:minmax(0,1fr) minmax(420px,590px);gap:24px}
 .calhd h2{min-width:0;font-size:22px}
@@ -1431,6 +1439,8 @@ function rSheets(){
     <span class="tb" title="Filas y columnas"><select id="trc"><option value="">Filas / columnas</option><option value="ra">Insertar fila arriba</option><option value="rb">Insertar fila abajo</option><option value="rd">Eliminar fila(s)</option><option value="ca">Insertar columna a la izquierda</option><option value="cb">Insertar columna a la derecha</option><option value="cd">Eliminar columna(s)</option></select></span>
     <button class="tb txt" id="tcf" title="Formato condicional">Condicional</button><button class="tb txt" id="tclr" title="Borrar formato">Borrar formato</button>
     <span class="sep"></span>
+    <button class="tb" id="timg" title="Insertar imagen · también puedes pegarla con Ctrl+V">${I('cam')}</button><input type="file" id="timgf" accept="image/*" multiple hidden>
+    <span class="sep"></span>
     <button class="tb" id="tundo" title="Deshacer (Ctrl+Z)">↶</button><button class="tb" id="tredo" title="Rehacer (Ctrl+Y)">↷</button>
     <button class="tb" data-z="-1" title="Alejar">−</button><span class="tb txt" style="min-width:42px">${Math.round(zoom()*100)}%</span><button class="tb" data-z="1" title="Acercar">+</button>
     ${isMobile()?'<button class="tb txt" id="tedit">Editar</button>':''}
@@ -1440,8 +1450,44 @@ function rSheets(){
 `;
   const w=$('#shw'); if(old){ w.scrollTop=old[0]; w.scrollLeft=old[1]; }
   drawSel(!old); if((hadFocus||S.sh.wantFocus)&&!isMobile()) w.focus({preventScroll:true}); S.sh.wantFocus=false;
-  bindSheet(sh);
+  bindSheet(sh); drawShPics(sh);
+  $('#timg').onclick=()=>$('#timgf').click(); $('#timgf').onchange=e=>{ insertPics([...e.target.files]); e.target.value=''; };
 }
+/* ---- imágenes flotantes en las chuletas (como en Excel) ---- */
+const SHP={sel:null};
+const shW=(d,c,z)=>Math.round((d.cw[c]??d.dw??64)*z), shH=(d,r,z)=>Math.round((d.rh[r]??d.dh??20)*z);
+function picPos(d,p,z){ let x=40, y=S.sh.hh||22; for(let c=0;c<p.c;c++) x+=shW(d,c,z); for(let r=0;r<p.r;r++) y+=shH(d,r,z); return {l:x+p.x*z,t:y+p.y*z,w:p.w*z,h:p.h*z}; }
+function picAnchor(d,l,t,z){ let x=40,c=0; while(c<2000){ const w=shW(d,c,z); if(x+w>l) break; x+=w; c++; } let y=S.sh.hh||22,r=0; while(r<20000){ const h=shH(d,r,z); if(y+h>t) break; y+=h; r++; } return {r,c,x:Math.max(0,Math.round((l-x)/z)),y:Math.max(0,Math.round((t-y)/z))}; }
+function drawShPics(sh){ const w=$('#shw'); if(!w||!sh) return; let L=$('#shpics'); const d=sh.data, z=zoom(); S.sh.hh=$('#sht thead')?.offsetHeight||22;
+  if(!L){ L=document.createElement('div'); L.id='shpics'; w.appendChild(L); bindShPics(L); }
+  if(SHP.sel&&!(d.pics||[]).some(p=>p.id===SHP.sel)) SHP.sel=null;
+  L.innerHTML=(d.pics||[]).map(p=>{ const q=picPos(d,p,z); return `<div class="shp ${SHP.sel===p.id?'on':''}" data-pic="${p.id}" style="left:${q.l}px;top:${q.t}px;width:${q.w}px;height:${q.h}px"><img data-src="${esc(p.path)}" alt="" draggable="false"><i class="h" data-h="1" title="Cambiar tamaño (Mayús: libre)"></i><button class="x" data-px title="Eliminar imagen">×</button></div>`; }).join('');
+  $$('[data-src]',L).forEach(async el=>{ const u=await mediaSrc(el.dataset.src); if(u) el.src=u; }); }
+function bindShPics(L){
+  L.addEventListener('pointerdown',e=>{ const el=e.target.closest('.shp'); if(!el) return; e.stopPropagation(); e.preventDefault(); if(S.editor) endEdit(true);
+    const id=el.dataset.pic; if(e.target.closest('[data-px]')) return delPic(id);
+    const was=SHP.sel===id; SHP.sel=id; $$('.shp',L).forEach(x=>x.classList.toggle('on',x===el));
+    const sh=curSheet(), d=sh.data, z=zoom(), p=(d.pics||[]).find(x=>x.id===id); if(!p) return; const q=picPos(d,p,z), x0=e.clientX, y0=e.clientY, rs=!!e.target.closest('[data-h]'), ratio=q.w/q.h; let nl=q.l,nt=q.t,nw=q.w,nh=q.h,moved=false;
+    try{ el.setPointerCapture(e.pointerId); }catch(_){}
+    const mv=ev=>{ const dx=ev.clientX-x0, dy=ev.clientY-y0; if(Math.abs(dx)+Math.abs(dy)>3) moved=true; if(!moved) return;
+      if(rs){ nw=Math.max(24,q.w+dx); nh=ev.shiftKey?Math.max(24,q.h+dy):nw/ratio; } else { nl=Math.max(40,q.l+dx); nt=Math.max(S.sh.hh,q.t+dy); }
+      el.style.left=nl+'px'; el.style.top=nt+'px'; el.style.width=nw+'px'; el.style.height=nh+'px'; };
+    const up=()=>{ el.removeEventListener('pointermove',mv); el.removeEventListener('pointerup',up); el.removeEventListener('pointercancel',up);
+      if(!moved){ if(was&&isMobile()) viewPic(id); return; }
+      const a=picAnchor(d,nl,nt,z); shMut(dd=>{ const pp=(dd.pics||[]).find(x=>x.id===id); if(!pp) return false; Object.assign(pp,a,{w:Math.round(nw/z),h:Math.round(nh/z)}); }); };
+    el.addEventListener('pointermove',mv); el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up); });
+  L.addEventListener('dblclick',e=>{ const el=e.target.closest('.shp'); if(el) viewPic(el.dataset.pic); });
+}
+document.addEventListener('pointerdown',e=>{ if(SHP.sel&&!e.target.closest('.shp')){ SHP.sel=null; $$('.shp.on').forEach(x=>x.classList.remove('on')); } },true);
+document.addEventListener('keydown',e=>{ if(!SHP.sel||!S.view.startsWith('sheet:')||S.modal||S.editor) return; if(e.key==='Delete'||e.key==='Backspace'){ e.preventDefault(); e.stopImmediatePropagation(); delPic(SHP.sel); } else if(e.key==='Escape'){ SHP.sel=null; $$('.shp.on').forEach(x=>x.classList.remove('on')); } },true);
+function delPic(id){ SHP.sel=null; shMut(d=>{ const n=(d.pics||[]).length; d.pics=(d.pics||[]).filter(p=>p.id!==id); if(d.pics.length===n) return false; }); }
+async function viewPic(id){ const p=(curSheet()?.data.pics||[]).find(x=>x.id===id); if(!p) return; const u=await mediaSrc(p.path);
+  modal(`<div class="acts top"><span style="flex:1"></span><button class="btn" data-close>Cerrar</button></div><img src="${u||''}" alt="" style="display:block;max-width:100%;max-height:78vh;margin:0 auto;border-radius:8px">`,'wide'); }
+async function insertPics(files){ files=files.filter(f=>f&&f.type&&f.type.startsWith('image/')); if(!files.length) return; const a=S.sh.a||{r:0,c:0}; let k=0;
+  for(const f of files){ const blob=await shrinkImage(f); let w=320,h=240; try{ const bm=await createImageBitmap(blob); const sc=Math.min(1,360/bm.width,300/bm.height); w=Math.round(bm.width*sc); h=Math.round(bm.height*sc); }catch(_){}
+    const id=uuid(), path=`${S.uid}/${id}.${blob.type.includes('png')?'png':'jpg'}`; await IDB.put(path,blob); if(S.cloud){ ls.set('mgg.upq.'+S.uid,[...upq(),path]); processUploads(); }
+    shMut(d=>{ (d.pics ||= []).push({id,path,r:a.r,c:a.c,x:4+k*20,y:4+k*20,w,h}); }); SHP.sel=id; k++; }
+  toast(files.length>1?`${files.length} imágenes insertadas`:'Imagen insertada · arrástrala para moverla'); }
 function sheetTable(sh){
   const d=sh.data, z=zoom(), {anchor,cov}=mergeMap(d), E=makeEval(d);
   let mr=0,mc=0; for(const k in d.cells){ const i=k.indexOf(','), r=+k.slice(0,i), c=+k.slice(i+1); if(r>mr) mr=r; if(c>mc) mc=c; }
@@ -1535,6 +1581,7 @@ function shiftAxis(d,ax,at,n){
   const cells={}; for(const k in d.cells){ let [r,c]=k.split(',').map(Number); const x=ax==='r'?r:c; if(n<0&&x===at) continue; if(n>0&&x>=at){ ax==='r'?r++:c++; } else if(n<0&&x>at){ ax==='r'?r--:c--; } cells[r+','+c]=d.cells[k]; }
   for(const k in cells){ const v=cells[k].v; if(typeof v==='string'&&v[0]==='=') cells[k].v='='+shiftRefs(v.slice(1),ax,at,n); } d.cells=cells;
   const sz=ax==='r'?'rh':'cw', o={}; for(const k in d[sz]){ const x=+k; if(n<0&&x===at) continue; o[n>0&&x>=at?x+1:n<0&&x>at?x-1:x]=d[sz][k]; } d[sz]=o;
+  for(const pc of d.pics||[]){ const kk=ax==='r'?'r':'c'; if(n>0&&pc[kk]>=at) pc[kk]++; else if(n<0&&pc[kk]>at) pc[kk]--; }
   const fix=g=>{ const i0=ax==='r'?0:1, i1=ax==='r'?2:3; g=[...g]; if(n>0){ if(g[i0]>=at) g[i0]++; if(g[i1]>=at) g[i1]++; } else { if(g[i0]>at) g[i0]--; if(g[i1]>=at) g[i1]--; if(g[i1]<g[i0]) return null; } return g; };
   d.mg=(d.mg||[]).map(fix).filter(g=>g&&(g[0]!==g[2]||g[1]!==g[3])); d.cf=(d.cf||[]).map(r=>{ const g=fix(r.rg); return g?{...r,rg:g}:null; }).filter(Boolean);
   if(ax==='r') d.nr=Math.max(1,(d.nr||0)+n); else d.nc=Math.max(1,(d.nc||0)+n);
@@ -1632,7 +1679,8 @@ function rangeData(d,rg){ const E=makeEval(d); const rows=[]; for(let r=rg[0];r<
 const sheetFocused=()=>S.view.startsWith('sheet:')&&document.activeElement&&document.activeElement.id==='shw'&&!S.editor;
 document.addEventListener('copy',e=>{ if(!sheetFocused()) return; const sh=curSheet(), rg=expandRange(sh.data,selRange()), r=rangeData(sh.data,rg); e.clipboardData.setData('text/plain',r.text); e.preventDefault(); S.sh.clip={...r,rg,sid:sh.id,marquee:true}; drawSel(false); toast('Copiado'); });
 document.addEventListener('cut',e=>{ if(!sheetFocused()) return; const sh=curSheet(), rg=expandRange(sh.data,selRange()), r=rangeData(sh.data,rg); e.clipboardData.setData('text/plain',r.text); e.preventDefault(); S.sh.clip={...r,rg,sid:sh.id,marquee:false}; shMut(d=>{ eachCell(d,rg,(rr,cc)=>{ delete d.cells[rr+','+cc]; }); }); });
-document.addEventListener('paste',e=>{ if(!sheetFocused()) return; e.preventDefault(); const text=e.clipboardData.getData('text/plain'); const a=S.sh.a, clip=S.sh.clip;
+document.addEventListener('paste',e=>{ if(!sheetFocused()&&!(SHP.sel&&S.view.startsWith('sheet:'))) return; e.preventDefault();
+  const ims=[...(e.clipboardData?.files||[])].filter(f=>f.type.startsWith('image/')); if(ims.length){ insertPics(ims); return; } const text=e.clipboardData.getData('text/plain'); const a=S.sh.a, clip=S.sh.clip;
   shMut(d=>{ if(clip&&clip.text===text){ const dr=a.r-clip.rg[0], dc=a.c-clip.rg[1]; clip.rows.forEach((row,i)=>row.forEach((cell,j)=>{ const k=(a.r+i)+','+(a.c+j); if(!cell){ delete d.cells[k]; return; } let v=cell.v; if(typeof v==='string'&&v[0]==='=') v='='+moveRefs(v.slice(1),dr,dc); const n={}; if(v!=null) n.v=v; if(cell.s){ const s=sidOf(d,cell.s); if(s!=null) n.s=s; } if(n.v==null&&n.s==null) delete d.cells[k]; else d.cells[k]=n; })); S.sh.f={r:a.r+clip.rows.length-1,c:a.c+clip.rows[0].length-1}; }
     else { const lines=parseTSV(text); lines.forEach((line,i)=>line.forEach((x,j)=>{ const k=(a.r+i)+','+(a.c+j); const p=parseInput(x); const cell=d.cells[k]||{}; if(p.v==null) delete cell.v; else cell.v=p.v; delete cell.cv; if(p.nf&&!styleOf(d,cell).nf){ const s=sidOf(d,{...styleOf(d,cell),nf:p.nf}); if(s!=null) cell.s=s; } if(cell.v==null&&cell.s==null) delete d.cells[k]; else d.cells[k]=cell; })); S.sh.f={r:a.r+lines.length-1,c:a.c+Math.max(...lines.map(l=>l.length))-1}; } });
   if(clip) clip.marquee=false; });
