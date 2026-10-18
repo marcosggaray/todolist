@@ -538,8 +538,8 @@ td .bk{margin:0}
    Pega aquí la URL y la anon key de Supabase (Project Settings → API).
    ===================================================================== */
 const CONFIG = {
-  SUPABASE_URL: '',
-  SUPABASE_ANON_KEY: '',
+  SUPABASE_URL: 'https://vbzckbybbaavhckvtjtn.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZiemNrYnliYmFhdmhja3Z0anRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3ODU0NDQsImV4cCI6MjA5MDM2MTQ0NH0.-4JmFl62B0kX-EBChxwk-1P-lIA_OPCXUJzOGdUf2Xo',
 };
 const TABLE='dash_items', BUCKET='dash-media';
 const SEED=null; /* solo en la versión de prueba */
@@ -1974,7 +1974,7 @@ document.addEventListener('keydown',e=>{ if(S.view!=='calc'||S.modal||e.ctrlKey|
 /* =====================================================================
    SETTINGS + IMPORT / EXPORT
    ===================================================================== */
-function cfg(){ const o=ls.get('mgg.cfg',{}); return {url:o.url||CONFIG.SUPABASE_URL,key:o.key||CONFIG.SUPABASE_ANON_KEY}; }
+function cfg(){ const o=ls.get('mgg.cfg',{}); return {url:o.url!=null?o.url:CONFIG.SUPABASE_URL,key:o.key!=null?o.key:CONFIG.SUPABASE_ANON_KEY}; }
 function rSettings(){
   const c=cfg(), L=lists();
   $('#view').innerHTML=`<div class="set">
@@ -2082,7 +2082,7 @@ function authScreen(){
    <button class="btn ghost sm" id="a_local" style="margin-top:18px">Usar sin cuenta</button></div>`;
   document.body.appendChild(a);
   const go_=async up=>{ const email=$('#a_e').value.trim(), password=$('#a_p').value; if(!email||!password) return; $('#a_err').textContent='';
-    const r=up?await S.cloud.auth.signUp({email,password}):await S.cloud.auth.signInWithPassword({email,password}); if(r.error) return $('#a_err').textContent=r.error.message;
+    const r=up?await S.cloud.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}}):await S.cloud.auth.signInWithPassword({email,password}); if(r.error) return $('#a_err').textContent=r.error.message;
     if(up&&!r.data.session) return $('#a_err').innerHTML='<span style="color:var(--ok)">Cuenta creada. Confirma el correo y vuelve a entrar.</span>';
     ls.set('mgg.lastEmail',email); ls.set('mgg.lastUid',r.data.session.user.id); a.remove(); start(r.data.session.user); };
   $('#a_in').onclick=()=>go_(false); $('#a_up').onclick=()=>go_(true); $('#a_p').onkeydown=e=>{ if(e.key==='Enter') go_(false); };
