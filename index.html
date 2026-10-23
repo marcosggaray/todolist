@@ -460,6 +460,11 @@ body.colrs,body.colrs *{cursor:col-resize!important;user-select:none} body.rowrs
 .shp.on .h,.shp.on .x{display:block}
 @media (pointer:coarse){ .shp .h{width:22px;height:22px;right:-11px;bottom:-11px} .shp .x{width:28px;height:28px;line-height:28px} }
 .navsrch{margin-right:4px}
+.pf{margin-bottom:12px} .pf .f{display:block;margin-bottom:6px} .pf .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pf .chip.on{background:var(--ink);color:var(--surface);border-color:var(--ink)} .pf .chip svg{width:13px;height:13px;vertical-align:-2px}
+.pfs{border-left:2px solid var(--line);padding-left:14px;margin-left:6px} .pfs.off{opacity:.4;pointer-events:none}
+.inp.sm{padding:3px 6px;width:auto;height:auto;font-size:12px}
+.pprev{background:var(--soft);border-radius:10px;padding:10px 12px;font-size:12px;margin-top:6px} .pprev b{display:block;margin-bottom:4px;font-size:12.5px} .pprev div{padding:2px 0} .pprev .hb{font-size:9px}
 .mdl.srch{max-width:680px;width:calc(100vw - 32px);padding:0;align-self:flex-start;margin-top:10vh;overflow:hidden}
 .srow{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
 .srow input{flex:1;border:0;outline:none;font:inherit;font-size:16px;background:none;color:var(--ink)}
@@ -2197,7 +2202,13 @@ function rConv(){
    ===================================================================== */
 const VAPID_PUB='BD6ovCwQzHKbPExNCDH9W62636zSjj8IoXGAGJtfMVgyYltFTbQn-URple8Dv-9AEX4IPJk-9SkrfDpPaV0hLAQ';
 const isIOS=/iPhone|iPad|iPod/.test(navigator.userAgent), isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-const pushPrefs=()=>({hour:8,tasks:true,trips:true,standby:false,...ls.get('mgg.push.prefs',{})});
+const pushPrefs=()=>({hour:8,tasks:true,trips:true,high:true,photo:false,lists:null,projects:null,statuses:['Not started','Ongoing'],today:true,late:true,soon:0,...ls.get('mgg.push.prefs',{})});
+/* misma lógica que la función "avisos" del servidor: sirve para la vista previa */
+function alertTasks(pr,today=todayISO()){ if(!pr.tasks) return []; const lim=addDays(today,+pr.soon||0);
+  return all('task').map(t=>t.data).filter(d=>{ if(!d.due||d.status==='Finished') return false; const st=d.status||'Not started';
+    if(!(pr.statuses||['Not started','Ongoing']).includes(st)) return false; if(pr.lists&&pr.lists.length&&!pr.lists.includes(d.list||'INSTRA')) return false;
+    if(pr.projects&&pr.projects.length&&!pr.projects.includes(d.project||'')) return false; if(pr.high&&!d.high) return false; if(pr.photo&&!(d.att||[]).some(a=>a.type==='image')) return false;
+    if(d.due===today) return pr.today!==false; if(d.due<today) return pr.late!==false; return d.due<=lim; }).sort((a,b)=>a.due.localeCompare(b.due)); }
 const pushOK=()=>'serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window;
 function u8key(b64){ const p='='.repeat((4-b64.length%4)%4), s=atob((b64+p).replace(/-/g,'+').replace(/_/g,'/')); return Uint8Array.from(s,c=>c.charCodeAt(0)); }
 async function pushSub(){ if(!pushOK()) return null; const reg=await navigator.serviceWorker.getRegistration(); return reg?await reg.pushManager.getSubscription():null; }
@@ -2211,19 +2222,35 @@ async function pushEnable(){
   let sub=await reg.pushManager.getSubscription(); if(!sub) sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:u8key(VAPID_PUB)});
   await pushSave(sub); ls.set('mgg.push.on',true); }
 async function pushDisable(){ const sub=await pushSub(); if(sub){ await S.cloud?.from('push_subs').delete().eq('endpoint',sub.endpoint); await sub.unsubscribe(); } ls.set('mgg.push.on',false); }
-async function pushPrefsSave(p){ ls.set('mgg.push.prefs',{...pushPrefs(),...p}); const sub=await pushSub(); if(sub&&S.cloud) await pushSave(sub).catch(e=>toast(e.message)); }
+async function pushPrefsSave(p){ const pr={...pushPrefs(),...p}; ls.set('mgg.push.prefs',pr); if(!S.cloud) return; const sub=await pushSub().catch(()=>null); if(sub) await pushSave(sub).catch(e=>toast(e.message)); await S.cloud.from('push_subs').update({prefs:pr,hour:pr.hour}).eq('user_id',S.uid).then(()=>{},()=>{}); }
+async function pushPull(){ if(!S.cloud||S.pushPulled) return; S.pushPulled=true; try{ const {data}=await S.cloud.from('push_subs').select('prefs,hour').eq('user_id',S.uid).limit(1); if(data&&data[0]&&data[0].prefs&&Object.keys(data[0].prefs).length){ ls.set('mgg.push.prefs',{...data[0].prefs,hour:data[0].hour}); pushBox(); } }catch(e){} }
 async function pushTest(){ const {data,error}=await S.cloud.functions.invoke('avisos',{body:{test:true}}); if(error) throw new Error(error.message); const sent=(data&&data.sent)||[]; if(!sent.length) throw new Error('No hay dispositivos con avisos activados'); if(sent.some(x=>x.error)) throw new Error('Algún dispositivo falló ('+sent.filter(x=>x.error).map(x=>x.error).join(', ')+')'); }
-async function pushBox(){ const el=$('#pushbox'); if(!el) return; const pr=pushPrefs(); const sub=await pushSub().catch(()=>null); const on=!!sub&&Notification.permission==='granted';
+async function pushBox(){ const el=$('#pushbox'); if(!el) return; pushPull(); const pr=pushPrefs(); const sub=await pushSub().catch(()=>null); const on=!!sub&&Notification.permission==='granted';
   const why=!pushOK()?(isIOS&&!isStandalone()?'En iPhone los avisos solo funcionan con la app instalada en la pantalla de inicio: ábrela desde el icono y actívalos ahí.':'Este navegador no admite avisos.'):Notification.permission==='denied'?'Los avisos están bloqueados para esta web: permítelos en los ajustes del navegador (o del iPhone: Ajustes → Notificaciones → To Do List).':'';
-  el.innerHTML=`<p>Un aviso al día a la hora que elijas con las tareas que vencen hoy y las retrasadas, y otro si mañana viajas o tienes viajes sin reservar esa semana.</p>
-   ${why?`<p class="mut" style="font-size:12.5px">${why}</p>`:`<div class="row wrap" style="margin:6px 0 12px">${on?`<span style="color:var(--ok);font-size:12.5px">● Activados en este dispositivo</span><button class="btn sm" id="pu_test">Enviar prueba</button><button class="btn sm" id="pu_off">Desactivar</button>`:`<button class="btn pri sm" id="pu_on">Activar en este dispositivo</button>`}</div>`}
-   <div class="g2"><div><label class="f">Hora del aviso</label><select class="inp" id="pu_h">${[6,7,8,9,10,12,14,18,20,21].map(h=>`<option value="${h}" ${pr.hour===h?'selected':''}>${pad(h)}:00</option>`).join('')}</select></div>
-   <div><label class="f">Incluir</label><label class="row" style="font-size:12.5px;margin-top:6px"><input type="checkbox" id="pu_t" ${pr.tasks?'checked':''}>Tareas</label><label class="row" style="font-size:12.5px"><input type="checkbox" id="pu_v" ${pr.trips?'checked':''}>Viajes</label><label class="row" style="font-size:12.5px"><input type="checkbox" id="pu_s" ${pr.standby?'checked':''}>También Standby</label></div></div>`;
+  const chips=(key,opts,lbl=x=>x)=>opts.map(o=>{ const sel=pr[key]; const isOn=key==='statuses'?(sel||[]).includes(o):!sel||!sel.length?false:sel.includes(o); return `<button class="chip ${isOn?'on':''}" data-pk="${key}" data-pv="${esc(o)}">${esc(lbl(o))}</button>`; }).join('');
+  const prjs=[...new Set(all('task').filter(t=>t.data.status!=='Finished'&&t.data.project).map(t=>t.data.project))].sort();
+  const prev=alertTasks(pr), td=todayISO();
+  el.innerHTML=`${why?`<p class="mut" style="font-size:12.5px">${why}</p>`:`<div class="row wrap" style="margin:0 0 14px">${on?`<span style="color:var(--ok);font-size:12.5px">● Activados en este dispositivo</span><button class="btn sm" id="pu_test">Enviar prueba</button><button class="btn sm" id="pu_off">Desactivar</button>`:`<button class="btn pri sm" id="pu_on">Activar en este dispositivo</button>`}</div>`}
+   <div class="pf"><label class="f">Hora del aviso</label><select class="inp" id="pu_h" style="max-width:140px">${[6,7,8,9,10,12,14,16,18,20,21,22].map(h=>`<option value="${h}" ${pr.hour===h?'selected':''}>${pad(h)}:00</option>`).join('')}</select></div>
+   <div class="pf"><label class="row"><input type="checkbox" id="pu_t" ${pr.tasks?'checked':''}><b>Tareas</b></label></div>
+   <div class="pfs ${pr.tasks?'':'off'}">
+    <div class="pf"><label class="f">Cuáles</label><div class="chips"><button class="chip ${pr.high?'on':''}" data-pb="high">! Solo importancia High</button><button class="chip ${pr.photo?'on':''}" data-pb="photo">${I('cam')} Solo con foto</button></div></div>
+    <div class="pf"><label class="f">Cuándo</label><div class="chips"><button class="chip ${pr.today!==false?'on':''}" data-pb="today">Vencen hoy</button><button class="chip ${pr.late!==false?'on':''}" data-pb="late">Retrasadas</button>
+      <span class="row" style="font-size:12px;gap:6px">y las que vencen en los próximos <select class="inp sm" id="pu_soon">${[0,1,2,3,5,7,14].map(n=>`<option value="${n}" ${(+pr.soon||0)===n?'selected':''}>${n}</option>`).join('')}</select> días</span></div></div>
+    <div class="pf"><label class="f">Estado</label><div class="chips">${chips('statuses',['Not started','Ongoing','Standby'])}</div></div>
+    <div class="pf"><label class="f">Listas <span class="mut">(ninguna marcada = todas)</span></label><div class="chips">${chips('lists',lists())}</div></div>
+    ${prjs.length?`<div class="pf"><label class="f">Proyectos <span class="mut">(ninguno marcado = todos)</span></label><div class="chips">${chips('projects',prjs)}</div></div>`:''}
+    <div class="pprev"><b>Con estos filtros, hoy te avisaría de ${prev.length} tarea${prev.length===1?'':'s'}</b>${prev.slice(0,6).map(d=>`<div>${d.due===td?'Hoy':d.due<td?fD(d.due):'→ '+fD(d.due)} · ${esc(d.task)}${d.high?' <span class="hb">!</span>':''}</div>`).join('')}${prev.length>6?`<div class="mut">+${prev.length-6} más</div>`:''}</div>
+   </div>
+   <div class="pf" style="margin-top:14px"><label class="row"><input type="checkbox" id="pu_v" ${pr.trips?'checked':''}><b>Viajes</b> <span class="mut" style="font-size:12px">· el día antes, y los que estén sin reservar esa semana</span></label></div>`;
   const busy=(b,f)=>async()=>{ b.disabled=true; try{ await f(); }catch(e){ toast(e.message||String(e)); } b.disabled=false; pushBox(); };
   $('#pu_on')&&($('#pu_on').onclick=function(){ busy(this,async()=>{ await pushEnable(); toast('Avisos activados'); })(); });
   $('#pu_off')&&($('#pu_off').onclick=function(){ busy(this,async()=>{ await pushDisable(); toast('Avisos desactivados'); })(); });
   $('#pu_test')&&($('#pu_test').onclick=function(){ busy(this,async()=>{ await pushTest(); toast('Prueba enviada: debería llegarte en unos segundos'); })(); });
-  $('#pu_h').onchange=e=>pushPrefsSave({hour:+e.target.value}); $('#pu_t').onchange=e=>pushPrefsSave({tasks:e.target.checked}); $('#pu_v').onchange=e=>pushPrefsSave({trips:e.target.checked}); $('#pu_s').onchange=e=>pushPrefsSave({standby:e.target.checked});
+  const save=p=>{ pushPrefsSave(p); pushBox(); };
+  $('#pu_h').onchange=e=>save({hour:+e.target.value}); $('#pu_t').onchange=e=>save({tasks:e.target.checked}); $('#pu_v').onchange=e=>save({trips:e.target.checked}); $('#pu_soon').onchange=e=>save({soon:+e.target.value});
+  $$('[data-pb]',el).forEach(b=>b.onclick=()=>{ const k=b.dataset.pb; save({[k]:k==='today'||k==='late'?pr[k]===false:!pr[k]}); });
+  $$('[data-pk]',el).forEach(b=>b.onclick=()=>{ const k=b.dataset.pk, v=b.dataset.pv; let a=[...(pr[k]||[])]; a=a.includes(v)?a.filter(x=>x!==v):[...a,v]; if(k==='statuses'&&!a.length) return toast('Deja al menos un estado'); save({[k]:a}); });
 }
 if('serviceWorker' in navigator){ navigator.serviceWorker.addEventListener('message',e=>{ if(e.data&&e.data.go) go(e.data.go); }); if(ls.get('mgg.push.on',false)) navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 
