@@ -649,7 +649,7 @@ const I=(n,cls='i')=>`<svg class="${cls}" viewBox="0 0 24 24">${P[n]}</svg>`;
 const S={
   items:new Map(), pending:new Set(), uid:null, email:null, cloud:null, chan:null, lastSync:null,
   view:'list:INSTRA',
-  t:{ list:'INSTRA', q:'', st:new Set(['Not started','Ongoing','Standby']), project:'', high:false, sort:{k:'n',d:1}, a:{r:0,c:2}, keep:new Set(), rows:[] },
+  t:{ list:'INSTRA', q:'', st:new Set((()=>{ try{ const v=JSON.parse(localStorage.getItem('mgg.tview')||'null'); return v&&Array.isArray(v.st)&&v.st.length?v.st:['Not started','Ongoing','Standby']; }catch(e){ return ['Not started','Ongoing','Standby']; } })()), project:'', high:(()=>{ try{ return !!(JSON.parse(localStorage.getItem('mgg.tview')||'{}').high); }catch(e){ return false; } })(), sort:(()=>{ try{ const v=JSON.parse(localStorage.getItem('mgg.tview')||'{}'); return v.sort&&v.sort.k?v.sort:{k:'n',d:1}; }catch(e){ return {k:'n',d:1}; } })(), a:{r:0,c:2}, keep:new Set(), rows:[] },
   cal:{ y:new Date().getFullYear(), m:new Date().getMonth(), sel:todayISO(), sel2:null, ly:String(new Date().getFullYear()), past:false },
   vault:{ key:null, dec:new Map(), last:0, show:new Set(), q:'', g:'' },
   links:{q:''}, sh:{id:ls.get('mgg.sheet',null), a:{r:0,c:0}, f:{r:0,c:0}, undo:{}, redo:{}, clip:null, NR:60, NC:20},
@@ -840,6 +840,7 @@ function cellHtml(it,c){
 }
 const cellCls=(it,col)=>col.k==='dl'?(dlInfo(it.data)?.c||''):col.k==='status'?STK[it.data.status]||'k-ns':'';
 const rowHtml=(it,r)=>`<tr class="${it.data.status==='Finished'?'fi':''} ${it.data.rh?'fixh':''} ${it.data.high?'hi':''}" ${it.data.rh?`style="--rh:${it.data.rh}px"`:''} data-id="${it.id}">${COLS.map((col,c)=>`<td class="${col.cls} ${cellCls(it,col)}" data-r="${r}" data-c="${c}">${cellHtml(it,c)}</td>`).join('')}</tr>`;
+function saveTView(){ const t=S.t; ls.set('mgg.tview',{st:[...t.st],high:t.high,sort:t.sort}); }
 function rTasks(){
   const t=S.t; const cnt={}; for(const s of STATUSES) cnt[s]=0; for(const x of all('task')) if((x.data.list||'INSTRA')===t.list) cnt[x.data.status||'Not started']++;
   const c=taskStats(t.list), prjs=projects(t.list);
@@ -859,8 +860,8 @@ function rTasks(){
   const tq=$('#tq');
   tq.oninput=()=>{ t.q=tq.value; t.keep.clear(); t.a.r=0; renderGrid(); };
   tq.onkeydown=e=>{ if(['Enter','ArrowDown','Escape'].includes(e.key)){ e.preventDefault(); if(e.key==='Escape'&&t.q){ t.q=''; tq.value=''; renderGrid(); } $('#gw')?.focus(); } };
-  $$('[data-st]').forEach(b=>b.onclick=()=>{ const s=b.dataset.st; t.st.has(s)?t.st.delete(s):t.st.add(s); t.keep.clear(); t.a.r=0; t.wantFocus=true; rTasks(); });
-  $('[data-hi]').onclick=()=>{ t.high=!t.high; t.keep.clear(); t.wantFocus=true; rTasks(); };
+  $$('[data-st]').forEach(b=>b.onclick=()=>{ const s=b.dataset.st; t.st.has(s)?t.st.delete(s):t.st.add(s); saveTView(); t.keep.clear(); t.a.r=0; t.wantFocus=true; rTasks(); });
+  $('[data-hi]').onclick=()=>{ t.high=!t.high; saveTView(); t.keep.clear(); t.wantFocus=true; rTasks(); };
   $('#tpj').onchange=e=>{ t.project=e.target.value; t.keep.clear(); t.a.r=0; t.wantFocus=true; rTasks(); };
   $('#tnew').onclick=()=>addTaskRow();
 }
@@ -896,7 +897,7 @@ function renderGrid(keep){
   gw.addEventListener('click',e=>{ const td=e.target.closest('td[data-r]'); if(!td||S.editor) return; const col=COLS[+td.dataset.c]; if(col.type==='pic') return openTaskPhotos(t.rows[+td.dataset.r].id); if(col.type==='date') startEdit(undefined,true); });
   gw.addEventListener('dblclick',e=>{ const td=e.target.closest('td[data-r]'); if(!td) return; if(+td.dataset.c<=1) return openTaskSheet(t.rows[+td.dataset.r].id); startEdit(); });
   gw.addEventListener('keydown',gridKey);
-  $('thead',gw).onclick=e=>{ const th=e.target.closest('th'); if(!th||e.target.closest('.crs')||Date.now()-(S.noSort||0)<300) return; const k=th.dataset.sort; t.sort=t.sort.k===k?{k,d:-t.sort.d}:{k,d:1}; renderGrid(); $('#gw').focus(); };
+  $('thead',gw).onclick=e=>{ const th=e.target.closest('th'); if(!th||e.target.closest('.crs')||Date.now()-(S.noSort||0)<300) return; const k=th.dataset.sort; t.sort=t.sort.k===k?{k,d:-t.sort.d}:{k,d:1}; saveTView(); renderGrid(); $('#gw').focus(); };
   $('#addrow').onclick=()=>addTaskRow();
 }
 function markClip(root){ $$((root?'':'tr.fixh ')+'.cx',root||$('#gw')||document).forEach(x=>x.classList.toggle('clip',x.closest('tr.fixh')&&x.scrollHeight>x.clientHeight+1)); }
@@ -1063,7 +1064,7 @@ function openTaskPhotos(id){
   const onp=e=>{ const fs=[...(e.clipboardData?.files||[])].filter(f=>f.type.startsWith('image/')); if(fs.length){ e.preventDefault(); add(fs); } };
   document.addEventListener('paste',onp); S.modalClean=()=>document.removeEventListener('paste',onp);
 }
-function goTask(id){ const it=S.items.get(id); if(!it) return; const d=T(it), t=S.t; t.q=''; t.high=false; if(!t.st.has(d.status)) t.st.add(d.status); go('list:'+(d.list||'INSTRA')); const r=t.rows.findIndex(x=>x.id===id); if(r>=0){ t.a={r,c:2}; selCell(true); } if(isMobile()) openTaskSheet(id); }
+function goTask(id){ const it=S.items.get(id); if(!it) return; const d=T(it), t=S.t; t.q=''; if(t.high&&!d.high) t.high=false; if(!t.st.has(d.status)) t.st.add(d.status); go('list:'+(d.list||'INSTRA')); const r=t.rows.findIndex(x=>x.id===id); if(r>=0){ t.a={r,c:2}; selCell(true); } if(isMobile()) openTaskSheet(id); }
 
 /* =====================================================================
    CALENDAR
@@ -2535,7 +2536,7 @@ async function boot(){
   S.cloud.auth.onAuthStateChange((ev,s)=>{ if(ev==='TOKEN_REFRESHED'&&s&&S.chan) S.cloud.realtime.setAuth(s.access_token); });
 }
 /* ---- actualización automática: si hay una versión nueva publicada, recarga ---- */
-const APP_VER='202610241806';
+const APP_VER='202610250103';
 async function checkUpdate(){ try{ if(!navigator.onLine||location.protocol==='file:') return; const r=await fetch(location.pathname+'?v='+Date.now(),{cache:'reload'}); if(!r.ok) return; const t=await r.text(); const m=t.match(/const APP_VER='(\d+)'/); if(!m||m[1]===APP_VER||m[1]<APP_VER) return;
   if(S.editor||S.modal||(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))){ toast('Hay una versión nueva: se aplicará al recargar'); return; }
   if(sessionStorage.getItem('mgg.upd')===m[1]) return; sessionStorage.setItem('mgg.upd',m[1]); location.reload(); }catch(e){} }
