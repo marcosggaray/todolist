@@ -2534,6 +2534,12 @@ async function boot(){
   if(data.session){ ls.set('mgg.lastUid',data.session.user.id); start(data.session.user); } else authScreen();
   S.cloud.auth.onAuthStateChange((ev,s)=>{ if(ev==='TOKEN_REFRESHED'&&s&&S.chan) S.cloud.realtime.setAuth(s.access_token); });
 }
+/* ---- actualización automática: si hay una versión nueva publicada, recarga ---- */
+const APP_VER='202610241806';
+async function checkUpdate(){ try{ if(!navigator.onLine||location.protocol==='file:') return; const r=await fetch(location.pathname+'?v='+Date.now(),{cache:'reload'}); if(!r.ok) return; const t=await r.text(); const m=t.match(/const APP_VER='(\d+)'/); if(!m||m[1]===APP_VER||m[1]<APP_VER) return;
+  if(S.editor||S.modal||(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))){ toast('Hay una versión nueva: se aplicará al recargar'); return; }
+  if(sessionStorage.getItem('mgg.upd')===m[1]) return; sessionStorage.setItem('mgg.upd',m[1]); location.reload(); }catch(e){} }
+setTimeout(checkUpdate,1500); document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') checkUpdate(); });
 boot();
 </script>
 </body>
