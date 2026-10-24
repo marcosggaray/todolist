@@ -431,6 +431,7 @@ td.r .fi{text-align:right;width:96px}
 .mq{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
 .mq div{background:var(--soft);border-radius:10px;padding:10px} .mq span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)} .mq b{font-size:17px;font-weight:600}
 .seg2{display:inline-flex;border:1px solid var(--line2);border-radius:999px;padding:2px;gap:2px} .seg2 button{font:inherit;font-size:10px;text-transform:uppercase;letter-spacing:.05em;border:0;background:none;padding:4px 10px;border-radius:999px;cursor:pointer;color:var(--mut)} .seg2 button.on{background:var(--ink);color:var(--surface)}
+.fi.vin{width:110px;font-weight:600;text-align:right}
 .pin{font:inherit;font-size:9px;text-transform:uppercase;letter-spacing:.05em;border:1px solid var(--line2);background:none;border-radius:999px;padding:2px 6px;margin-right:2px;cursor:pointer;color:var(--mut)} .pin.on{background:#fff1cc;border-color:#ffd666;color:#8a5a00}
 .pstat{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)} .pstat.err{color:var(--bad);cursor:help}
 .psrc{display:block;font-size:9.5px;color:var(--mut);margin-top:-2px;padding-right:6px}
@@ -460,6 +461,7 @@ body.colrs,body.colrs *{cursor:col-resize!important;user-select:none} body.rowrs
 .shp.on .h,.shp.on .x{display:block}
 @media (pointer:coarse){ .shp .h{width:22px;height:22px;right:-11px;bottom:-11px} .shp .x{width:28px;height:28px;line-height:28px} }
 .navsrch{margin-right:4px}
+.steps{font-size:13px;line-height:1.55;padding-left:20px;margin:14px 0} .steps li{margin-bottom:8px} .steps ul{margin:4px 0 0;padding-left:18px} .steps code{background:var(--soft);padding:1px 4px;border-radius:4px}
 .pf{margin-bottom:12px} .pf .f{display:block;margin-bottom:6px} .pf .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .pf .chip.on{background:var(--ink);color:var(--surface);border-color:var(--ink)} .pf .chip svg{width:13px;height:13px;vertical-align:-2px}
 .pfs{border-left:2px solid var(--line);padding-left:14px;margin-left:6px} .pfs.off{opacity:.4;pointer-events:none}
@@ -490,6 +492,12 @@ body.colrs,body.colrs *{cursor:col-resize!important;user-select:none} body.rowrs
 .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-top:18px}
 .ft.sz td{padding:6px;text-align:center} .ft.sz th{text-align:center}
 @media (max-width:820px){ .cu input{font-size:19px} .mdl.srch{margin-top:0;max-height:100dvh} .gres{max-height:calc(100dvh - 120px)} }
+/* ---------- tareas High ---------- */
+.grid tr.hi td.c-tk{font-weight:600;box-shadow:inset 3px 0 0 #e90d01}
+.grid tr.hi:not(.fi) td.c-tk .cx{color:var(--ink)}
+.grid tr.hi td.c-n{color:#e90d01;font-weight:600}
+.grid tr.hi.fi td.c-tk{box-shadow:inset 3px 0 0 #f2a19d;font-weight:500}
+.tc.hi{box-shadow:inset 3px 0 0 #e90d01;padding-left:14px} .tc.hi .tt,.tc.hi h4,.tc.hi b.t{font-weight:600}
 /* ---------- calendario v6 ---------- */
 .calw{grid-template-columns:minmax(0,1fr) minmax(420px,590px);gap:24px}
 .calhd h2{min-width:0;font-size:22px}
@@ -831,7 +839,7 @@ function cellHtml(it,c){
   }
 }
 const cellCls=(it,col)=>col.k==='dl'?(dlInfo(it.data)?.c||''):col.k==='status'?STK[it.data.status]||'k-ns':'';
-const rowHtml=(it,r)=>`<tr class="${it.data.status==='Finished'?'fi':''} ${it.data.rh?'fixh':''}" ${it.data.rh?`style="--rh:${it.data.rh}px"`:''} data-id="${it.id}">${COLS.map((col,c)=>`<td class="${col.cls} ${cellCls(it,col)}" data-r="${r}" data-c="${c}">${cellHtml(it,c)}</td>`).join('')}</tr>`;
+const rowHtml=(it,r)=>`<tr class="${it.data.status==='Finished'?'fi':''} ${it.data.rh?'fixh':''} ${it.data.high?'hi':''}" ${it.data.rh?`style="--rh:${it.data.rh}px"`:''} data-id="${it.id}">${COLS.map((col,c)=>`<td class="${col.cls} ${cellCls(it,col)}" data-r="${r}" data-c="${c}">${cellHtml(it,c)}</td>`).join('')}</tr>`;
 function rTasks(){
   const t=S.t; const cnt={}; for(const s of STATUSES) cnt[s]=0; for(const x of all('task')) if((x.data.list||'INSTRA')===t.list) cnt[x.data.status||'Not started']++;
   const c=taskStats(t.list), prjs=projects(t.list);
@@ -1006,7 +1014,7 @@ document.addEventListener('keydown',e=>{ if(S.picker) S.picker.key(e); },true);
 function mobileCards(){
   const t=S.t; if(!t.rows.length) return `<div class="empty">${t.q?'Sin coincidencias':'No hay tareas con estos filtros'}</div>`;
   const rows=t.rows.slice(0,t.mlimit||150);
-  return `<div class="tcards">${rows.map(it=>{ const d=it.data; return `<div class="tc ${d.status==='Finished'?'fi':''}" data-id="${it.id}">
+  return `<div class="tcards">${rows.map(it=>{ const d=it.data; return `<div class="tc ${d.status==='Finished'?'fi':''} ${d.high?'hi':''}" data-id="${it.id}">
    <div class="tp"><span>${esc(d.n)}</span>${d.project?`<span>${esc(d.project)}</span>`:''}${d.high?'<span class="hb">!</span>':''}${(n=>n?`<span class="pc">${I('cam')}${n}</span>`:'')((d.att||[]).filter(a=>a.type==='image').length)}<span style="flex:1"></span>${(i=>i?`<span class="bdg ${i.c}">${i.t}</span>`:'')(dlInfo(d))}</div>
    <div class="tt">${esc(d.task)||'<i class="mut">(sin título)</i>'}</div>${d.comments?`<div class="tm">${esc(d.comments)}</div>`:''}
    <div class="bt"><span class="bdg big ${STK[d.status]||'k-ns'}" data-cyc>${esc(d.status)}</span><span class="mut">${d.due?'Vence '+fD(d.due):''}</span></div></div>`; }).join('')}
@@ -1970,7 +1978,9 @@ function lineSVG(xs,ys,{H=200,lbl=v=>Math.round(v),fill=true,zero=true}={}){ con
 
 /* ---- precios de mercado (función de Supabase "precios") ---- */
 const KNOWN_ISIN=[[/S&P\s*500/i,'ES0165242001'],[/Automation/i,'IE00BYZK4552'],[/World\s*EX\s*USA/i,'IE000R4ZNTN3'],[/Alibaba/i,'US01609W1027'],[/Infineon/i,'DE0006231004']];
-function fillIsins(){ let ch=false; for(const x of FIN.investments||[]){ if((x.isin||'').trim()) continue; const k=KNOWN_ISIN.find(([re])=>re.test(x.name||'')); if(k){ x.isin=k[1]; ch=true; } } return ch; }
+const KNOWN_SYM={'US01609W1027':'AHLA.DE','IE00BYZK4552':'2B76.DE','IE000R4ZNTN3':'XUSE.AS','DE0006231004':'IFX.DE','ES0165242001':'0P0001MRGY.F'};
+function fillIsins(){ let ch=false; for(const x of FIN.investments||[]){ if(!(x.isin||'').trim()){ const k=KNOWN_ISIN.find(([re])=>re.test(x.name||'')); if(k){ x.isin=k[1]; ch=true; } } if(!(x.sym||'').trim()&&KNOWN_SYM[(x.isin||'').trim()]){ x.sym=KNOWN_SYM[x.isin.trim()]; ch=true; } }
+  if(!FIN.fix1){ FIN.fix1=1; FIN.pricesAt=null; ch=true; const sp=(FIN.investments||[]).find(i=>(i.isin||'').trim()==='ES0165242001'); if(sp&&Math.abs((+sp.shares||0)-2505.3)<0.01) sp.shares=2540.7543921; } return ch; }
 function ago(t){ const m=Math.round((Date.now()-Date.parse(t))/60000); return m<1?'ahora':m<60?`hace ${m} min`:new Date(t).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'}); }
 function priceStatus(){ if(!S.cloud) return 'Modo local · sin conexión a mercado'; if(S.prRun) return 'Actualizando…'; if(S.prErr) return '⚠ No actualizado';
   if(FIN.priceMode==='manual') return FIN.fxAt?'EUR/USD '+ago(FIN.fxAt):'EUR/USD sin actualizar';
@@ -2032,11 +2042,12 @@ function rFin(){
    <div class="fgrid">
     <section class="fc wide"><h3 class="sec">Inversiones <span>${F.investments.length}</span><span style="flex:1"></span><span class="seg2"><button class="${FIN.priceMode!=='manual'?'on':''}" data-pm="auto" title="Precio de mercado automático por ISIN">Automático</button><button class="${FIN.priceMode==='manual'?'on':''}" data-pm="manual" title="Escribes tú los precios">Manual</button></span><span class="pstat ${S.prErr?'err':''}" title="${esc(S.prErr||'')}">${priceStatus()}</span><button class="btn sm" id="fpr" ${S.cloud?'':'disabled'}>${I('refresh')}Actualizar</button><span class="mut" style="text-transform:none;letter-spacing:0">EUR/USD ${fin_in('fx.USD','num','style="width:70px"')}</span><button class="btn sm" data-fadd="investments">${I('plus')}Añadir</button></h3>
      <div class="alloc">${alloc.map((a,i)=>`<i style="flex:${a.v||0.0001};background:${shades[i%shades.length]}" title="${esc(a.n)} · ${eur(a.v)}"></i>`).join('')}</div>
-     <div class="tscroll"><table class="ft"><thead><tr><th>Producto</th><th>ISIN</th><th class="r">Participaciones</th><th class="r">Invertido</th><th>Ticker</th><th class="r">Precio</th><th class="r">Valor €</th><th class="r">Δ €</th><th class="r">Δ %</th><th class="r">Peso</th><th></th></tr></thead><tbody>
+     <div class="tscroll"><table class="ft"><thead><tr><th>Producto</th><th>ISIN</th><th class="r">Participaciones</th><th class="r">Invertido</th><th class="r">Coste medio</th><th>Ticker</th><th class="r">Precio</th><th class="r">Valor</th><th class="r">Δ €</th><th class="r">Δ %</th><th class="r">Peso</th><th></th></tr></thead><tbody>
      ${F.investments.map((x,i)=>{ const val=invVal(x), cost=invCost(x), d=val-cost; return `<tr><td><span class="sw" style="background:${shades[alloc.findIndex(a=>a.n===x.name)%shades.length]}"></span>${fin_in(`investments.${i}.name`,'text')}</td><td>${fin_in(`investments.${i}.isin`,'text','placeholder="ISIN" style="width:120px"')}${x.isin?`<a class="ib" href="https://www.google.com/search?q=${encodeURIComponent(x.isin)}" target="_blank" rel="noopener" title="Buscar precio">${I('ext')}</a>`:''}</td>
-      <td class="r">${fin_in(`investments.${i}.shares`)}</td><td class="r">${fin_in(`investments.${i}.invested`)}${x.ccy==='USD'?' $':''}</td><td>${fin_in(`investments.${i}.sym`,'text',`placeholder="${esc(x.symAuto||'auto')}" style="width:96px" title="Déjalo vacío para que se busque solo por el ISIN"`)}</td><td class="r">${FIN.priceMode!=='manual'?`<button class="pin ${x.manual?'on':''}" data-pin="${i}" title="${x.manual?'Precio fijado a mano: clic para volver a automático':`Mercado${x.priceAt?' · '+new Date(x.priceAt).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'}):''}${x.symAuto?' · '+x.symAuto:''}${x.priceSrc?' · '+x.priceSrc:''} — clic para fijarlo a mano`}">${x.manual?'Manual':'Auto'}</button>`:''}${fin_in(`investments.${i}.price`)}<select class="fi ccy" data-fp="investments.${i}.ccy" data-ft="text"><option ${x.ccy!=='USD'?'selected':''}>EUR</option><option ${x.ccy==='USD'?'selected':''}>USD</option></select></td>
-      <td class="r b">${eur(val)}</td><td class="r ${d>=0?'pos':'neg'}">${d>=0?'+':''}${eur(d)}</td><td class="r ${d>=0?'pos':'neg'}">${pctf(cost?val/cost-1:0)}</td><td class="r">${pctf(invV?val/invV:0,1)}</td><td><button class="ib" data-fdel="investments.${i}" title="Quitar">${I('x')}</button></td></tr>`; }).join('')}
-     <tr class="tot"><td>Total</td><td></td><td></td><td class="r">${eur(invC)}</td><td></td><td></td><td class="r b">${eur(invV)}</td><td class="r ${invV>=invC?'pos':'neg'}">${invV>=invC?'+':''}${eur(invV-invC)}</td><td class="r ${invV>=invC?'pos':'neg'}">${pctf(invC?invV/invC-1:0)}</td><td></td><td></td></tr></tbody></table></div>
+      <td class="r">${fin_in(`investments.${i}.shares`)}</td><td class="r">${fin_in(`investments.${i}.invested`)}${x.ccy==='USD'?' $':''}</td><td class="r mut">${(+x.shares||0)?((+x.invested||0)/(+x.shares)).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:(+x.invested/+x.shares)<10?4:2})+(x.ccy==='USD'?' $':' €'):'—'}</td><td>${fin_in(`investments.${i}.sym`,'text',`placeholder="${esc(x.symAuto||'auto')}" style="width:96px" title="Déjalo vacío para que se busque solo por el ISIN"`)}</td><td class="r">${FIN.priceMode!=='manual'?`<button class="pin ${x.manual?'on':''}" data-pin="${i}" title="${x.manual?'Precio fijado a mano: clic para volver a automático':`Mercado${x.priceAt?' · '+new Date(x.priceAt).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'}):''}${x.symAuto?' · '+x.symAuto:''}${x.priceSrc?' · '+x.priceSrc:''} — clic para fijarlo a mano`}">${x.manual?'Manual':'Auto'}</button>`:''}${fin_in(`investments.${i}.price`)}<select class="fi ccy" data-fp="investments.${i}.ccy" data-ft="text"><option ${x.ccy!=='USD'?'selected':''}>EUR</option><option ${x.ccy==='USD'?'selected':''}>USD</option></select></td>
+      <td class="r b">${(()=>{ const usd=x.ccy==='USD', vc=(+x.shares||0)*(+x.price||0), sym=usd?' $':' €', txt=(Math.round(vc*100)/100).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});
+        return (FIN.priceMode==='manual'||x.manual?`<input class="fi num vin" data-fval="${i}" value="${txt}" title="Escribe el valor de mercado en ${usd?'dólares':'euros'}, como en tu banco">${usd?' $':''}`:txt+sym)+(usd?`<small class="psrc">≈ ${eur(val)}</small>`:''); })()}</td><td class="r ${d>=0?'pos':'neg'}">${d>=0?'+':''}${eur(d)}</td><td class="r ${d>=0?'pos':'neg'}">${pctf(cost?val/cost-1:0)}</td><td class="r">${pctf(invV?val/invV:0,1)}</td><td><button class="ib" data-fdel="investments.${i}" title="Quitar">${I('x')}</button></td></tr>`; }).join('')}
+     <tr class="tot"><td>Total</td><td></td><td></td><td class="r">${eur(invC)}</td><td></td><td></td><td></td><td class="r b">${eur(invV)}</td><td class="r ${invV>=invC?'pos':'neg'}">${invV>=invC?'+':''}${eur(invV-invC)}</td><td class="r ${invV>=invC?'pos':'neg'}">${pctf(invC?invV/invC-1:0)}</td><td></td><td></td></tr></tbody></table></div>
      <p class="mut" style="font-size:11.5px;margin:10px 0 0">${FIN.priceMode==='manual'?'Modo manual: escribe tú el precio de cada inversión. El cambio EUR/USD sí se actualiza solo.':'Modo automático: precio de mercado por ISIN al abrir Finanzas y cada 15 min. Si escribes un precio a mano, esa inversión queda fijada (botón Manual) hasta que vuelvas a pulsarlo. Si alguna sale mal, pon su ticker.'} Rentabilidad anualizada desde ${fin_in('invSince','text','type="date" style="width:auto"')}</p></section>
     <section class="fc"><h3 class="sec">Cuentas <span>${eur(cash)}</span><span style="flex:1"></span><button class="btn sm" data-fadd="accounts">${I('plus')}Añadir</button></h3>
      ${F.accounts.map((a,i)=>`<div class="acc"><div class="row">${fin_in(`accounts.${i}.name`,'text','style="font-weight:600;font-size:14px"')}<button class="ib" data-fdel="accounts.${i}" title="Quitar">${I('x')}</button></div>
@@ -2085,6 +2096,9 @@ function rFin(){
   $$('[data-fdelcat]',v).forEach(b=>b.onclick=()=>{ const [k,j]=b.dataset.fdelcat.split('.'); confirm2('Quitar categoría',FIN.budget[k][+j],()=>{ FIN.budget[k].splice(+j,1); FIN.budget.months.forEach(r=>r[k].splice(+j,1)); saveFinSoon(); rFin(); },'Quitar'); });
   $('#fpr')&&($('#fpr').onclick=()=>refreshPrices(true));
   $$('[data-pm]',v).forEach(b=>b.onclick=()=>{ FIN.priceMode=b.dataset.pm; S.prErr=''; saveFinSoon(); rFin(); refreshPrices(true); });
+  $$('[data-fval]',v).forEach(inp=>inp.onchange=()=>{ const x=FIN.investments[+inp.dataset.fval]; const t=inp.value.replace(/[€\s]/g,''); const n=parseFloat(/,/.test(t)?t.replace(/\./g,'').replace(',','.'):t);
+    if(!isFinite(n)) return rFin(); if(!(+x.shares>0)) return toast('Pon primero las participaciones'), rFin();
+    x.price=+(n/(+x.shares)).toFixed(6); x.priceAt=new Date().toISOString(); if(FIN.priceMode!=='manual') x.manual=true; saveFinSoon(); rFin(); });
   $$('[data-pin]',v).forEach(b=>b.onclick=()=>{ const x=FIN.investments[+b.dataset.pin]; x.manual=!x.manual; saveFinSoon(); rFin(); if(!x.manual) refreshPrices(true); });
   $$('.fi[data-fp$=".price"]',v).forEach(inp=>inp.addEventListener('change',()=>{ const i=+inp.dataset.fp.split('.')[1], x=FIN.investments[i]; if(FIN.priceMode!=='manual'&&!x.manual){ x.manual=true; saveFinSoon(); toast('Precio fijado a mano para '+x.name); rFin(); } }));
   refreshPrices(false);
@@ -2253,6 +2267,43 @@ async function pushBox(){ const el=$('#pushbox'); if(!el) return; pushPull(); co
   $$('[data-pk]',el).forEach(b=>b.onclick=()=>{ const k=b.dataset.pk, v=b.dataset.pv; let a=[...(pr[k]||[])]; a=a.includes(v)?a.filter(x=>x!==v):[...a,v]; if(k==='statuses'&&!a.length) return toast('Deja al menos un estado'); save({[k]:a}); });
 }
 if('serviceWorker' in navigator){ navigator.serviceWorker.addEventListener('message',e=>{ if(e.data&&e.data.go) go(e.data.go); }); if(ls.get('mgg.push.on',false)) navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+
+
+/* =====================================================================
+   SIRI / ATAJOS: claves para crear tareas por voz
+   ===================================================================== */
+const TAREA_URL=()=>cfg().url.replace(/\/$/,'')+'/functions/v1/tarea';
+async function sha256hex(t){ const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)); return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join(''); }
+async function siriBox(){ const el=$('#siribox'); if(!el) return;
+  if(!S.cloud){ el.innerHTML='<p class="mut" style="font-size:12.5px">Necesitas estar conectado a tu cuenta.</p>'; return; }
+  el.innerHTML='<p class="mut" style="font-size:12.5px">Cargando…</p>';
+  const {data,error}=await S.cloud.from('api_tokens').select('id,name,created_at,last_used').order('created_at');
+  if(error){ el.innerHTML=`<p class="mut" style="font-size:12.5px">${esc(error.message)}</p>`; return; }
+  el.innerHTML=`<p>Crea tareas hablando: <i>“Oye Siri, nueva tarea”</i> → <i>“personal, comprar regalo para el viernes, importante”</i>. Entiende la lista y el proyecto al principio, fechas (hoy, mañana, el viernes, el 27, 3 de noviembre, en dos semanas, fin de mes) e “importante/urgente”.</p>
+   ${(data||[]).map(t=>`<div class="lrow"><b>${esc(t.name)}</b><span class="mut" style="font-size:11px">creada ${new Date(t.created_at).toLocaleDateString('es-ES')}${t.last_used?' · último uso '+new Date(t.last_used).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'}):' · sin usar'}</span><button class="btn ghost sm" data-tdel="${t.id}" style="color:var(--bad)">Quitar</button></div>`).join('')}
+   <div class="row wrap" style="margin-top:12px"><button class="btn pri sm" id="tk_new">${(data||[]).length?'Crear otra clave':'Crear clave y ver instrucciones'}</button><button class="btn sm" id="tk_help">Cómo crear el atajo</button></div>`;
+  $('#tk_new').onclick=async()=>{ const raw=crypto.getRandomValues(new Uint8Array(24)); const tok='tdl_'+b64e(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+    const name=(isIOS?'iPhone':/Mac/.test(navigator.userAgent)?'Mac':'Atajos')+' '+new Date().toLocaleDateString('es-ES');
+    const {error}=await S.cloud.from('api_tokens').insert({token_hash:await sha256hex(tok),name}); if(error) return toast(error.message); siriBox(); siriHelp(tok); };
+  $('#tk_help').onclick=()=>siriHelp(null);
+  $$('[data-tdel]',el).forEach(b=>b.onclick=()=>confirm2('Quitar clave','Los atajos que la usen dejarán de funcionar.',async()=>{ await S.cloud.from('api_tokens').delete().eq('id',b.dataset.tdel); siriBox(); },'Quitar'));
+}
+function siriHelp(tok){
+  modal(`<div class="acts top"><span style="flex:1"></span><button class="btn" data-close>Cerrar</button></div>
+   <h2 style="margin-top:0">Atajo “Nueva tarea”</h2>
+   ${tok?`<label class="f">Tu clave (cópiala ahora: no se vuelve a mostrar)</label><div class="row"><input class="inp" readonly value="${esc(tok)}" id="tk_v" style="font-family:ui-monospace,monospace;font-size:12px"><button class="btn sm" id="tk_c">Copiar</button></div>`:'<p class="mut" style="font-size:12.5px">Si no tienes la clave a mano, crea una nueva desde Ajustes (y quita la antigua).</p>'}
+   <label class="f" style="margin-top:12px">Dirección</label><div class="row"><input class="inp" readonly value="${esc(TAREA_URL())}" style="font-family:ui-monospace,monospace;font-size:12px"><button class="btn sm" id="tk_u">Copiar</button></div>
+   <ol class="steps">
+    <li>Abre la app <b>Atajos</b> en el iPhone → <b>+</b> (arriba a la derecha).</li>
+    <li>Añade la acción <b>Dictar texto</b> (idioma Español).</li>
+    <li>Añade <b>Obtener contenido de URL</b> y pega la dirección. Toca <b>Mostrar más</b>:
+      <ul><li>Método: <b>POST</b></li><li>Encabezados → añadir: <b>Authorization</b> = <code>Bearer </code> + tu clave (con un espacio después de Bearer)</li><li>Cuerpo de la solicitud: <b>JSON</b> → añadir campo de texto <b>text</b> = variable <b>Texto dictado</b></li></ul></li>
+    <li>Añade <b>Mostrar resultado</b> con <b>Contenido de la URL</b> (Siri te leerá lo que ha creado).</li>
+    <li>Arriba, ponle de nombre <b>Nueva tarea</b>. Listo: “Oye Siri, nueva tarea”.</li>
+   </ol>
+   <p class="mut" style="font-size:12px">Ejemplos: “Personal, pedir cita en el banco en dos semanas” · “ONT5, revisar rechazos del silo con Knapp mañana, urgente” · “Llamar a TGW el 3 de noviembre”. Sin lista, va a INSTRA. Puedes hacer un segundo atajo “Tarea personal” añadiendo en el JSON el campo <b>list</b> = PERSONAL.</p>`,'wide');
+  $('#tk_c')&&($('#tk_c').onclick=()=>copy($('#tk_v').value)); $('#tk_u').onclick=()=>copy(TAREA_URL());
+}
 
 /* =====================================================================
    LINKS
