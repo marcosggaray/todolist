@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-JqJmORstXNXJkfh9506X78xPC/rvvNF02hboA8xJwhs=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-1wqZ1yyZXQlSopXdFyxaWf+qbx6+PPIa09pEf/UZoss=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2636,7 +2636,8 @@ async function boot(){
 }
 
 /* ---- verificación en dos pasos (TOTP) ---- */
-async function mfaNeeded(){ try{ const {data,error}=await S.cloud.auth.mfa.getAuthenticatorAssuranceLevel(); if(error) return false; return data.nextLevel==='aal2'&&data.currentLevel!=='aal2'; }catch(e){ return false; } }
+async function mfaNeeded(){ try{ const {data,error}=await S.cloud.auth.mfa.getAuthenticatorAssuranceLevel(); if(error) return false; if(data.currentLevel==='aal2') return false; if(data.nextLevel==='aal2') return true;
+  const {data:f}=await S.cloud.auth.mfa.listFactors(); return !!(f&&f.totp||[]).some(x=>x.status==='verified'); }catch(e){ return false; } }
 async function afterLogin(user){ if(await mfaNeeded()) return mfaScreen(()=>start(user)); start(user); }
 function mfaScreen(done){
   if($('.auth.mfa')) return; const a=document.createElement('div'); a.className='auth mfa'; a.innerHTML=`<div class="mdl"><div class="brand">TO DO LIST</div>
@@ -2713,7 +2714,7 @@ async function pushRefresh(){ try{ if(!S.cloud||!ls.get('mgg.push.on',false)||!p
     await pushSave(sub); }catch(e){ console.warn('avisos',e); } }
 
 /* ---- actualización automática: si hay una versión nueva publicada, recarga ---- */
-const APP_VER='202611132317';
+const APP_VER='202611132336';
 async function checkUpdate(){ try{ if(!navigator.onLine||location.protocol==='file:') return; const r=await fetch(location.pathname+'?v='+Date.now(),{cache:'reload'}); if(!r.ok) return; const t=await r.text(); const m=t.match(/const APP_VER='(\d+)'/); if(!m||m[1]===APP_VER||m[1]<APP_VER) return;
   if(S.editor||S.modal||(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))){ toast('Hay una versión nueva: se aplicará al recargar'); return; }
   if(sessionStorage.getItem('mgg.upd')===m[1]) return; sessionStorage.setItem('mgg.upd',m[1]); location.reload(); }catch(e){} }
