@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LFP5GDYsJ/wLvPEWrzLvJzPFBJ5ng7/CI/Cf67f+0A0=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-6/y8aQ4yyU7XV2l8uOqRk1LMfEbhCw45vp2qJ9EJshk=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -512,7 +512,9 @@ body.colrs,body.colrs *{cursor:col-resize!important;user-select:none} body.rowrs
 .gdim h3{opacity:.35}
 .tagpick{display:flex;flex-wrap:wrap;gap:6px}
 .tcols{display:inline-flex;gap:4px} .tcol{width:18px;height:18px;border-radius:50%;border:2px solid transparent;background:var(--tc);cursor:pointer;padding:0} .tcol.on{border-color:var(--ink);box-shadow:inset 0 0 0 2px var(--surface)}
-.row.mt{gap:10px;margin-bottom:8px}
+.row.mt{gap:10px;margin-bottom:8px;padding:2px 0;border-top:2px solid transparent} .row.mt.drag{opacity:.4} .row.mt.over{border-top-color:var(--ink)}
+.mgrip{cursor:grab;color:var(--mut);font-size:12px;letter-spacing:-2px;user-select:none} .mord{display:inline-flex} .mord .ib{width:22px;font-size:13px} .mord .ib[disabled]{opacity:.2;cursor:default}
+@media (hover:none){ .mgrip{display:none} }
 /* ---------- pantallas grandes: calculadora, conversor, finanzas ---------- */
 .cquick{display:flex;flex-direction:column;gap:10px}
 .qc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
@@ -2375,10 +2377,17 @@ function openLink(id){
   if(it) $('#l_del').onclick=()=>{ remove(it.id); closeModal(); };
 }
 function manageTags(){
-  const draw=()=>{ const tags=ltags(); $('#mtags').innerHTML=tags.length?tags.map((t,i)=>`<div class="row mt"><span class="tcols">${TAGC.map(([n,c])=>`<button class="tcol ${c===t.c?'on':''}" data-mc="${i}|${c}" title="${n}" style="--tc:${c}"></button>`).join('')}</span><input class="inp" data-mn="${i}" value="${esc(t.n)}" style="flex:1"><span class="mut" style="font-size:11px;width:60px;text-align:right">${all('link').filter(l=>(l.data.tags||[]).includes(t.n)).length} links</span><button class="ib" data-md="${i}" title="Borrar etiqueta">${I('x')}</button></div>`).join(''):'<p class="mut">Aún no hay etiquetas. Créalas al editar un link.</p>'; };
+  const draw=()=>{ const tags=ltags(); $('#mtags').innerHTML=tags.length?tags.map((t,i)=>`<div class="row mt" draggable="true" data-mi="${i}"><span class="mgrip" title="Arrastra para ordenar">⋮⋮</span><span class="mord"><button class="ib" data-mu="${i}" title="Subir" ${i?'':'disabled'}>↑</button><button class="ib" data-mdn="${i}" title="Bajar" ${i<tags.length-1?'':'disabled'}>↓</button></span><span class="tcols">${TAGC.map(([n,c])=>`<button class="tcol ${c===t.c?'on':''}" data-mc="${i}|${c}" title="${n}" style="--tc:${c}"></button>`).join('')}</span><input class="inp" data-mn="${i}" value="${esc(t.n)}" style="flex:1"><span class="mut" style="font-size:11px;width:60px;text-align:right">${all('link').filter(l=>(l.data.tags||[]).includes(t.n)).length} links</span><button class="ib" data-md="${i}" title="Borrar etiqueta">${I('x')}</button></div>`).join(''):'<p class="mut">Aún no hay etiquetas. Créalas al editar un link.</p>'; if(tags.length>1) $('#mtags').insertAdjacentHTML('beforeend','<p class="mut" style="font-size:11.5px;margin:10px 0 0">El orden de aquí es el de la barra de etiquetas y el de «Por etiqueta» al ordenar un grupo.</p>'); };
   modal(`<div class="acts top"><h2 style="margin:0;flex:1">Etiquetas</h2><button class="btn" data-close>Cerrar</button></div><div id="mtags"></div>`); draw();
   const box=$('#mtags');
-  box.onclick=e=>{ const c=e.target.closest('[data-mc]'); if(c){ const [i,col]=c.dataset.mc.split('|'); const t=[...ltags()]; t[+i]={...t[+i],c:col}; setSetting('linkTags',t); return draw(); }
+  const mv=(i,j)=>{ const t=[...ltags()]; if(j<0||j>=t.length||i===j) return; const [x]=t.splice(i,1); t.splice(j,0,x); setSetting('linkTags',t); draw(); if(S.view==='links') rLinks(); };
+  let dragI=null;
+  box.ondragstart=e=>{ const r=e.target.closest('[data-mi]'); if(!r||e.target.closest('input')) return; dragI=+r.dataset.mi; r.classList.add('drag'); e.dataTransfer.effectAllowed='move'; };
+  box.ondragover=e=>{ if(dragI===null) return; e.preventDefault(); $$('.row.mt',box).forEach(x=>x.classList.remove('over')); e.target.closest('[data-mi]')?.classList.add('over'); };
+  box.ondrop=e=>{ e.preventDefault(); const r=e.target.closest('[data-mi]'); if(r&&dragI!==null) mv(dragI,+r.dataset.mi); dragI=null; };
+  box.ondragend=()=>{ dragI=null; $$('.row.mt',box).forEach(x=>x.classList.remove('drag','over')); };
+  box.onclick=e=>{ const u=e.target.closest('[data-mu]'); if(u) return mv(+u.dataset.mu,+u.dataset.mu-1); const dn=e.target.closest('[data-mdn]'); if(dn) return mv(+dn.dataset.mdn,+dn.dataset.mdn+1);
+    const c=e.target.closest('[data-mc]'); if(c){ const [i,col]=c.dataset.mc.split('|'); const t=[...ltags()]; t[+i]={...t[+i],c:col}; setSetting('linkTags',t); return draw(); }
     const d=e.target.closest('[data-md]'); if(d){ const t=[...ltags()], n=t[+d.dataset.md].n; confirm2('Borrar etiqueta',`Se quitará "${n}" de todos los links.`,()=>{ setSetting('linkTags',t.filter(x=>x.n!==n)); for(const l of all('link')) if((l.data.tags||[]).includes(n)) update(l.id,{tags:l.data.tags.filter(x=>x!==n)}); manageTags(); },'Borrar'); } };
   box.onchange=e=>{ const inp=e.target.closest('[data-mn]'); if(!inp) return; const t=[...ltags()], i=+inp.dataset.mn, old=t[i].n, nn=inp.value.trim(); if(!nn||nn===old) return draw(); if(t.some((x,j)=>j!==i&&norm(x.n)===norm(nn))) return toast('Ya existe'), draw();
     t[i]={...t[i],n:nn}; setSetting('linkTags',t); for(const l of all('link')) if((l.data.tags||[]).includes(old)) update(l.id,{tags:l.data.tags.map(x=>x===old?nn:x)}); S.links.tags=(S.links.tags||[]).map(x=>x===old?nn:x); draw(); };
@@ -2687,7 +2696,7 @@ async function pushRefresh(){ try{ if(!S.cloud||!ls.get('mgg.push.on',false)||!p
     await pushSave(sub); }catch(e){ console.warn('avisos',e); } }
 
 /* ---- actualización automática: si hay una versión nueva publicada, recarga ---- */
-const APP_VER='202611132351';
+const APP_VER='202611132355';
 async function checkUpdate(){ try{ if(!navigator.onLine||location.protocol==='file:') return; const r=await fetch(location.pathname+'?v='+Date.now(),{cache:'reload'}); if(!r.ok) return; const t=await r.text(); const m=t.match(/const APP_VER='(\d+)'/); if(!m||m[1]===APP_VER||m[1]<APP_VER) return;
   if(S.editor||S.modal||(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))){ toast('Hay una versión nueva: se aplicará al recargar'); return; }
   if(sessionStorage.getItem('mgg.upd')===m[1]) return; sessionStorage.setItem('mgg.upd',m[1]); location.reload(); }catch(e){} }
