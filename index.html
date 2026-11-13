@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-JqJmORstXNXJkfh9506X78xPC/rvvNF02hboA8xJwhs=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -212,7 +213,7 @@ table.sh{border-collapse:collapse;table-layout:fixed;font-family:Calibri,Carlito
 .sh td{padding:0 3px;overflow:hidden;white-space:nowrap;vertical-align:bottom;box-shadow:inset -1px -1px 0 #e1e1e1;line-height:1.2;cursor:cell;user-select:none}
 .sh td.nb{box-shadow:none}
 .sh td.ovf{overflow:visible}
-.sh td .ov{overflow:hidden;white-space:nowrap;position:relative}
+.sh td .ov{overflow:hidden;white-space:nowrap;position:relative;z-index:1;pointer-events:none}
 .sh td.wr{white-space:pre-wrap;word-break:break-word}
 .sh td .cl{overflow:hidden}
 .sh td.err{color:#c00}
@@ -485,7 +486,7 @@ body.colrs,body.colrs *{cursor:col-resize!important;user-select:none} body.rowrs
 .cchips .chip.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
 .cu{display:flex;flex-direction:column;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
-.cu span{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+.cu span{font-size:11.5px;letter-spacing:.02em;color:var(--mut)}
 .cu input{border:0;outline:none;font:inherit;font-size:22px;font-weight:500;background:none;color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
 .cu.src{border-color:var(--ink)}
 .ppc{display:flex;align-items:center;gap:10px;margin-bottom:12px} .ppc label{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)} .ppc .inp{width:90px}
@@ -498,6 +499,47 @@ body.colrs,body.colrs *{cursor:col-resize!important;user-select:none} body.rowrs
 .grid tr.hi td.c-n{color:#e90d01;font-weight:600}
 .grid tr.hi.fi td.c-tk{box-shadow:inset 3px 0 0 #f2a19d;font-weight:500}
 .tc.hi{box-shadow:inset 3px 0 0 #e90d01;padding-left:14px} .tc.hi .tt,.tc.hi h4,.tc.hi b.t{font-weight:600}
+.tagbar{display:flex;flex-wrap:wrap;gap:6px;margin:-6px 0 22px}
+.tagc{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:12px;border:1px solid var(--line2);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 10px 4px 8px;cursor:pointer}
+.tagc i{width:10px;height:10px;border-radius:50%;background:var(--tc);display:inline-block}
+.tagc span{color:var(--mut);font-size:10.5px}
+.tagc.on{background:var(--tc);border-color:var(--tc);color:#fff} .tagc.on i{background:#fff} .tagc.on span{color:rgba(255,255,255,.85)}
+.tagc.clr{border-style:dashed;color:var(--mut)}
+.lk .x b .ltd{display:inline-flex;gap:3px;margin-left:7px;vertical-align:1px;white-space:nowrap} .ltd i{width:8px;height:8px;border-radius:50%;background:var(--tc);display:inline-block}
+.lgrid.hlmode .lk{transition:opacity .15s} .lk.dim{opacity:.22} .lk.dim:hover{opacity:.6} .lk.hit b{font-weight:600}
+.gdim h3{opacity:.35}
+.tagpick{display:flex;flex-wrap:wrap;gap:6px}
+.tcols{display:inline-flex;gap:4px} .tcol{width:18px;height:18px;border-radius:50%;border:2px solid transparent;background:var(--tc);cursor:pointer;padding:0} .tcol.on{border-color:var(--ink);box-shadow:inset 0 0 0 2px var(--surface)}
+.row.mt{gap:10px;margin-bottom:8px}
+/* ---------- pantallas grandes: calculadora, conversor, finanzas ---------- */
+.cquick{display:flex;flex-direction:column;gap:10px}
+.qc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+.qc h3.sec{margin:0 0 8px}
+.qrow{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+.qrow label{display:flex;flex-direction:column;gap:2px;flex:1;min-width:70px} .qrow label span{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}
+.qi{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;font-size:15px;width:100%;background:var(--bg);color:var(--ink);outline:none} .qi:focus{border-color:var(--ink)}
+.qarr{color:var(--mut);padding-bottom:8px}
+.qr{margin-top:8px;font-size:13px;line-height:1.6} .qr b{font-size:16px;cursor:pointer;border-bottom:1px dashed var(--line2)} .qr b:hover{border-bottom-color:var(--ink)}
+.chist{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);align-self:stretch}
+.chist .hist{max-height:calc(100dvh - 230px);overflow:auto}
+@media (min-width:1200px){
+ .calcw.sci{grid-template-columns:minmax(0,1.5fr) minmax(230px,.55fr) minmax(300px,.75fr);justify-content:stretch;gap:24px;max-width:1900px;margin:0 auto}
+ .calcw.sci .keys button{height:clamp(46px,7.4vh,78px);font-size:clamp(15px,1.15vw,21px)}
+ .calcw.sci .keys.nk button{min-height:clamp(52px,8.9vh,94px)}
+ .calcw.sci .disp .rs{font-size:clamp(44px,3.6vw,68px)}
+ .calcw.sci .disp .ex{font-size:15px}
+ .conv{max-width:none}
+ .cvw{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:start;margin-top:18px}
+ .cvw .cchips{flex-direction:column;margin:0;position:sticky;top:0} .cvw .cchips .chip{justify-content:flex-start;text-align:left;width:100%;padding:9px 14px}
+ .cgrid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+ .cu{padding:16px 18px} .cu input{font-size:28px}
+ .fin{max-width:none}
+}
+@media (max-width:1199px){ .cquick{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))} }
+@media (min-width:1500px){ .fgrid{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.ceq{margin-top:22px} .eqt td,.eqt th{font-size:12px} .eqt td{font-variant-numeric:tabular-nums}
+.bkl .lrow{gap:10px}
+.bkban{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:60;background:var(--surface);border:1px solid var(--line2);box-shadow:0 10px 30px rgba(0,0,0,.15);border-radius:12px;padding:10px 12px 10px 16px;display:flex;gap:10px;align-items:center;font-size:12.5px;max-width:calc(100vw - 32px)}
 /* ---------- calendario v6 ---------- */
 .calw{grid-template-columns:minmax(0,1fr) minmax(420px,590px);gap:24px}
 .calhd h2{min-width:0;font-size:22px}
@@ -598,8 +640,9 @@ const TABLE='dash_items', BUCKET='dash-media';
 const SEED=null; /* solo en la versión de prueba */
 const SEED_FIN=null;
 const FIN_ID='00000000-0000-4000-8000-00000000a003';
-const SUPA_JS='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js';
-const XLSX_JS='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+if(window.top!==window.self){ try{ window.top.location=window.self.location.href; }catch(e){ document.documentElement.innerHTML=''; } }
+const SUPA_JS=['supabase-2.45.4.js','https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js'], SUPA_SRI='sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o';
+const XLSX_JS=['https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'], XLSX_SRI='sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw';
 const VAULT_META_ID='00000000-0000-4000-8000-00000000a001';
 const SETTINGS_ID='00000000-0000-4000-8000-00000000a002';
 const STATUSES=['Not started','Ongoing','Standby','Finished'];
@@ -629,7 +672,9 @@ const nISO=s=>{ try{return new Date(s).toISOString()}catch(e){return s} };
 const ls={ get(k,d){ try{const v=localStorage.getItem(k); return v==null?d:JSON.parse(v)}catch(e){return d} }, set(k,v){ try{localStorage.setItem(k,JSON.stringify(v))}catch(e){} } };
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('on'),1800); }
-function loadScript(src){ return new Promise((res,rej)=>{ if($(`script[src="${src}"]`)) return res(); const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=()=>rej(new Error('No se pudo cargar '+src)); document.head.appendChild(s); }); }
+function loadScript1(src,sri){ return new Promise((res,rej)=>{ if($(`script[src="${src}"]`)) return res(); const s=document.createElement('script'); s.src=src; if(sri){ s.integrity=sri; s.crossOrigin='anonymous'; } s.onload=res; s.onerror=()=>{ s.remove(); rej(new Error('No se pudo cargar '+src)); }; document.head.appendChild(s); }); }
+async function loadScript(srcs,sri){ let err; for(const src of [].concat(srcs)){ try{ return await loadScript1(src,sri); }catch(e){ err=e; } } throw err; }
+function loadScript0(src){ return new Promise((res,rej)=>{ if($(`script[src="${src}"]`)) return res(); const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=()=>rej(new Error('No se pudo cargar '+src)); document.head.appendChild(s); }); }
 async function copy(t){ try{ await navigator.clipboard.writeText(String(t??'')); }catch(e){ const a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select(); document.execCommand('copy'); a.remove(); } toast('Copiado'); }
 const P={
   search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>', plus:'<path d="M12 4v16M4 12h16"/>', x:'<path d="M5 5l14 14M19 5 5 19"/>',
@@ -1531,6 +1576,8 @@ async function insertPics(files){ files=files.filter(f=>f&&f.type&&f.type.starts
     shMut(d=>{ (d.pics ||= []).push({id,path,r:a.r,c:a.c,x:4+k*20,y:4+k*20,w,h}); }); SHP.sel=id; k++; }
   toast(files.length>1?`${files.length} imágenes insertadas`:'Imagen insertada · arrástrala para moverla'); }
 const SH_ROWS=1000, SH_COLS=100, SH_BUF=25;
+const _mc=document.createElement('canvas').getContext('2d');
+function txtW(t,st,z){ _mc.font=`${st.i?'italic ':''}${st.b?'700 ':''}${((st.fs||11)*96/72*z).toFixed(1)}px Calibri, Carlito, "Segoe UI", Arial, sans-serif`; let m=0; for(const l of String(t).split('\n')) m=Math.max(m,_mc.measureText(l).width); return m; }
 function rowAtY(Y,y){ let lo=0,hi=Y.length-2; while(lo<hi){ const m=(lo+hi+1)>>1; if(Y[m]<=y) lo=m; else hi=m-1; } return lo; }
 function reTable(){ const sh=curSheet(), t=$('#sht'); if(!sh||!t) return; t.outerHTML=sheetTable(sh,true); drawSel(false); }
 function sheetTable(sh,tableOnly){
@@ -1567,7 +1614,7 @@ function sheetTable(sh,tableOnly){
       let inner=esc(txt);
       if(txt&&!st.wr&&typeof val==='string'&&(!st.ha||st.ha==='left')&&!m){
         let w=W(c), cc=c+1; while(cc<NC&&cc<c+30){ const kk=r+','+cc, nc=d.cells[kk]; if(cov.has(kk)||anchor.has(kk)||(nc&&nc.v!=null&&nc.v!=='')) break; w+=W(cc); cc++; }
-        if(cc>c+1&&txt.length*5*z>W(c)){ cls.push('ovf'); inner=`<div class="ov" style="width:${w-7}px">${inner}</div>`; } }
+        if(cc>c+1&&txtW(txt,st,z)>W(c)-6){ cls.push('ovf'); inner=`<div class="ov" style="width:${Math.min(w-7,Math.ceil(txtW(txt,st,z))+4)}px">${inner}</div>`; } }
       if(st.wr||m){ let hh=H(r); if(m){ hh=0; for(let i=m[0];i<=m[2];i++) hh+=H(i); } inner=`<div class="cl" style="max-height:${hh-1}px">${inner}</div>`; }
       h+=`<td data-r="${r}" data-c="${c}"${m?` rowspan="${m[2]-m[0]+1}" colspan="${m[3]-m[1]+1}"`:''}${cls.length?` class="${cls.join(' ')}"`:''}${css?` style="${css}"`:''}>${inner}</td>`;
     }
@@ -1995,7 +2042,7 @@ async function refreshPrices(force){
   S.prRun=true; S.prErr=''; if(S.view==='finances') rFin();
   try{
     const {data,error}=await S.cloud.functions.invoke('precios',{body:{items:inv.map(x=>({isin:(x.isin||'').trim().toUpperCase(),sym:(x.sym||'').trim()}))}});
-    if(error){ let m=error.message||String(error); if(/404|not found|Failed to send/i.test(m)) m='Falta instalar la función "precios" en Supabase'; throw new Error(m); }
+    if(error){ let m=error.message||String(error); if(/401/.test(m)) m='Inicia sesión de nuevo'; else if(/404|not found|Failed to send/i.test(m)) m='Falta instalar la función "precios" en Supabase'; throw new Error(m); }
     const fx={EUR:1,...(data.fx||{})}; if(fx.USD){ FIN.fx.USD=+(+fx.USD).toFixed(4); FIN.fxAt=new Date().toISOString(); }
     const toCcy=(p,from,to)=>{ if(from===to) return p; const eurV=p/(fx[from]||NaN); return eurV*(fx[to]||NaN); };
     let ok=0;
@@ -2197,10 +2244,11 @@ const SIZES=[
 function rConv(){
   const v=$('#view'), cat=CONV.find(c=>c.k===CS.cat)||CONV[0];
   v.innerHTML=`<div class="conv"><div class="seg2 big"><button class="${CS.tab==='conv'?'on':''}" data-ct="conv">Conversor</button><button class="${CS.tab==='size'?'on':''}" data-ct="size">Tallas</button></div>
-   ${CS.tab==='conv'?`<div class="cchips">${CONV.map(c=>`<button class="chip ${c.k===cat.k?'on':''}" data-cc="${c.k}">${c.n}</button>`).join('')}</div>
+   ${CS.tab==='conv'?`<div class="cvw"><div class="cchips">${CONV.map(c=>`<button class="chip ${c.k===cat.k?'on':''}" data-cc="${c.k}">${c.n}</button>`).join('')}</div><div class="cmain">
    ${cat.ppc?`<div class="ppc"><label>Prendas por caja</label><input class="inp" id="cppc" inputmode="decimal" value="${esc(String(CS.ppc).replace('.',','))}"></div>`:''}
    <div class="cgrid">${cat.u.map((u,i)=>`<label class="cu"><span>${esc(u[0])}</span><input inputmode="${u[2]==='hms'||/^p\d+$/.test(u[2]||'')?'text':'decimal'}" data-ci="${i}" placeholder="${u[2]==='hms'?'0:00:00':/^p\d+$/.test(u[2]||'')?'m:ss':'0'}" autocomplete="off"></label>`).join('')}</div>
-   <p class="mut" style="font-size:11.5px;margin-top:14px">Escribe en cualquier casilla y se recalculan las demás. Decimales con coma. Los ritmos aceptan 4:30.</p>`
+   <p class="mut" style="font-size:11.5px;margin-top:14px">Escribe en cualquier casilla y se recalculan las demás. Decimales con coma. Los ritmos aceptan 4:30.</p>
+   ${(()=>{ const us=cat.u.filter(u=>!u[2]); if(us.length<3) return ''; return `<section class="fc ceq"><h3 class="sec">Tabla de equivalencias · ${cat.n}</h3><div class="tscroll"><table class="ft eqt"><thead><tr><th>1 …</th>${us.map(u=>`<th class="r">${esc(u[0].split(' · ')[0])}</th>`).join('')}</tr></thead><tbody>${us.map(a=>`<tr><td class="b">${esc(a[0])}</td>${us.map(b=>`<td class="r ${a===b?'mut':''}">${a===b?'1':nfmt(a[1]/b[1])}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`; })()}</div></div>`
    :`<div class="sgrid">${SIZES.map(t=>`<section class="fc"><h3 class="sec">${t.t}</h3><div class="tscroll"><table class="ft sz"><thead><tr>${t.h.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${t.r.map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?'b':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`).join('')}</div>
    <p class="mut" style="font-size:11.5px;margin-top:14px">Equivalencias orientativas: cada marca y prenda puede variar.</p>`}</div>`;
   $$('[data-ct]',v).forEach(b=>b.onclick=()=>{ CS.tab=b.dataset.ct; rConv(); });
@@ -2215,7 +2263,6 @@ function rConv(){
 /* =====================================================================
    AVISOS (notificaciones push)
    ===================================================================== */
-const VAPID_PUB='BD6ovCwQzHKbPExNCDH9W62636zSjj8IoXGAGJtfMVgyYltFTbQn-URple8Dv-9AEX4IPJk-9SkrfDpPaV0hLAQ';
 const isIOS=/iPhone|iPad|iPod/.test(navigator.userAgent), isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 const pushPrefs=()=>({hour:8,tasks:true,trips:true,high:true,photo:false,lists:null,projects:null,statuses:['Not started','Ongoing'],today:true,late:true,soon:0,...ls.get('mgg.push.prefs',{})});
 /* misma lógica que la función "avisos" del servidor: sirve para la vista previa */
@@ -2234,7 +2281,7 @@ async function pushEnable(){
   if(!pushOK()) throw new Error(isIOS&&!isStandalone()?'En iPhone, instala primero la app en la pantalla de inicio y ábrela desde el icono':'Este navegador no admite avisos');
   const perm=await Notification.requestPermission(); if(perm!=='granted') throw new Error('Permiso denegado. Actívalo en los ajustes del navegador o del iPhone');
   const reg=await navigator.serviceWorker.register('sw.js'); await navigator.serviceWorker.ready;
-  let sub=await reg.pushManager.getSubscription(); if(!sub) sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:u8key(VAPID_PUB)});
+  const key=await vapidKey(); let sub=await reg.pushManager.getSubscription(); if(sub&&!(sub.options&&sub.options.applicationServerKey&&keyEq(sub.options.applicationServerKey,key))){ await sub.unsubscribe().catch(()=>{}); sub=null; } if(!sub) sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:u8key(key)});
   await pushSave(sub); ls.set('mgg.push.on',true); }
 async function pushDisable(){ const sub=await pushSub(); if(sub){ await S.cloud?.from('push_subs').delete().eq('endpoint',sub.endpoint); await sub.unsubscribe(); } ls.set('mgg.push.on',false); }
 async function pushPrefsSave(p){ const pr={...pushPrefs(),...p}; ls.set('mgg.push.prefs',pr); if(!S.cloud) return; const sub=await pushSub().catch(()=>null); if(sub) await pushSave(sub).catch(e=>toast(e.message)); await S.cloud.from('push_subs').update({prefs:pr,hour:pr.hour}).eq('user_id',S.uid).then(()=>{},()=>{}); }
@@ -2309,26 +2356,59 @@ function siriHelp(tok){
 /* =====================================================================
    LINKS
    ===================================================================== */
+/* ---- etiquetas de links (estilo Finder) ---- */
+const TAGC=[['Rojo','#ff3b30'],['Naranja','#ff9500'],['Amarillo','#ffcc00'],['Verde','#34c759'],['Azul','#007aff'],['Morado','#af52de'],['Gris','#8e8e93']];
+const ltags=()=>setting('linkTags',[])||[];
+const tagColor=n=>(ltags().find(t=>t.n===n)||{}).c||'#8e8e93';
+const safeUrl=u=>/^\s*(javascript|data|vbscript):/i.test(u||'')?'about:blank':u;
+function linkQuery(){ const q=S.links.q||'', tags=ltags(), sel=new Set(S.links.tags||[]), rest=[];
+  for(const tok of q.split(/\s+/).filter(Boolean)){ const tn=norm(tok.replace(/^#/,'')); const t=tags.find(x=>norm(x.n)===tn)||(tok[0]==='#'&&tn?tags.find(x=>norm(x.n).startsWith(tn)):null); if(t) sel.add(t.n); else rest.push(norm(tok)); }
+  return {sel,rest}; }
 function rLinks(){
-  const q=norm(S.links.q), L=all('link').filter(l=>!q||norm(l.data.title+' '+l.data.url+' '+l.data.group).includes(q));
+  const {sel,rest}=linkQuery(), tags=ltags(), allL=all('link');
+  const L=allL.filter(l=>!rest.length||rest.every(w=>norm([l.data.title,l.data.url,l.data.group,...(l.data.tags||[])].join(' ')).includes(w)));
+  const on=l=>!sel.size||[...sel].every(t=>(l.data.tags||[]).includes(t));
   const groups=new Map(); for(const l of L){ const g=l.data.group||'General'; if(!groups.has(g)) groups.set(g,[]); groups.get(g).push(l); }
   const host=u=>{ try{ return new URL(u).host; }catch(e){ return u; } };
-  $('#view').innerHTML=`<div class="ttool"><div class="search">${I('search')}<input id="lq" placeholder="BUSCAR" value="${esc(S.links.q)}"></div><div class="grow"></div><button class="btn pri" id="ladd">${I('plus')}Nuevo link</button></div>
-   ${groups.size?`<div class="lgrid">${[...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([g,arr])=>`<div><h3 class="sec">${esc(g)} <span>${arr.length}</span></h3>
-   ${arr.sort((a,b)=>(a.data.order??0)-(b.data.order??0)||a.data.title.localeCompare(b.data.title)).map(l=>`<a class="lk" href="${esc(l.data.url)}" target="_blank" rel="noopener" data-lid="${l.id}"><span class="x"><b>${esc(l.data.title)}</b><span>${esc(host(l.data.url))}</span></span><button class="ib" data-led title="Editar">${I('edit')}</button><button class="ib" data-lcp title="Copiar URL">${I('copy')}</button></a>`).join('')}</div>`).join('')}</div>`:'<div class="empty">Sin links</div>'}
+  const cnt=n=>allL.filter(l=>(l.data.tags||[]).includes(n)).length;
+  $('#view').innerHTML=`<div class="ttool"><div class="search">${I('search')}<input id="lq" placeholder="BUSCAR · escribe una etiqueta para resaltarla" value="${esc(S.links.q)}"></div><div class="grow"></div><button class="btn" id="ltagm">Etiquetas</button><button class="btn pri" id="ladd">${I('plus')}Nuevo link</button></div>
+   ${tags.length?`<div class="tagbar">${tags.map(t=>`<button class="tagc ${sel.has(t.n)?'on':''}" data-tg="${esc(t.n)}" style="--tc:${t.c}"><i></i>${esc(t.n)}<span>${cnt(t.n)}</span></button>`).join('')}${sel.size?`<button class="tagc clr" data-tgclr>Quitar resaltado</button>`:''}</div>`:''}
+   ${groups.size?`<div class="lgrid ${sel.size?'hlmode':''}">${[...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([g,arr])=>{ const any=arr.some(on); return `<div class="${sel.size&&!any?'gdim':''}"><h3 class="sec">${esc(g)} <span>${sel.size?arr.filter(on).length+'/':''}${arr.length}</span></h3>
+   ${arr.sort((a,b)=>(a.data.order??0)-(b.data.order??0)||a.data.title.localeCompare(b.data.title)).map(l=>`<a class="lk ${sel.size?(on(l)?'hit':'dim'):''}" href="${esc(safeUrl(l.data.url))}" target="_blank" rel="noopener noreferrer" data-lid="${l.id}"><span class="x"><b>${esc(l.data.title)}${(l.data.tags||[]).length?`<span class="ltd">${(l.data.tags||[]).map(t=>`<i style="--tc:${tagColor(t)}" title="${esc(t)}"></i>`).join('')}</span>`:''}</b><span>${esc(host(l.data.url))}</span></span><button class="ib" data-led title="Editar">${I('edit')}</button><button class="ib" data-lcp title="Copiar URL">${I('copy')}</button></a>`).join('')}</div>`; }).join('')}</div>`:'<div class="empty">Sin links</div>'}
    <p class="mut" style="font-size:11px;margin-top:24px">Los enlaces internos (.grp, IPs 10.x, .jnlp) solo abren desde la red o VPN de Inditex.</p>`;
   const lq=$('#lq'); lq.oninput=()=>{ S.links.q=lq.value; const p=lq.selectionStart; rLinks(); const n=$('#lq'); n.focus(); n.setSelectionRange(p,p); };
-  $('#ladd').onclick=()=>openLink(null);
-  $('#view').onclick=e=>{ const a=e.target.closest('[data-lid]'); if(!a) return; if(e.target.closest('[data-led]')){ e.preventDefault(); return openLink(a.dataset.lid); } if(e.target.closest('[data-lcp]')){ e.preventDefault(); return copy(S.items.get(a.dataset.lid).data.url); } };
+  $('#ladd').onclick=()=>openLink(null); $('#ltagm').onclick=manageTags;
+  $('#view').onclick=e=>{ const tg=e.target.closest('[data-tg]'); if(tg){ const s2=new Set(S.links.tags||[]); s2.has(tg.dataset.tg)?s2.delete(tg.dataset.tg):s2.add(tg.dataset.tg); S.links.tags=[...s2]; return rLinks(); }
+    if(e.target.closest('[data-tgclr]')){ S.links.tags=[]; S.links.q=(S.links.q||'').split(/\s+/).filter(tok=>!ltags().some(t=>norm(t.n)===norm(tok.replace(/^#/,'')))).join(' '); return rLinks(); }
+    const a=e.target.closest('[data-lid]'); if(!a) return; if(e.target.closest('[data-led]')){ e.preventDefault(); return openLink(a.dataset.lid); } if(e.target.closest('[data-lcp]')){ e.preventDefault(); return copy(S.items.get(a.dataset.lid).data.url); } };
 }
+function tagPicker(cur){ let sel=new Set(cur||[]), col=TAGC[4][1];
+  const html=()=>`<div class="tagpick">${ltags().map(t=>`<button type="button" class="tagc ${sel.has(t.n)?'on':''}" data-tp="${esc(t.n)}" style="--tc:${t.c}"><i></i>${esc(t.n)}</button>`).join('')}</div>
+    <div class="row" style="margin-top:8px;gap:6px"><input class="inp" id="tp_new" placeholder="Nueva etiqueta" style="flex:1"><span class="tcols">${TAGC.map(([n,c])=>`<button type="button" class="tcol ${c===col?'on':''}" data-tcol="${c}" title="${n}" style="--tc:${c}"></button>`).join('')}</span><button type="button" class="btn sm" id="tp_add">Añadir</button></div>`;
+  return { html, sel:()=>[...sel], bind(root,rerender){ root.onclick=e=>{ const b=e.target.closest('[data-tp]'); if(b){ const n=b.dataset.tp; sel.has(n)?sel.delete(n):sel.add(n); return rerender(); } const c=e.target.closest('[data-tcol]'); if(c){ col=c.dataset.tcol; return rerender(); }
+      if(e.target.closest('#tp_add')){ const n=$('#tp_new').value.trim(); if(!n) return; if(!ltags().some(t=>norm(t.n)===norm(n))) setSetting('linkTags',[...ltags(),{n,c:col}]); sel.add(ltags().find(t=>norm(t.n)===norm(n))?.n||n); rerender(); } };
+      const ni=$('#tp_new',root); if(ni) ni.onkeydown=e=>{ if(e.key==='Enter'){ e.preventDefault(); $('#tp_add',root).click(); } }; } }; }
 function openLink(id){
-  const it=id?S.items.get(id):null, d=it?it.data:{title:'',url:'',group:''}; const groups=[...new Set(all('link').map(l=>l.data.group||'General'))];
-  modal(`<h2>${it?'Editar link':'Nuevo link'}</h2><label class="f">Nombre</label><input class="inp" id="l_t" value="${esc(d.title)}"><label class="f">URL</label><input class="inp" id="l_u" value="${esc(d.url)}" inputmode="url">
+  const it=id?S.items.get(id):null, d=it?it.data:{title:'',url:'',group:'',tags:[]}; const groups=[...new Set(all('link').map(l=>l.data.group||'General'))];
+  const tp=tagPicker(d.tags);
+  modal(`<div class="acts top">${it?`<button class="btn danger" id="l_del">Eliminar</button>`:''}<span style="flex:1"></span><button class="btn" data-close>Cancelar</button><button class="btn pri" id="l_ok">Guardar</button></div>
+   <label class="f">Nombre</label><input class="inp" id="l_t" value="${esc(d.title)}"><label class="f">URL</label><input class="inp" id="l_u" value="${esc(d.url)}" inputmode="url">
    <label class="f">Grupo</label><input class="inp" id="l_g" list="lgl" value="${esc(d.group)}"><datalist id="lgl">${groups.map(g=>`<option value="${esc(g)}">`).join('')}</datalist>
-   <div class="acts">${it?`<button class="btn danger l" id="l_del">Eliminar</button>`:''}<button class="btn" data-close>Cancelar</button><button class="btn pri" id="l_ok">Guardar</button></div>`);
+   <label class="f">Etiquetas</label><div id="l_tags"></div>`);
+  const box=$('#l_tags'), rr=()=>{ box.innerHTML=tp.html(); tp.bind(box,rr); }; rr();
   setTimeout(()=>$('#l_t').focus(),50);
-  $('#l_ok').onclick=()=>{ let u=$('#l_u').value.trim(); if(u&&!/^[a-z]+:/i.test(u)) u='https://'+u; if(!u) return toast('Falta la URL'); const v={title:$('#l_t').value.trim()||u,url:u,group:$('#l_g').value.trim()||'General'}; it?update(it.id,v):create('link',v); closeModal(); };
+  $('#l_ok').onclick=()=>{ let u=$('#l_u').value.trim(); if(u&&!/^[a-z][a-z0-9+.-]*:/i.test(u)&&!/^\\\\/.test(u)) u='https://'+u; if(!u) return toast('Falta la URL'); if(/^(javascript|data|vbscript):/i.test(u)) return toast('Ese tipo de enlace no está permitido');
+    const v={title:$('#l_t').value.trim()||u,url:u,group:$('#l_g').value.trim()||'General',tags:tp.sel()}; it?update(it.id,v):create('link',v); closeModal(); };
   if(it) $('#l_del').onclick=()=>{ remove(it.id); closeModal(); };
+}
+function manageTags(){
+  const draw=()=>{ const tags=ltags(); $('#mtags').innerHTML=tags.length?tags.map((t,i)=>`<div class="row mt"><span class="tcols">${TAGC.map(([n,c])=>`<button class="tcol ${c===t.c?'on':''}" data-mc="${i}|${c}" title="${n}" style="--tc:${c}"></button>`).join('')}</span><input class="inp" data-mn="${i}" value="${esc(t.n)}" style="flex:1"><span class="mut" style="font-size:11px;width:60px;text-align:right">${all('link').filter(l=>(l.data.tags||[]).includes(t.n)).length} links</span><button class="ib" data-md="${i}" title="Borrar etiqueta">${I('x')}</button></div>`).join(''):'<p class="mut">Aún no hay etiquetas. Créalas al editar un link.</p>'; };
+  modal(`<div class="acts top"><h2 style="margin:0;flex:1">Etiquetas</h2><button class="btn" data-close>Cerrar</button></div><div id="mtags"></div>`); draw();
+  const box=$('#mtags');
+  box.onclick=e=>{ const c=e.target.closest('[data-mc]'); if(c){ const [i,col]=c.dataset.mc.split('|'); const t=[...ltags()]; t[+i]={...t[+i],c:col}; setSetting('linkTags',t); return draw(); }
+    const d=e.target.closest('[data-md]'); if(d){ const t=[...ltags()], n=t[+d.dataset.md].n; confirm2('Borrar etiqueta',`Se quitará "${n}" de todos los links.`,()=>{ setSetting('linkTags',t.filter(x=>x.n!==n)); for(const l of all('link')) if((l.data.tags||[]).includes(n)) update(l.id,{tags:l.data.tags.filter(x=>x!==n)}); manageTags(); },'Borrar'); } };
+  box.onchange=e=>{ const inp=e.target.closest('[data-mn]'); if(!inp) return; const t=[...ltags()], i=+inp.dataset.mn, old=t[i].n, nn=inp.value.trim(); if(!nn||nn===old) return draw(); if(t.some((x,j)=>j!==i&&norm(x.n)===norm(nn))) return toast('Ya existe'), draw();
+    t[i]={...t[i],n:nn}; setSetting('linkTags',t); for(const l of all('link')) if((l.data.tags||[]).includes(old)) update(l.id,{tags:l.data.tags.map(x=>x===old?nn:x)}); S.links.tags=(S.links.tags||[]).map(x=>x===old?nn:x); draw(); };
 }
 
 /* =====================================================================
@@ -2362,13 +2442,25 @@ const SCI=[['sin','sin('],['cos','cos('],['tan','tan('],['ln','ln('],['log','log
   ['x²','^2'],['x³','^3'],['xʸ','^'],['√','√('],['∛','∛('],
   ['π','π'],['e','e'],['n!','!'],['1/x','1/('],['|x|','abs('],
   ['EXP','E'],['Ans','Ans'],['(','('],[')',')'],['±','±']];
+const QV=ls.get('mgg.qv',{});
+const qn=(v,d=2)=>isFinite(v)?v.toLocaleString('es-ES',{maximumFractionDigits:d}):'—';
+const quse=(v,d=4)=>isFinite(v)?`<b data-use="${+v.toFixed(d)}" title="Usar en la calculadora">${qn(v,d)}</b>`:'—';
+const QUICK=[
+ {k:'pct',t:'Porcentaje',f:[['%','p',15],['de','x',200]],calc:g=>`${qn(g('p'))} % de ${qn(g('x'))} = ${quse(g('p')*g('x')/100)}`},
+ {k:'var',t:'Variación',f:[['De','a',80],['a','b',100]],calc:g=>{ const a=g('a'),b=g('b'),d=b-a; return `${d>=0?'+':''}${quse(d)} · <span class="${d>=0?'pos':'neg'}">${d>=0?'+':''}${qn(a?d/a*100:NaN)} %</span>`; }},
+ {k:'r3',t:'Regla de tres',f:[['Si','a',10],['es','b',25],['→','',''],['entonces','c',4]],calc:g=>`${qn(g('c'))} es ${quse(g('b')*g('c')/g('a'))}`},
+ {k:'iva',t:'IVA',f:[['Importe','x',100],['Tipo %','t',21]],calc:g=>{ const x=g('x'),t=g('t')/100; return `Sin IVA → con IVA: ${quse(x*(1+t),2)}<br>Con IVA → sin IVA: ${quse(x/(1+t),2)} <span class="mut">(IVA ${qn(x-x/(1+t))})</span>`; }},
+ {k:'tp',t:'Throughput',f:[['Cajas','n',150],['en min','m',6]],calc:g=>{ const n=g('n'),m=g('m'); return `${quse(n/m*60,1)} cajas/h · ${quse(m*60/n,2)} s/caja<br><span class="mut">Turno 8 h: ${qn(n/m*480,0)} cajas</span>`; }},
+ {k:'desc',t:'Descuento',f:[['Precio','x',59.95],['Dto %','d',30]],calc:g=>`Pagas ${quse(g('x')*(1-g('d')/100),2)} · ahorras ${qn(g('x')*g('d')/100)}`},
+];
 function rCalc(){
   const keys=[['C','fn'],['⌫','fn'],['%','fn'],['÷','op'],['7'],['8'],['9'],['×','op'],['4'],['5'],['6'],['−','op'],['1'],['2'],['3'],['+','op'],['0','w2'],[','],['=','eq']];
   $('#view').innerHTML=`<div class="calcw sci"><div class="cbody"><div class="disp"><div class="ex" id="cex">${esc(CALC.ex)||'&nbsp;'}</div><div class="rs" id="crs">${esc(CALC.res)}</div>
      <div class="cst"><button class="tb txt ${CALC.deg?'on':''}" data-mode="deg">DEG</button><button class="tb txt ${!CALC.deg?'on':''}" data-mode="rad">RAD</button><span style="flex:1"></span>${CALC.mem?`<span class="mut" style="font-size:11px">M = ${fmtN(CALC.mem)}</span>`:''}</div></div>
     <div class="ckeys"><div class="keys sk">${['MC','MR','M+','M−','Rnd'].map(k=>`<button class="fn" data-m="${k}">${k}</button>`).join('')}${SCI.map(([l,v])=>`<button class="fn" data-k="${esc(v)}">${l}</button>`).join('')}</div>
     <div class="keys nk">${keys.map(([k,c])=>`<button class="${c||''}" data-k="${k}">${k}</button>`).join('')}</div></div></div>
-   <div class="chist"><h3 class="sec">Historial <button class="btn ghost sm" id="chc">Borrar</button></h3><div class="hist">${CALC.hist.slice(0,20).map((h,i)=>`<div data-h="${i}"><span>${esc(h.e)}</span><b>${esc(h.r)}</b></div>`).join('')||'<p class="mut" style="font-size:12px">Vacío</p>'}</div></div></div>`;
+   <div class="chist"><h3 class="sec">Historial <button class="btn ghost sm" id="chc">Borrar</button></h3><div class="hist">${CALC.hist.slice(0,40).map((h,i)=>`<div data-h="${i}"><span>${esc(h.e)}</span><b>${esc(h.r)}</b></div>`).join('')||'<p class="mut" style="font-size:12px">Vacío</p>'}</div></div>
+   <div class="cquick">${QUICK.map(q=>`<div class="qc" data-qc="${q.k}"><h3 class="sec">${q.t}</h3><div class="qrow">${q.f.map(([lbl,id,def])=>lbl==='→'?'<span class="qarr">→</span>':`<label><span>${lbl}</span><input class="qi" data-q="${q.k}.${id}" inputmode="decimal" value="${esc(String(QV[q.k+'.'+id]??def??''))}"></label>`).join('')}</div><div class="qr" id="qr_${q.k}"></div></div>`).join('')}</div></div>`;
   const upd=()=>{ $('#cex').innerHTML=esc(CALC.ex)||'&nbsp;'; $('#crs').textContent=CALC.res; };
   $('#view').onclick=e=>{ const b=e.target.closest('[data-k]'); if(b){ calcKey(b.dataset.k); upd(); return; }
     const md=e.target.closest('[data-mode]'); if(md){ CALC.deg=md.dataset.mode==='deg'; ls.set('mgg.deg',CALC.deg); calcKey(''); return rCalc(); }
@@ -2377,6 +2469,10 @@ function rCalc(){
       ls.set('mgg.mem',CALC.mem); calcKey(''); return rCalc(); }
     const h=e.target.closest('[data-h]'); if(h){ CALC.ex=CALC.hist[+h.dataset.h].e; calcKey(''); upd(); } };
   $('#chc').onclick=()=>{ CALC.hist=[]; ls.set('mgg.calc',[]); rCalc(); };
+  const qcalc=()=>{ for(const q of QUICK){ const g=id=>{ const el=$(`[data-q="${q.k}.${id}"]`); return parseNum(el?el.value:''); }; let out=''; try{ out=q.calc(g); }catch(e){ out=''; } const el=$('#qr_'+q.k); if(el) el.innerHTML=out||'<span class="mut">—</span>'; } };
+  $$('.qi').forEach(inp=>inp.oninput=()=>{ QV[inp.dataset.q]=inp.value; ls.set('mgg.qv',QV); qcalc(); });
+  $$('.qr').forEach(el=>el.onclick=e=>{ const b=e.target.closest('[data-use]'); if(b){ CALC.ex+=b.dataset.use.replace('.',','); calcKey(''); upd(); toast('Añadido a la calculadora'); } });
+  qcalc();
 }
 function calcKey(k){
   if(k==='C'){ CALC.ex=''; CALC.res='0'; return; }
@@ -2413,7 +2509,9 @@ function rSettings(){
    <section><h3 class="sec">Avisos</h3><div id="pushbox"></div></section>
    <section><h3 class="sec">Seguridad</h3><p>Contraseñas y Finanzas se abren con la contraseña maestra${bioOK()?` o con ${bioName()} en este dispositivo`:''}.</p>
      <div class="g2"><div><label class="f">Bloquear tras</label><select class="inp" id="p_lock">${[[5,'5 min sin actividad'],[15,'15 min sin actividad'],[30,'30 min sin actividad'],[60,'1 hora sin actividad'],[0,'Solo al cerrar la app']].map(([v,t])=>`<option value="${v}" ${lockMin()===v?'selected':''}>${t}</option>`).join('')}</select></div>
+     <div><label class="f">Verificación en dos pasos (cuenta)</label><div id="mfabox"></div></div>
      <div><label class="f">${bioOK()?bioName()+' en este dispositivo':'Biometría'}</label>${!bioOK()?'<p class="mut" style="font-size:12px;margin:8px 0 0">No disponible en este navegador</p>':bioGet()?`<div class="row" style="margin-top:4px"><span style="color:var(--ok);font-size:12.5px">● Activado</span><button class="btn sm" id="p_biooff">Desactivar</button></div>`:`<button class="btn sm" id="p_bioon" style="margin-top:4px">${S.vault.key?'Activar':'Desbloquea primero para activar'}</button>`}</div></div></section>
+   <section><h3 class="sec">Copias de seguridad</h3><div id="bkbox"></div></section>
    <section><h3 class="sec">Exportar</h3><p>Tareas en CSV (punto y coma, fechas dd/mm/aaaa) o copia completa sin contraseñas.</p><div class="row wrap"><button class="btn" id="x_csv">Tareas CSV</button><button class="btn" id="x_json">Copia completa JSON</button></div></section>
    <section><h3 class="sec">Preferencias</h3><div class="g2"><div><label class="f">Días libres al año</label><input class="inp" type="number" id="p_vac" value="${setting('vacDays',23)}"></div><div><label class="f">Tema</label><select class="inp" id="p_th"><option value="light">Claro</option><option value="dark" ${document.documentElement.dataset.theme==='dark'?'selected':''}>Oscuro</option></select></div></div></section>
    <section><h3 class="sec">Atajos · Tareas y chuletas</h3><div class="sc"><kbd>← ↑ → ↓</kbd><span>Moverse (Mayús = rango en chuletas · Ctrl = ir al extremo)</span><kbd>F2</kbd><span>Editar · o empieza a escribir</span><kbd>Enter / Tab</kbd><span>Confirmar y bajar / derecha</span><kbd>Alt+Enter</kbd><span>Salto de línea en la celda</span><kbd>Supr</kbd><span>Vaciar celda(s)</span><kbd>Ctrl+Z / Ctrl+Y</kbd><span>Deshacer / rehacer</span><kbd>Ctrl+C / X / V</kbd><span>Copiar / cortar / pegar (también desde Excel)</span><kbd>Ctrl+B / I / U</kbd><span>Negrita / cursiva / subrayado</span><kbd>Ctrl+clic</kbd><span>Abrir la URL de una celda</span><kbd>Ctrl+Enter</kbd><span>Nueva tarea</span><kbd>Ctrl+E</kbd><span>Ficha de la tarea</span><kbd>N O S F</kbd><span>Status: Not started / Ongoing / Standby / Finished</span></div></section>
@@ -2422,7 +2520,7 @@ function rSettings(){
   if(S.cloud) $('#c_out').onclick=async()=>{ await S.cloud.auth.signOut(); location.reload(); };
   $('#p_vac').onchange=e=>setSetting('vacDays',+e.target.value||23);
   $('#shnew').onclick=()=>addSheet();
-  pushBox();
+  pushBox(); mfaBox(); bkBox();
   $('#p_lock').onchange=e=>{ ls.set('mgg.lockMin',+e.target.value); if(S.vault.key) S.vault.last=Date.now(); toast('Guardado'); };
   $('#p_biooff')&&($('#p_biooff').onclick=()=>{ const r=bioGet(); if(r) IDB.del('bio-'+r.credId); localStorage.removeItem(bioKey()); render(); });
   $('#p_bioon')&&($('#p_bioon').onclick=async()=>{ if(!S.vault.key) return go('vault'); try{ const m=await bioEnroll(); toast(bioName()+' activado'); render(); }catch(e){ if(e.name!=='NotAllowedError') toast(e.message); } });
@@ -2450,7 +2548,7 @@ function exportCSV(){ const q=v=>{ v=String(v??''); return /[;"\n]/.test(v)?'"'+
   dl(`tareas_${todayISO()}.csv`,'﻿'+rows.map(r=>r.map(q).join(';')).join('\r\n'),'text/csv;charset=utf-8'); }
 function exportJSON(){ dl(`diary_backup_${todayISO()}.json`,JSON.stringify([...S.items.values()].filter(i=>!i.deleted&&i.kind!=='secret'&&i.kind!=='vaultmeta')),'application/json'); }
 async function importXlsx(file,opt){
-  await loadScript(XLSX_JS); const buf=await file.arrayBuffer();
+  await loadScript(XLSX_JS,XLSX_SRI); const buf=await file.arrayBuffer();
   const wb=XLSX.read(buf,{type:'array',sheets:['INSTRA','PERSONAL','CALENDAR','CALENDAR 2027','ONT5','TOLEDO','W_PASS','P_PASS'],cellDates:false,cellHTML:false,cellStyles:false});
   const rowsOf=n=>wb.Sheets[n]?XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,raw:true,defval:null,blankrows:true}):null;
   const ser=v=>{ if(typeof v!=='number'||v<40000||v>60000) return ''; const d=new Date(Math.round((v-25569)*864e5)); return `${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}`; };
@@ -2505,14 +2603,14 @@ function authScreen(){
   const a=document.createElement('div'); a.className='auth'; a.innerHTML=`<div class="mdl"><div class="brand">TO DO LIST</div>
    <label class="f">Email</label><input class="inp" id="a_e" type="email" autocomplete="username" value="${esc(ls.get('mgg.lastEmail',''))}">
    <label class="f">Contraseña</label><input class="inp" id="a_p" type="password" autocomplete="current-password"><p id="a_err" style="color:var(--bad);font-size:12px;min-height:16px"></p>
-   <button class="btn pri" id="a_in" style="width:100%;justify-content:center">Iniciar sesión</button><button class="btn" id="a_up" style="width:100%;justify-content:center;margin-top:8px">Crear cuenta</button>
+   <button class="btn pri" id="a_in" style="width:100%;justify-content:center">Iniciar sesión</button>
    <button class="btn ghost sm" id="a_local" style="margin-top:18px">Usar sin cuenta</button></div>`;
   document.body.appendChild(a);
   const go_=async up=>{ const email=$('#a_e').value.trim(), password=$('#a_p').value; if(!email||!password) return; $('#a_err').textContent='';
     const r=up?await S.cloud.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}}):await S.cloud.auth.signInWithPassword({email,password}); if(r.error) return $('#a_err').textContent=r.error.message;
     if(up&&!r.data.session) return $('#a_err').innerHTML='<span style="color:var(--ok)">Cuenta creada. Confirma el correo y vuelve a entrar.</span>';
-    ls.set('mgg.lastEmail',email); ls.set('mgg.lastUid',r.data.session.user.id); a.remove(); start(r.data.session.user); };
-  $('#a_in').onclick=()=>go_(false); $('#a_up').onclick=()=>go_(true); $('#a_p').onkeydown=e=>{ if(e.key==='Enter') go_(false); };
+    ls.set('mgg.lastEmail',email); ls.set('mgg.lastUid',r.data.session.user.id); a.remove(); afterLogin(r.data.session.user); };
+  $('#a_in').onclick=()=>go_(false); $('#a_p').onkeydown=e=>{ if(e.key==='Enter') go_(false); };
   $('#a_local').onclick=()=>{ ls.set('mgg.cfg',{url:'',key:''}); location.reload(); };
   setTimeout(()=>($('#a_e').value?$('#a_p'):$('#a_e')).focus(),50);
 }
@@ -2525,18 +2623,97 @@ async function start(user){
   setSync('saving','Conectando');
   try{ await fetchRemote(!!S.lastSync&&S.items.size>0); render(); }catch(e){ console.error(e); setSync('offline'); }
   subscribe(); flush(); processUploads(); try{ migrateCal(); }catch(e){}
+  setTimeout(()=>{ pushRefresh(); bkReminder(); },4000);
 }
 async function boot(){
   document.documentElement.dataset.theme=ls.get('mgg.theme','light'); boot0();
   const c=cfg(); if(!c.url||!c.key) return start(null);
-  try{ await loadScript(SUPA_JS); }catch(e){ toast('Sin conexión: copia local'); const last=ls.get('mgg.lastUid',null); return start(last?{id:last,email:ls.get('mgg.lastEmail','')}:null); }
+  try{ await loadScript(SUPA_JS,SUPA_SRI); }catch(e){ toast('Sin conexión: copia local'); const last=ls.get('mgg.lastUid',null); return start(last?{id:last,email:ls.get('mgg.lastEmail','')}:null); }
   S.cloud=window.supabase.createClient(c.url,c.key,{auth:{persistSession:true,autoRefreshToken:true}});
   const {data}=await S.cloud.auth.getSession();
-  if(data.session){ ls.set('mgg.lastUid',data.session.user.id); start(data.session.user); } else authScreen();
+  if(data.session){ ls.set('mgg.lastUid',data.session.user.id); afterLogin(data.session.user); } else authScreen();
   S.cloud.auth.onAuthStateChange((ev,s)=>{ if(ev==='TOKEN_REFRESHED'&&s&&S.chan) S.cloud.realtime.setAuth(s.access_token); });
 }
+
+/* ---- verificación en dos pasos (TOTP) ---- */
+async function mfaNeeded(){ try{ const {data,error}=await S.cloud.auth.mfa.getAuthenticatorAssuranceLevel(); if(error) return false; return data.nextLevel==='aal2'&&data.currentLevel!=='aal2'; }catch(e){ return false; } }
+async function afterLogin(user){ if(await mfaNeeded()) return mfaScreen(()=>start(user)); start(user); }
+function mfaScreen(done){
+  if($('.auth.mfa')) return; const a=document.createElement('div'); a.className='auth mfa'; a.innerHTML=`<div class="mdl"><div class="brand">TO DO LIST</div>
+   <p style="font-size:13px;margin:4px 0 12px">Verificación en dos pasos: escribe el código de 6 dígitos de tu app de autenticación.</p>
+   <input class="inp" id="m_c" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456" style="font-size:24px;letter-spacing:.3em;text-align:center">
+   <p id="m_err" style="color:var(--bad);font-size:12px;min-height:16px"></p>
+   <button class="btn pri" id="m_ok" style="width:100%;justify-content:center">Verificar</button>
+   <button class="btn ghost sm" id="m_out" style="margin-top:14px">Cerrar sesión</button></div>`;
+  document.body.appendChild(a);
+  const go_=async()=>{ const code=$('#m_c').value.replace(/\D/g,''); if(code.length!==6) return; $('#m_err').textContent='';
+    const {data:f}=await S.cloud.auth.mfa.listFactors(); const fa=(f&&f.totp||[]).find(x=>x.status==='verified'); if(!fa) return $('#m_err').textContent='No hay factor configurado';
+    const {error}=await S.cloud.auth.mfa.challengeAndVerify({factorId:fa.id,code}); if(error){ $('#m_c').value=''; return $('#m_err').textContent='Código incorrecto'; }
+    a.remove(); done(); };
+  $('#m_ok').onclick=go_; $('#m_c').oninput=()=>{ if($('#m_c').value.replace(/\D/g,'').length===6) go_(); };
+  $('#m_out').onclick=async()=>{ await S.cloud.auth.signOut(); location.reload(); };
+  setTimeout(()=>$('#m_c').focus(),50);
+}
+document.addEventListener('visibilitychange',async()=>{ if(document.visibilityState!=='visible'||!S.cloud||!S.uid||S.uid==='local') return; if(await mfaNeeded()) mfaScreen(()=>location.reload()); });
+async function mfaBox(){ const el=$('#mfabox'); if(!el) return; if(!S.cloud){ el.innerHTML='<p class="mut" style="font-size:12px">Necesitas estar conectado a tu cuenta.</p>'; return; }
+  const {data}=await S.cloud.auth.mfa.listFactors(); const fa=(data&&data.totp||[]).find(x=>x.status==='verified');
+  el.innerHTML=fa?`<div class="row" style="margin-top:4px"><span style="color:var(--ok);font-size:12.5px">● Activada</span><button class="btn sm" id="mf_off">Desactivar</button></div><p class="mut" style="font-size:11.5px;margin:6px 0 0">Te pide el código solo al entrar en un dispositivo nuevo o tras cerrar sesión.</p>`
+    :`<button class="btn sm" id="mf_on" style="margin-top:4px">Activar</button><p class="mut" style="font-size:11.5px;margin:6px 0 0">Con Google Authenticator, Microsoft Authenticator o la app Contraseñas del iPhone.</p>`;
+  $('#mf_off')&&($('#mf_off').onclick=()=>confirm2('Desactivar verificación en dos pasos','Volverás a entrar solo con email y contraseña.',async()=>{ const {error}=await S.cloud.auth.mfa.unenroll({factorId:fa.id}); if(error) toast(error.message); else toast('Desactivada'); mfaBox(); },'Desactivar'));
+  $('#mf_on')&&($('#mf_on').onclick=async()=>{ const old=(data&&data.all||[]).filter(x=>x.status!=='verified'); for(const o of old) await S.cloud.auth.mfa.unenroll({factorId:o.id}).catch(()=>{});
+    const {data:en,error}=await S.cloud.auth.mfa.enroll({factorType:'totp',friendlyName:'To Do List '+Date.now().toString(36)}); if(error) return toast(error.message);
+    let ok=false;
+    modal(`<div class="acts top"><span style="flex:1"></span><button class="btn" data-close>Cancelar</button></div><h2 style="margin-top:0">Verificación en dos pasos</h2>
+      <ol class="steps"><li>Abre tu app de autenticación (en el iPhone vale la app <b>Contraseñas</b> → Códigos, o Google/Microsoft Authenticator).</li><li>Escanea este código QR${isMobile()?' o toca el enlace para añadirlo directamente':''}:</li></ol>
+      <div style="text-align:center"><img src="${esc(en.totp.qr_code)}" alt="QR" style="width:200px;height:200px;background:#fff;padding:8px;border-radius:8px"></div>
+      ${isMobile()?`<p style="text-align:center"><a class="btn sm" href="${esc(en.totp.uri)}">Añadir a mi app</a></p>`:''}
+      <p class="mut" style="font-size:11.5px;text-align:center">O escribe esta clave a mano: <code style="user-select:all">${esc(en.totp.secret)}</code></p>
+      <label class="f">3. Escribe el código de 6 dígitos que te muestra</label><input class="inp" id="mf_c" inputmode="numeric" maxlength="6" style="font-size:22px;letter-spacing:.3em;text-align:center"><p id="mf_e" style="color:var(--bad);font-size:12px;min-height:16px"></p>
+      <button class="btn pri" id="mf_v" style="width:100%;justify-content:center">Activar</button>`);
+    S.modalClean=async()=>{ if(!ok) await S.cloud.auth.mfa.unenroll({factorId:en.id}).catch(()=>{}); };
+    $('#mf_v').onclick=async()=>{ const code=$('#mf_c').value.replace(/\D/g,''); const {error:e2}=await S.cloud.auth.mfa.challengeAndVerify({factorId:en.id,code}); if(e2) return $('#mf_e').textContent='Código incorrecto, prueba con el siguiente';
+      ok=true; closeModal(); toast('Verificación en dos pasos activada'); mfaBox(); };
+  });
+}
+
+/* ---- copias de seguridad ---- */
+async function bkList(){ const {data,error}=await S.cloud.storage.from('dash-backups').list(S.uid,{limit:20,sortBy:{column:'name',order:'desc'}}); if(error) throw error; return (data||[]).filter(f=>f.name.endsWith('.json')); }
+async function bkDownload(name){ const {data,error}=await S.cloud.storage.from('dash-backups').download(`${S.uid}/${name}`); if(error) throw error; return data; }
+async function bkSave(name){ const b=await bkDownload(name); dl(`todolist_copia_${name}`,await b.text(),'application/json'); ls.set('mgg.bk.dl',todayISO()); }
+async function bkRestore(txt){ const o=JSON.parse(txt); if(o.type!=='mgg-backup'||!Array.isArray(o.items)) throw new Error('No es una copia de To Do List'); let n=0;
+  for(const it of o.items){ if(!it.id||!it.kind) continue; put({id:it.id,kind:it.kind,data:it.data,deleted:false}); n++; } render(); return n; }
+async function bkBox(){ const el=$('#bkbox'); if(!el) return; if(!S.cloud){ el.innerHTML='<p class="mut" style="font-size:12px">Necesitas estar conectado a tu cuenta.</p>'; return; }
+  let list=[]; try{ list=await bkList(); }catch(e){ el.innerHTML=`<p class="mut">${esc(e.message)}</p>`; return; }
+  const last=ls.get('mgg.bk.dl',null);
+  el.innerHTML=`<p>Cada domingo se guarda sola una copia de todo en tu Supabase (las 8 últimas). Contraseñas y Finanzas van cifradas. Las fotos y audios no entran en la copia.${last?` Última descarga a este dispositivo: ${fD(last)}.`:''}</p>
+   <div class="bkl">${list.map(f=>`<div class="lrow"><b>${fD(f.name.slice(0,10))}</b><span class="mut" style="font-size:11px">${Math.round((f.metadata?.size||0)/1024)} KB</span><span style="flex:1"></span><button class="btn sm" data-bkd="${esc(f.name)}">Descargar</button><button class="btn ghost sm" data-bkr="${esc(f.name)}">Restaurar</button></div>`).join('')||'<p class="mut" style="font-size:12px">Aún no hay copias.</p>'}</div>
+   <div class="row wrap" style="margin-top:10px"><button class="btn sm" id="bk_now">Hacer copia ahora</button><label class="btn ghost sm" style="cursor:pointer">Restaurar desde archivo<input type="file" id="bk_file" accept=".json" hidden></label></div>`;
+  const restore=async txt=>confirm2('Restaurar copia','Se recuperan las tareas, notas, chuletas, links, etc. tal como estaban en la copia. Lo que hayas creado después se mantiene.',async()=>{ try{ const n=await bkRestore(txt); toast(`Restaurados ${n} elementos`); }catch(e){ toast(e.message); } },'Restaurar');
+  $$('[data-bkd]',el).forEach(b=>b.onclick=async()=>{ try{ await bkSave(b.dataset.bkd); bkBox(); }catch(e){ toast(e.message); } });
+  $$('[data-bkr]',el).forEach(b=>b.onclick=async()=>{ try{ restore(await (await bkDownload(b.dataset.bkr)).text()); }catch(e){ toast(e.message); } });
+  $('#bk_now').onclick=async function(){ this.disabled=true; const {error}=await S.cloud.functions.invoke('copia',{body:{action:'now'}}); if(error) toast('No se pudo hacer la copia'); else toast('Copia guardada'); bkBox(); };
+  $('#bk_file').onchange=async e=>{ const f=e.target.files[0]; if(f) restore(await f.text()); e.target.value=''; };
+}
+async function bkReminder(){ try{ if(!S.cloud||isMobile()) return; const last=ls.get('mgg.bk.dl',null), snooze=ls.get('mgg.bk.snooze',null), td=todayISO();
+    if(snooze&&snooze>td) return; if(last&&diffDays(last,td)<30) return; if(!last){ const first=ls.get('mgg.bk.first',null); if(!first){ ls.set('mgg.bk.first',td); return; } if(diffDays(first,td)<7) return; }
+    const list=await bkList(); if(!list.length) return;
+    const b=document.createElement('div'); b.className='bkban'; b.innerHTML=`<span>${last?'Hace más de un mes que no guardas':'Guarda'} una copia de seguridad en este ordenador (o en tu OneDrive).</span><button class="btn pri sm" id="bkb_d">Descargar copia</button><button class="btn ghost sm" id="bkb_n">Ahora no</button>`;
+    document.body.appendChild(b);
+    $('#bkb_d').onclick=async()=>{ try{ await bkSave(list[0].name); toast('Copia descargada'); }catch(e){ toast(e.message); } b.remove(); };
+    $('#bkb_n').onclick=()=>{ ls.set('mgg.bk.snooze',addDays(td,7)); b.remove(); };
+  }catch(e){} }
+
+/* ---- avisos: la clave pública se pide al servidor (así se puede renovar) ---- */
+async function vapidKey(){ const {data,error}=await S.cloud.functions.invoke('avisos',{body:{action:'pubkey'}}); if(error||!data||!data.key) throw new Error('No se pudo obtener la clave de avisos'); return data.key; }
+const keyEq=(buf,b64)=>{ try{ const a=new Uint8Array(buf), b=u8key(b64); return a.length===b.length&&a.every((x,i)=>x===b[i]); }catch(e){ return false; } };
+async function pushRefresh(){ try{ if(!S.cloud||!ls.get('mgg.push.on',false)||!pushOK()||Notification.permission!=='granted') return; const reg=await navigator.serviceWorker.register('sw.js'); await navigator.serviceWorker.ready;
+    const key=await vapidKey(); let sub=await reg.pushManager.getSubscription();
+    if(sub&&!(sub.options&&sub.options.applicationServerKey&&keyEq(sub.options.applicationServerKey,key))){ await sub.unsubscribe().catch(()=>{}); sub=null; }
+    if(!sub) sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:u8key(key)});
+    await pushSave(sub); }catch(e){ console.warn('avisos',e); } }
+
 /* ---- actualización automática: si hay una versión nueva publicada, recarga ---- */
-const APP_VER='202610250103';
+const APP_VER='202611132317';
 async function checkUpdate(){ try{ if(!navigator.onLine||location.protocol==='file:') return; const r=await fetch(location.pathname+'?v='+Date.now(),{cache:'reload'}); if(!r.ok) return; const t=await r.text(); const m=t.match(/const APP_VER='(\d+)'/); if(!m||m[1]===APP_VER||m[1]<APP_VER) return;
   if(S.editor||S.modal||(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))){ toast('Hay una versión nueva: se aplicará al recargar'); return; }
   if(sessionStorage.getItem('mgg.upd')===m[1]) return; sessionStorage.setItem('mgg.upd',m[1]); location.reload(); }catch(e){} }
