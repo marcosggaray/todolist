@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-1wqZ1yyZXQlSopXdFyxaWf+qbx6+PPIa09pEf/UZoss=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LFP5GDYsJ/wLvPEWrzLvJzPFBJ5ng7/CI/Cf67f+0A0=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -505,7 +505,9 @@ body.colrs,body.colrs *{cursor:col-resize!important;user-select:none} body.rowrs
 .tagc span{color:var(--mut);font-size:10.5px}
 .tagc.on{background:var(--tc);border-color:var(--tc);color:#fff} .tagc.on i{background:#fff} .tagc.on span{color:rgba(255,255,255,.85)}
 .tagc.clr{border-style:dashed;color:var(--mut)}
-.lk .x b .ltd{display:inline-flex;gap:3px;margin-left:7px;vertical-align:1px;white-space:nowrap} .ltd i{width:8px;height:8px;border-radius:50%;background:var(--tc);display:inline-block}
+.lk .x b .ltd{display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:8px;vertical-align:1px}
+.ltd i{font-style:normal;font-size:10px;line-height:16px;height:16px;padding:0 7px;border-radius:999px;color:var(--tc);background:color-mix(in srgb,var(--tc) 14%,transparent);border:1px solid color-mix(in srgb,var(--tc) 45%,transparent);white-space:nowrap;font-weight:500}
+.lgrid h3.sec.lgh{cursor:pointer;user-select:none} .lgrid h3.sec.lgh:hover{color:var(--ink)} .lgh em{font-style:normal;font-size:9.5px;margin-left:6px;padding:1px 5px;border:1px solid var(--line2);border-radius:4px;letter-spacing:.04em}
 .lgrid.hlmode .lk{transition:opacity .15s} .lk.dim{opacity:.22} .lk.dim:hover{opacity:.6} .lk.hit b{font-weight:600}
 .gdim h3{opacity:.35}
 .tagpick{display:flex;flex-wrap:wrap;gap:6px}
@@ -2318,47 +2320,17 @@ if('serviceWorker' in navigator){ navigator.serviceWorker.addEventListener('mess
 
 
 /* =====================================================================
-   SIRI / ATAJOS: claves para crear tareas por voz
-   ===================================================================== */
-const TAREA_URL=()=>cfg().url.replace(/\/$/,'')+'/functions/v1/tarea';
-async function sha256hex(t){ const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)); return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join(''); }
-async function siriBox(){ const el=$('#siribox'); if(!el) return;
-  if(!S.cloud){ el.innerHTML='<p class="mut" style="font-size:12.5px">Necesitas estar conectado a tu cuenta.</p>'; return; }
-  el.innerHTML='<p class="mut" style="font-size:12.5px">Cargando…</p>';
-  const {data,error}=await S.cloud.from('api_tokens').select('id,name,created_at,last_used').order('created_at');
-  if(error){ el.innerHTML=`<p class="mut" style="font-size:12.5px">${esc(error.message)}</p>`; return; }
-  el.innerHTML=`<p>Crea tareas hablando: <i>“Oye Siri, nueva tarea”</i> → <i>“personal, comprar regalo para el viernes, importante”</i>. Entiende la lista y el proyecto al principio, fechas (hoy, mañana, el viernes, el 27, 3 de noviembre, en dos semanas, fin de mes) e “importante/urgente”.</p>
-   ${(data||[]).map(t=>`<div class="lrow"><b>${esc(t.name)}</b><span class="mut" style="font-size:11px">creada ${new Date(t.created_at).toLocaleDateString('es-ES')}${t.last_used?' · último uso '+new Date(t.last_used).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'}):' · sin usar'}</span><button class="btn ghost sm" data-tdel="${t.id}" style="color:var(--bad)">Quitar</button></div>`).join('')}
-   <div class="row wrap" style="margin-top:12px"><button class="btn pri sm" id="tk_new">${(data||[]).length?'Crear otra clave':'Crear clave y ver instrucciones'}</button><button class="btn sm" id="tk_help">Cómo crear el atajo</button></div>`;
-  $('#tk_new').onclick=async()=>{ const raw=crypto.getRandomValues(new Uint8Array(24)); const tok='tdl_'+b64e(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-    const name=(isIOS?'iPhone':/Mac/.test(navigator.userAgent)?'Mac':'Atajos')+' '+new Date().toLocaleDateString('es-ES');
-    const {error}=await S.cloud.from('api_tokens').insert({token_hash:await sha256hex(tok),name}); if(error) return toast(error.message); siriBox(); siriHelp(tok); };
-  $('#tk_help').onclick=()=>siriHelp(null);
-  $$('[data-tdel]',el).forEach(b=>b.onclick=()=>confirm2('Quitar clave','Los atajos que la usen dejarán de funcionar.',async()=>{ await S.cloud.from('api_tokens').delete().eq('id',b.dataset.tdel); siriBox(); },'Quitar'));
-}
-function siriHelp(tok){
-  modal(`<div class="acts top"><span style="flex:1"></span><button class="btn" data-close>Cerrar</button></div>
-   <h2 style="margin-top:0">Atajo “Nueva tarea”</h2>
-   ${tok?`<label class="f">Tu clave (cópiala ahora: no se vuelve a mostrar)</label><div class="row"><input class="inp" readonly value="${esc(tok)}" id="tk_v" style="font-family:ui-monospace,monospace;font-size:12px"><button class="btn sm" id="tk_c">Copiar</button></div>`:'<p class="mut" style="font-size:12.5px">Si no tienes la clave a mano, crea una nueva desde Ajustes (y quita la antigua).</p>'}
-   <label class="f" style="margin-top:12px">Dirección</label><div class="row"><input class="inp" readonly value="${esc(TAREA_URL())}" style="font-family:ui-monospace,monospace;font-size:12px"><button class="btn sm" id="tk_u">Copiar</button></div>
-   <ol class="steps">
-    <li>Abre la app <b>Atajos</b> en el iPhone → <b>+</b> (arriba a la derecha).</li>
-    <li>Añade la acción <b>Dictar texto</b> (idioma Español).</li>
-    <li>Añade <b>Obtener contenido de URL</b> y pega la dirección. Toca <b>Mostrar más</b>:
-      <ul><li>Método: <b>POST</b></li><li>Encabezados → añadir: <b>Authorization</b> = <code>Bearer </code> + tu clave (con un espacio después de Bearer)</li><li>Cuerpo de la solicitud: <b>JSON</b> → añadir campo de texto <b>text</b> = variable <b>Texto dictado</b></li></ul></li>
-    <li>Añade <b>Mostrar resultado</b> con <b>Contenido de la URL</b> (Siri te leerá lo que ha creado).</li>
-    <li>Arriba, ponle de nombre <b>Nueva tarea</b>. Listo: “Oye Siri, nueva tarea”.</li>
-   </ol>
-   <p class="mut" style="font-size:12px">Ejemplos: “Personal, pedir cita en el banco en dos semanas” · “ONT5, revisar rechazos del silo con Knapp mañana, urgente” · “Llamar a TGW el 3 de noviembre”. Sin lista, va a INSTRA. Puedes hacer un segundo atajo “Tarea personal” añadiendo en el JSON el campo <b>list</b> = PERSONAL.</p>`,'wide');
-  $('#tk_c')&&($('#tk_c').onclick=()=>copy($('#tk_v').value)); $('#tk_u').onclick=()=>copy(TAREA_URL());
-}
-
-/* =====================================================================
    LINKS
    ===================================================================== */
 /* ---- etiquetas de links (estilo Finder) ---- */
 const TAGC=[['Rojo','#ff3b30'],['Naranja','#ff9500'],['Amarillo','#ffcc00'],['Verde','#34c759'],['Azul','#007aff'],['Morado','#af52de'],['Gris','#8e8e93']];
 const ltags=()=>setting('linkTags',[])||[];
+const linkSortM=()=>setting('linkSort',{})||{};
+const LSORT=[['','Orden de creación'],['az','A→Z'],['tag','Por etiqueta']];
+const tcmp=(a,b)=>a.data.title.localeCompare(b.data.title,'es',{sensitivity:'base',numeric:true});
+function linkSorter(m){ if(m==='az') return tcmp;
+  if(m==='tag'){ const idx=n=>{ const T=ltags().map(t=>t.n); const ii=(n.data.tags||[]).map(t=>T.indexOf(t)).filter(i=>i>=0); return ii.length?Math.min(...ii):1e9; }; return (a,b)=>idx(a)-idx(b)||tcmp(a,b); }
+  return (a,b)=>(a.data.order??0)-(b.data.order??0)||(a.data.created||'').localeCompare(b.data.created||'')||tcmp(a,b); }
 const tagColor=n=>(ltags().find(t=>t.n===n)||{}).c||'#8e8e93';
 const safeUrl=u=>/^\s*(javascript|data|vbscript):/i.test(u||'')?'about:blank':u;
 function linkQuery(){ const q=S.links.q||'', tags=ltags(), sel=new Set(S.links.tags||[]), rest=[];
@@ -2373,12 +2345,13 @@ function rLinks(){
   const cnt=n=>allL.filter(l=>(l.data.tags||[]).includes(n)).length;
   $('#view').innerHTML=`<div class="ttool"><div class="search">${I('search')}<input id="lq" placeholder="BUSCAR · escribe una etiqueta para resaltarla" value="${esc(S.links.q)}"></div><div class="grow"></div><button class="btn" id="ltagm">Etiquetas</button><button class="btn pri" id="ladd">${I('plus')}Nuevo link</button></div>
    ${tags.length?`<div class="tagbar">${tags.map(t=>`<button class="tagc ${sel.has(t.n)?'on':''}" data-tg="${esc(t.n)}" style="--tc:${t.c}"><i></i>${esc(t.n)}<span>${cnt(t.n)}</span></button>`).join('')}${sel.size?`<button class="tagc clr" data-tgclr>Quitar resaltado</button>`:''}</div>`:''}
-   ${groups.size?`<div class="lgrid ${sel.size?'hlmode':''}">${[...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([g,arr])=>{ const any=arr.some(on); return `<div class="${sel.size&&!any?'gdim':''}"><h3 class="sec">${esc(g)} <span>${sel.size?arr.filter(on).length+'/':''}${arr.length}</span></h3>
-   ${arr.sort((a,b)=>(a.data.order??0)-(b.data.order??0)||a.data.title.localeCompare(b.data.title)).map(l=>`<a class="lk ${sel.size?(on(l)?'hit':'dim'):''}" href="${esc(safeUrl(l.data.url))}" target="_blank" rel="noopener noreferrer" data-lid="${l.id}"><span class="x"><b>${esc(l.data.title)}${(l.data.tags||[]).length?`<span class="ltd">${(l.data.tags||[]).map(t=>`<i style="--tc:${tagColor(t)}" title="${esc(t)}"></i>`).join('')}</span>`:''}</b><span>${esc(host(l.data.url))}</span></span><button class="ib" data-led title="Editar">${I('edit')}</button><button class="ib" data-lcp title="Copiar URL">${I('copy')}</button></a>`).join('')}</div>`; }).join('')}</div>`:'<div class="empty">Sin links</div>'}
+   ${groups.size?`<div class="lgrid ${sel.size?'hlmode':''}">${[...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([g,arr])=>{ const any=arr.some(on); const sm=linkSortM()[g]||'', si=LSORT.findIndex(x=>x[0]===sm), nx=LSORT[(si+1)%LSORT.length][1]; return `<div class="${sel.size&&!any?'gdim':''}"><h3 class="sec lgh" data-lgaz="${esc(g)}" title="Clic: ${nx}">${esc(g)}${sm?`<em>${LSORT[si][1]}</em>`:''} <span>${sel.size?arr.filter(on).length+'/':''}${arr.length}</span></h3>
+   ${arr.sort(linkSorter(sm)).map(l=>`<a class="lk ${sel.size?(on(l)?'hit':'dim'):''}" href="${esc(safeUrl(l.data.url))}" target="_blank" rel="noopener noreferrer" data-lid="${l.id}"><span class="x"><b>${esc(l.data.title)}${(l.data.tags||[]).length?`<span class="ltd">${(l.data.tags||[]).map(t=>`<i style="--tc:${tagColor(t)}">${esc(t)}</i>`).join('')}</span>`:''}</b><span>${esc(host(l.data.url))}</span></span><button class="ib" data-led title="Editar">${I('edit')}</button><button class="ib" data-lcp title="Copiar URL">${I('copy')}</button></a>`).join('')}</div>`; }).join('')}</div>`:'<div class="empty">Sin links</div>'}
    <p class="mut" style="font-size:11px;margin-top:24px">Los enlaces internos (.grp, IPs 10.x, .jnlp) solo abren desde la red o VPN de Inditex.</p>`;
   const lq=$('#lq'); lq.oninput=()=>{ S.links.q=lq.value; const p=lq.selectionStart; rLinks(); const n=$('#lq'); n.focus(); n.setSelectionRange(p,p); };
   $('#ladd').onclick=()=>openLink(null); $('#ltagm').onclick=manageTags;
-  $('#view').onclick=e=>{ const tg=e.target.closest('[data-tg]'); if(tg){ const s2=new Set(S.links.tags||[]); s2.has(tg.dataset.tg)?s2.delete(tg.dataset.tg):s2.add(tg.dataset.tg); S.links.tags=[...s2]; return rLinks(); }
+  $('#view').onclick=e=>{ const gz=e.target.closest('[data-lgaz]'); if(gz){ const g=gz.dataset.lgaz, m={...linkSortM()}, i=LSORT.findIndex(x=>x[0]===(m[g]||'')), nx=LSORT[(i+1)%LSORT.length]; if(nx[0]) m[g]=nx[0]; else delete m[g]; setSetting('linkSort',m); toast(`${g}: ${nx[1]}`); return rLinks(); }
+    const tg=e.target.closest('[data-tg]'); if(tg){ const s2=new Set(S.links.tags||[]); s2.has(tg.dataset.tg)?s2.delete(tg.dataset.tg):s2.add(tg.dataset.tg); S.links.tags=[...s2]; return rLinks(); }
     if(e.target.closest('[data-tgclr]')){ S.links.tags=[]; S.links.q=(S.links.q||'').split(/\s+/).filter(tok=>!ltags().some(t=>norm(t.n)===norm(tok.replace(/^#/,'')))).join(' '); return rLinks(); }
     const a=e.target.closest('[data-lid]'); if(!a) return; if(e.target.closest('[data-led]')){ e.preventDefault(); return openLink(a.dataset.lid); } if(e.target.closest('[data-lcp]')){ e.preventDefault(); return copy(S.items.get(a.dataset.lid).data.url); } };
 }
@@ -2398,7 +2371,7 @@ function openLink(id){
   const box=$('#l_tags'), rr=()=>{ box.innerHTML=tp.html(); tp.bind(box,rr); }; rr();
   setTimeout(()=>$('#l_t').focus(),50);
   $('#l_ok').onclick=()=>{ let u=$('#l_u').value.trim(); if(u&&!/^[a-z][a-z0-9+.-]*:/i.test(u)&&!/^\\\\/.test(u)) u='https://'+u; if(!u) return toast('Falta la URL'); if(/^(javascript|data|vbscript):/i.test(u)) return toast('Ese tipo de enlace no está permitido');
-    const v={title:$('#l_t').value.trim()||u,url:u,group:$('#l_g').value.trim()||'General',tags:tp.sel()}; it?update(it.id,v):create('link',v); closeModal(); };
+    const v={title:$('#l_t').value.trim()||u,url:u,group:$('#l_g').value.trim()||'General',tags:tp.sel()}; it?update(it.id,v):create('link',{...v,created:new Date().toISOString(),order:1e6}); closeModal(); };
   if(it) $('#l_del').onclick=()=>{ remove(it.id); closeModal(); };
 }
 function manageTags(){
@@ -2714,7 +2687,7 @@ async function pushRefresh(){ try{ if(!S.cloud||!ls.get('mgg.push.on',false)||!p
     await pushSave(sub); }catch(e){ console.warn('avisos',e); } }
 
 /* ---- actualización automática: si hay una versión nueva publicada, recarga ---- */
-const APP_VER='202611132336';
+const APP_VER='202611132351';
 async function checkUpdate(){ try{ if(!navigator.onLine||location.protocol==='file:') return; const r=await fetch(location.pathname+'?v='+Date.now(),{cache:'reload'}); if(!r.ok) return; const t=await r.text(); const m=t.match(/const APP_VER='(\d+)'/); if(!m||m[1]===APP_VER||m[1]<APP_VER) return;
   if(S.editor||S.modal||(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))){ toast('Hay una versión nueva: se aplicará al recargar'); return; }
   if(sessionStorage.getItem('mgg.upd')===m[1]) return; sessionStorage.setItem('mgg.upd',m[1]); location.reload(); }catch(e){} }
