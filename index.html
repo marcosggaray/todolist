@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-vWqGJQtury+bmTTQ3N/50/2IVBPvvcyYx67noHejIjw=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-RjiYF57uHeYgN/pw9uGApX1RtUHznkGBgcrrlHD++Y0=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -203,7 +203,7 @@ table.grid{border-collapse:separate;border-spacing:0;table-layout:fixed;width:10
 .shw{flex:1;min-height:0;overflow:auto;position:relative;border:1px solid var(--line2);background:#fff;outline:none;-webkit-overflow-scrolling:touch}
 table.sh{border-collapse:collapse;table-layout:fixed;font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif;color:#000;font-weight:400;position:relative}
 .shctx{position:fixed;z-index:90;background:var(--surface,#fff);border:1px solid var(--line2);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.16);padding:4px;min-width:220px;display:flex;flex-direction:column}
-.shctx button{text-align:left;padding:7px 12px;font-size:12.5px;border-radius:5px;color:var(--ink)} .shctx button:hover{background:var(--hover,rgba(0,0,0,.06))} .shctx button.bad{color:var(--bad)} .shctx hr{border:0;border-top:1px solid var(--line);margin:4px 0}
+.shctx button kbd{float:right;border:0;margin-left:18px;color:var(--mut)} .shctx button{text-align:left;padding:7px 12px;font-size:12.5px;border-radius:5px;color:var(--ink)} .shctx button:hover{background:var(--hover,rgba(0,0,0,.06))} .shctx button.bad{color:var(--bad)} .shctx hr{border:0;border-top:1px solid var(--line);margin:4px 0}
 .sh th{position:sticky;background:#f3f3f3;color:#555;font-weight:400;font-size:11px;border:1px solid #d6d6d6;z-index:3;user-select:none;padding:0;font-family:var(--font)}
 .sh thead th{top:0;height:22px;cursor:s-resize}
 .sh tbody th{left:0;z-index:2;cursor:e-resize;text-align:center}
@@ -222,6 +222,9 @@ table.sh{border-collapse:collapse;table-layout:fixed;font-family:Calibri,Carlito
 .selbox{position:absolute;pointer-events:none;border:1px solid #000;background:rgba(20,20,20,.07);z-index:1}
 .actbox{position:absolute;pointer-events:none;border:2px solid #000;z-index:1}
 .copybox{position:absolute;pointer-events:none;border:1px dashed #000;z-index:1}
+.mvbox{position:absolute;pointer-events:none;border:2px dashed #555;z-index:2;background:rgba(0,0,0,.03)}
+.fillh{position:absolute;width:7px;height:7px;background:#000;border:1px solid #fff;z-index:3;cursor:crosshair;box-sizing:content-box}
+.shw.mv,.shw.mv td{cursor:move!important} .shw.fl,.shw.fl td{cursor:crosshair!important}
 .shtabs{display:flex;align-items:stretch;flex:none;overflow-x:auto;border:1px solid var(--line2);border-top:0}
 .shtab{padding:8px 18px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);border-right:1px solid var(--line);white-space:nowrap;display:flex;align-items:center}
 .shtab:hover{color:var(--ink)}
@@ -1643,7 +1646,7 @@ function sheetTable(sh,tableOnly){
   }
   if(r1<NR-1) h+=`<tr class="vsp" style="height:${Y[NR]-Y[r1+1]}px"><th></th><td colspan="${NC}"></td></tr>`;
   if(tableOnly) return h+'</tbody></table>';
-  return h+`</tbody></table><div class="selbox" id="selbox"></div><div class="actbox" id="actbox"></div><div class="copybox" id="copybox" style="display:none"></div>`;
+  return h+`</tbody></table><div class="selbox" id="selbox"></div><div class="actbox" id="actbox"></div><div class="copybox" id="copybox" style="display:none"></div><div class="mvbox" id="mvbox" style="display:none"></div><div class="fillh" id="fillh"></div>`;
 }
 function tdAt(r,c){ const sh=curSheet(); if(!sh) return null; const m=(sh.data.mg||[]).find(m=>r>=m[0]&&r<=m[2]&&c>=m[1]&&c<=m[3]); if(m){ r=m[0]; c=m[1]; } return $(`#sht td[data-r="${r}"][data-c="${c}"]`); }
 function rectOf(r1,c1,r2,c2){ const a=tdAt(r1,c1), b=tdAt(r2,c2);
@@ -1654,6 +1657,7 @@ function drawSel(scroll){
   const R=rectOf(r1,c1,r2,c2), A=rectOf(a.r,a.c,a.r,a.c); const sb=$('#selbox'), ab=$('#actbox'); if(!R||!A) return;
   Object.assign(sb.style,{left:R.l+'px',top:R.t+'px',width:R.w+1+'px',height:R.h+1+'px',display:(R.w===A.w&&R.h===A.h)?'none':'block'});
   Object.assign(ab.style,{left:A.l-1+'px',top:A.t-1+'px',width:A.w+2+'px',height:A.h+2+'px'});
+  const fh=$('#fillh'); if(fh) Object.assign(fh.style,{left:R.l+R.w-4+'px',top:R.t+R.h-4+'px',display:isMobile()?'none':'block'});
   $$('#sht th.hs').forEach(x=>x.classList.remove('hs')); for(let c=c1;c<=Math.min(c2,S.sh.NC-1);c++) $(`#sht th[data-hc="${c}"]`)?.classList.add('hs'); const wn=S.sh.win||[0,S.sh.NR-1]; for(let r=Math.max(r1,wn[0]);r<=Math.min(r2,wn[1]);r++) $(`#sht th[data-hr="${r}"]`)?.classList.add('hs');
   const cb=$('#copybox'); if(S.sh.clip&&S.sh.clip.sid===sh.id&&S.sh.clip.marquee){ const g=S.sh.clip.rg, C=rectOf(g[0],g[1],g[2],g[3]); if(C) Object.assign(cb.style,{display:'block',left:C.l+'px',top:C.t+'px',width:C.w+1+'px',height:C.h+1+'px'}); } else cb.style.display='none';
   const cell=d.cells[a.r+','+a.c]; const raw=cell&&cell.v!=null?cell.v:''; const st=styleOf(d,cell);
@@ -1739,7 +1743,10 @@ function shStartEdit(initial){
 function bindSheet(sh){
   const w=$('#shw');
   w.addEventListener('mousedown',e=>{
-    const rz=e.target.closest('[data-rzc],[data-rzr]'); if(rz){ e.preventDefault(); return startResize(e,rz); }
+    const rz=e.target.closest('[data-rzc],[data-rzr]'); if(rz){ e.preventDefault(); if(e.detail>=2) return autoFit(rz); return startResize(e,rz); }
+    if(e.button!==0) return;
+    if(e.target.id==='fillh'){ e.preventDefault(); if(S.editor) endEdit(true); return shDragFill(e); }
+    if(!S.editor&&nearSelEdge(e)){ e.preventDefault(); return shDragMove(e); }
     const hc=e.target.closest('th[data-hc]'), hr=e.target.closest('th[data-hr]');
     if(e.target.closest('th.corner')){ S.sh.a={r:0,c:0}; const u=usedBounds(sh.data); S.sh.f={r:u.mr,c:u.mc}; drawSel(false); return; }
     if(hc){ const c=+hc.dataset.hc; if(e.shiftKey) S.sh.f={r:S.sh.NR-1,c}; else { S.sh.a={r:0,c}; S.sh.f={r:S.sh.NR-1,c}; } drawSel(false); S.drag={mode:'col'}; setTimeout(()=>w.focus({preventScroll:true})); return; }
@@ -1750,7 +1757,7 @@ function bindSheet(sh){
     if(e.shiftKey) S.sh.f={r,c}; else { S.sh.a={r,c}; S.sh.f={r,c}; }
     drawSel(false); S.drag={mode:'cell'}; setTimeout(()=>w.focus({preventScroll:true}));
   });
-  w.addEventListener('mousemove',e=>{ if(!S.drag||S.drag.mode==='resize'||e.buttons!==1) return;
+  w.addEventListener('mousemove',e=>{ if(!e.buttons&&!S.drag){ w.classList.toggle('mv',!S.editor&&nearSelEdge(e)); return; } if(!S.drag||S.drag.mode==='resize'||e.buttons!==1) return;
     if(S.drag.mode==='cell'){ const td=e.target.closest('td[data-r]'); if(td){ const r=+td.dataset.r,c=+td.dataset.c; if(r!==S.sh.f.r||c!==S.sh.f.c){ S.sh.f={r,c}; drawSel(false); } } }
     else if(S.drag.mode==='col'){ const th=e.target.closest('th[data-hc]'); if(th){ S.sh.f={r:S.sh.NR-1,c:+th.dataset.hc}; drawSel(false); } }
     else if(S.drag.mode==='row'){ const th=e.target.closest('th[data-hr]'); if(th){ S.sh.f={r:+th.dataset.hr,c:S.sh.NC-1}; drawSel(false); } } });
@@ -1786,21 +1793,76 @@ function startResize(e,h){ const z=zoom(); const isC=h.dataset.rzc!=null, i=+(is
   S.drag={mode:'resize'}; const mv=ev=>{ cur=Math.max(isC?12:10,w0+((isC?ev.clientX:ev.clientY)-start)); if(isC){ col.style.width=cur+'px'; t.style.width=(tw0+cur-w0)+'px'; } else tr.style.height=cur+'px'; drawSel(false); };
   const up=()=>{ document.removeEventListener('mousemove',mv); document.removeEventListener('mouseup',up); S.drag=null; if(Math.abs(cur-w0)>1) shMut(d=>{ (isC?d.cw:d.rh)[i]=Math.round(cur/z); }); else if(S.dirty) scheduleRender(); };
   document.addEventListener('mousemove',mv); document.addEventListener('mouseup',up); }
+/* ---- mover selección arrastrando el borde, controlador de relleno, autoajuste (como Excel) ---- */
+function cellAtPoint(x,y){ const el=document.elementFromPoint(x,y); const td=el&&el.closest&&el.closest('#sht td[data-r]'); return td?{r:+td.dataset.r,c:+td.dataset.c}:null; }
+function selRectPx(){ const sh=curSheet(); if(!sh) return null; const [r1,c1,r2,c2]=expandRange(sh.data,selRange()); const R=rectOf(r1,c1,r2,c2); if(!R) return null; const w=$('#shw'), b=w.getBoundingClientRect(); return {x:b.left-w.scrollLeft+R.l, y:b.top-w.scrollTop+R.t, w:R.w, h:R.h}; }
+function nearSelEdge(e){ if(!e.target.closest('#sht td[data-r]')&&!e.target.closest('#selbox,#actbox')) return false; const R=selRectPx(); if(!R) return false; const x=e.clientX, y=e.clientY, T=4;
+  const inX=x>=R.x-T&&x<=R.x+R.w+T, inY=y>=R.y-T&&y<=R.y+R.h+T; if(!inX||!inY) return false;
+  return Math.abs(x-R.x)<=T||Math.abs(x-(R.x+R.w))<=T||Math.abs(y-R.y)<=T||Math.abs(y-(R.y+R.h))<=T; }
+function shAutoScroll(e){ const w=$('#shw'), b=w.getBoundingClientRect(), M=24; if(e.clientY>b.bottom-M) w.scrollTop+=18; else if(e.clientY<b.top+M+20) w.scrollTop-=18; if(e.clientX>b.right-M) w.scrollLeft+=18; else if(e.clientX<b.left+M+36) w.scrollLeft-=18; }
+function dragLoop(e,onMove,onUp,cls){ const w=$('#shw'); w.classList.add(cls); S.drag={mode:'resize'}; let last=e;
+  const mv=ev=>{ last=ev; shAutoScroll(ev); onMove(ev); }; const up=ev=>{ document.removeEventListener('mousemove',mv); document.removeEventListener('mouseup',up); w.classList.remove(cls); S.drag=null; $('#mvbox').style.display='none'; onUp(ev,last); w.focus({preventScroll:true}); };
+  document.addEventListener('mousemove',mv); document.addEventListener('mouseup',up); }
+function showMv(r1,c1,r2,c2){ const R=rectOf(r1,c1,r2,c2), b=$('#mvbox'); if(!R) return; Object.assign(b.style,{display:'block',left:R.l+'px',top:R.t+'px',width:R.w+1+'px',height:R.h+1+'px'}); }
+function shDragMove(e){ const sh=curSheet(); const [r1,c1,r2,c2]=expandRange(sh.data,selRange()); const g0=cellAtPoint(e.clientX,e.clientY)||{r:r1,c:c1};
+  const grab={r:Math.max(r1,Math.min(r2,g0.r)),c:Math.max(c1,Math.min(c2,g0.c))}; let dr=0,dc=0;
+  dragLoop(e,ev=>{ const t=cellAtPoint(ev.clientX,ev.clientY); if(!t) return; dr=Math.max(-r1,t.r-grab.r); dc=Math.max(-c1,t.c-grab.c); showMv(r1+dr,c1+dc,r2+dr,c2+dc); },
+    ev=>{ if(!dr&&!dc) return; shMoveRange([r1,c1,r2,c2],dr,dc,ev.ctrlKey||ev.metaKey); },'mv'); }
+function shMoveRange(rg,dr,dc,copy){ const [r1,c1,r2,c2]=rg; shMut(d=>{ const src={}; for(let r=r1;r<=r2;r++) for(let c=c1;c<=c2;c++){ const k=r+','+c; if(d.cells[k]) src[k]=JSON.parse(JSON.stringify(d.cells[k])); }
+    const inR=(m,a,b,cc,dd)=>m[0]>=a&&m[2]<=cc&&m[1]>=b&&m[3]<=dd; const mgs=(d.mg||[]).filter(m=>inR(m,r1,c1,r2,c2));
+    if(!copy){ for(const k in src) delete d.cells[k]; d.mg=(d.mg||[]).filter(m=>!inR(m,r1,c1,r2,c2)); }
+    const t1=r1+dr,u1=c1+dc,t2=r2+dr,u2=c2+dc; for(let r=t1;r<=t2;r++) for(let c=u1;c<=u2;c++) delete d.cells[r+','+c];
+    d.mg=(d.mg||[]).filter(m=>m[2]<t1||m[0]>t2||m[3]<u1||m[1]>u2);
+    for(const k in src){ const [r,c]=k.split(',').map(Number), cell=src[k]; if(copy&&typeof cell.v==='string'&&cell.v[0]==='='){ cell.v='='+moveRefs(cell.v.slice(1),dr,dc); delete cell.cv; } d.cells[(r+dr)+','+(c+dc)]=cell; }
+    for(const m of mgs) d.mg.push([m[0]+dr,m[1]+dc,m[2]+dr,m[3]+dc]);
+    if(!copy){ const inS=(r,c)=>r>=r1&&r<=r2&&c>=c1&&c<=c2; for(const k in d.cells){ const cell=d.cells[k]; if(typeof cell.v!=='string'||cell.v[0]!=='=') continue; const nv='='+mapFormula(cell.v.slice(1),(dcf,cl,drf,rw)=>{ let c=colIdx(cl), r=rw-1; if(inS(r,c)){ r+=dr; c+=dc; } return dcf+colName(c)+drf+(r+1); }); if(nv!==cell.v){ cell.v=nv; delete cell.cv; } } }
+    S.sh.a={r:S.sh.a.r+dr,c:S.sh.a.c+dc}; S.sh.f={r:S.sh.f.r+dr,c:S.sh.f.c+dc}; }); }
+function shDragFill(e){ const sh=curSheet(); const [r1,c1,r2,c2]=expandRange(sh.data,selRange()); let to=null;
+  dragLoop(e,ev=>{ const t=cellAtPoint(ev.clientX,ev.clientY); if(!t) return; const dDown=t.r>r2?t.r-r2:t.r<r1?t.r-r1:0, dRight=t.c>c2?t.c-c2:t.c<c1?t.c-c1:0;
+      if(!dDown&&!dRight){ to=null; $('#mvbox').style.display='none'; return; }
+      if(Math.abs(dDown)>=Math.abs(dRight)) to=dDown>0?[r1,c1,t.r,c2]:[t.r,c1,r2,c2]; else to=dRight>0?[r1,c1,r2,t.c]:[r1,t.c,r2,c2]; showMv(...to); },
+    ev=>{ if(!to) return; shFill([r1,c1,r2,c2],to,ev.ctrlKey||ev.metaKey); },'fl'); }
+function fillSeries(vals,n,back,toggle){ // vals: celdas origen en orden; devuelve n celdas nuevas
+  const nums=vals.map(c=>c&&typeof c.v==='number'?c.v:null), allNum=toggle!=='copy'&&vals.length&&nums.every(x=>x!=null);
+  let step=null; if(allNum){ if(vals.length>1){ step=(nums[nums.length-1]-nums[0])/(nums.length-1); if(!nums.every((x,i)=>Math.abs(x-(nums[0]+step*i))<1e-9)) step=null; } else { const st=vals[0].__st||{}; step=isDateFmt(st.nf)?1:null; if(toggle) step=step==null?1:null; } }
+  const out=[]; for(let i=1;i<=n;i++){ const L=vals.length, idx=back?((L-(i%L))%L):((i-1)%L), src=vals[idx]; if(!src){ out.push(null); continue; } const c={...src}; delete c.__st;
+    if(step!=null){ c.v=back?nums[0]-step*i:nums[L-1]+step*i; }
+    else if(typeof c.v==='string'&&c.v[0]!=='='&&L===1&&!toggle){ const m=c.v.match(/^(.*?)(\d+)(\D*)$/); if(m){ const k=+m[2]+(back?-i:i); if(k>=0) c.v=m[1]+String(k).padStart(m[2].length,'0')+m[3]; } }
+    out.push(c); } return out; }
+function shFill(src,to,toggle){ const [r1,c1,r2,c2]=src; shMut(d=>{ const vert=to[0]!==r1||to[2]!==r2; const get=(r,c)=>{ const x=d.cells[r+','+c]; if(!x) return null; const y=JSON.parse(JSON.stringify(x)); y.__st=styleOf(d,x); return y; };
+    const lines=vert?[...Array(c2-c1+1).keys()].map(j=>c1+j):[...Array(r2-r1+1).keys()].map(i=>r1+i);
+    for(const L of lines){ const vals=vert?[...Array(r2-r1+1).keys()].map(i=>get(r1+i,L)):[...Array(c2-c1+1).keys()].map(j=>get(L,c1+j));
+      const back=vert?to[0]<r1:to[1]<c1, n=vert?(back?r1-to[0]:to[2]-r2):(back?c1-to[1]:to[3]-c2), outs=fillSeries(vals,n,back,toggle);
+      outs.forEach((cell,i)=>{ const off=i+1, r=vert?(back?r1-off:r2+off):L, c=vert?L:(back?c1-off:c2+off), k=r+','+c;
+        if(!cell){ delete d.cells[k]; return; } const sr=vert?(back?(r2-((off-1)%(r2-r1+1))):(r1+((off-1)%(r2-r1+1)))):L, sc=vert?L:(back?(c2-((off-1)%(c2-c1+1))):(c1+((off-1)%(c2-c1+1))));
+        if(typeof cell.v==='string'&&cell.v[0]==='='){ cell.v='='+moveRefs(cell.v.slice(1),r-sr,c-sc); delete cell.cv; } else delete cell.cv; d.cells[k]=cell; }); }
+    S.sh.a={r:to[0],c:to[1]}; S.sh.f={r:to[2],c:to[3]}; }); }
+function autoFit(h){ const sh=curSheet(), d=sh.data, z=zoom(); const isC=h.dataset.rzc!=null, i=+(isC?h.dataset.rzc:h.dataset.rzr);
+  shMut(d=>{ if(!isC){ delete d.rh[i]; return; } const E=makeEval(d); let mx=0; for(const k in d.cells){ const [r,c]=k.split(',').map(Number); if(c!==i) continue; if((d.mg||[]).some(m=>m[0]<=r&&m[2]>=r&&m[1]<=c&&m[3]>=c&&m[3]>m[1])) continue; const cell=d.cells[k]; if(cell.v==null) continue; const st=styleOf(d,cell); let t; try{ t=fmtVal(E.val(r,c),st.nf); }catch(_){ t=String(cell.v); } const wpx=txtW(String(t).split('\n').reduce((a,b)=>a.length>b.length?a:b,''),st,1); if(wpx>mx) mx=wpx; }
+    if(!mx) return false; d.cw[i]=Math.min(800,Math.ceil(mx+10)); }); }
+function shFillDir(dir){ const [r1,c1,r2,c2]=expandRange(curSheet().data,selRange()); if(dir==='d'){ if(r2>r1) shFill([r1,c1,r1,c2],[r1,c1,r2,c2],'copy'); else if(r1>0) shFill([r1-1,c1,r1-1,c2],[r1-1,c1,r1,c2],'copy'); } else { if(c2>c1) shFill([r1,c1,r2,c1],[r1,c1,r2,c2],'copy'); else if(c1>0) shFill([r1,c1-1,r2,c1-1],[r1,c1-1,r2,c1],'copy'); } }
 function shCtx(x,y,only){ $('.shctx')?.remove(); const [r1,c1,r2,c2]=selRange(), nr=r2-r1+1, nc=c2-c1+1;
-  const it=[]; if(only!=='c') it.push(['ra','Insertar fila arriba'],['rb','Insertar fila abajo'],['rd',nr>1?`Eliminar ${nr} filas`:'Eliminar fila',1]); if(only==='') it.push(null);
+  const it=[['cut','Cortar','','Ctrl+X'],['copy','Copiar','','Ctrl+C'],['paste','Pegar','','Ctrl+V'],['clr','Borrar contenido','','Supr'],null]; if(only!=='c') it.push(['ra','Insertar fila arriba'],['rb','Insertar fila abajo'],['rd',nr>1?`Eliminar ${nr} filas`:'Eliminar fila',1]); if(only==='') it.push(null);
   if(only!=='r') it.push(['ca','Insertar columna a la izquierda'],['cb','Insertar columna a la derecha'],['cd',nc>1?`Eliminar ${nc} columnas`:'Eliminar columna',1]);
-  const m=document.createElement('div'); m.className='shctx'; m.innerHTML=it.map(o=>o?`<button data-op="${o[0]}" class="${o[2]?'bad':''}">${o[1]}</button>`:'<hr>').join('');
+  const m=document.createElement('div'); m.className='shctx'; m.innerHTML=it.map(o=>o?`<button data-op="${o[0]}" class="${o[2]?'bad':''}">${o[1]}${o[3]?`<kbd>${o[3]}</kbd>`:''}</button>`:'<hr>').join('');
   document.body.appendChild(m); const W=m.offsetWidth,Hh=m.offsetHeight; m.style.left=Math.min(x,innerWidth-W-8)+'px'; m.style.top=Math.min(y,innerHeight-Hh-8)+'px';
   const close=()=>{ m.remove(); document.removeEventListener('pointerdown',out,true); document.removeEventListener('keydown',esc_,true); $('#shw')?.focus({preventScroll:true}); };
   const out=e=>{ if(!m.contains(e.target)) close(); }, esc_=e=>{ if(e.key==='Escape'){ e.stopPropagation(); close(); } };
   setTimeout(()=>{ document.addEventListener('pointerdown',out,true); document.addEventListener('keydown',esc_,true); });
-  m.onclick=e=>{ const b=e.target.closest('[data-op]'); if(!b) return; close(); rowsCols(b.dataset.op); toast(b.textContent.replace(/^Insertar/,'Insertada').replace(/^Eliminar/,'Eliminado')+' · Ctrl+Z para deshacer'); }; }
+  m.onclick=async e=>{ const b=e.target.closest('[data-op]'); if(!b) return; close(); const op=b.dataset.op;
+    if(op==='copy'||op==='cut'){ if(!document.execCommand(op)) toast('Usa '+(op==='cut'?'Ctrl+X':'Ctrl+C')); return; }
+    if(op==='clr') return clearRange(false);
+    if(op==='paste'){ try{ let html='',text=''; if(navigator.clipboard.read){ for(const ci of await navigator.clipboard.read()){ if(ci.types.includes('text/html')) html=await (await ci.getType('text/html')).text(); if(ci.types.includes('text/plain')) text=await (await ci.getType('text/plain')).text(); } } else text=await navigator.clipboard.readText(); shPaste(html,text); }catch(_){ toast('El navegador no deja pegar desde el menú: usa Ctrl+V'); } return; }
+    rowsCols(op); toast(b.textContent.replace(/^Insertar/,'Insertada').replace(/^Eliminar/,'Eliminado')+' · Ctrl+Z para deshacer'); }; }
 function sheetKey(e){
   if(S.editor||S.modal||S.pal) return; const k=e.key, ctrl=e.ctrlKey||e.metaKey, sh=curSheet(); const H=()=>{ e.preventDefault(); e.stopPropagation(); };
   if(ctrl){ const l=k.toLowerCase();
     if(k==='-'||k==='+'||(k==='='&&e.shiftKey)){ H(); const [r1,c1,r2,c2]=selRange(), fullR=c1===0&&c2===S.sh.NC-1, fullC=r1===0&&r2===S.sh.NR-1; const del=k==='-';
       if(fullR&&!fullC) return rowsCols(del?'rd':'ra'); if(fullC&&!fullR) return rowsCols(del?'cd':'ca'); const td=$(`#shw td[data-r="${S.sh.f.r}"][data-c="${S.sh.f.c}"]`)||$('.sh td.sel')||$('.sh td'); const rc=td?td.getBoundingClientRect():{left:200,bottom:200}; return shCtx(rc.left+10,rc.bottom,''); }
     if(l==='z'){ H(); return shUndo(e.shiftKey); } if(l==='y'){ H(); return shUndo(true); }
+    if(l==='d'&&!e.shiftKey){ H(); return shFillDir('d'); } if(l==='r'&&!e.shiftKey){ H(); return shFillDir('r'); }
+    if(k===' '){ H(); const c1=Math.min(S.sh.a.c,S.sh.f.c), c2=Math.max(S.sh.a.c,S.sh.f.c); S.sh.a={r:0,c:c1}; S.sh.f={r:S.sh.NR-1,c:c2}; return drawSel(false); }
+    if(k===';'||k===','&&e.shiftKey){ H(); const n=Math.round((new Date(todayISO()+'T00:00:00Z')-Date.UTC(1899,11,30))/864e5); return shMut(d=>{ const k2=S.sh.a.r+','+S.sh.a.c, cell=d.cells[k2]||{}; cell.v=n; delete cell.cv; const st=styleOf(d,cell); if(!isDateFmt(st.nf)){ const s2=sidOf(d,{...st,nf:'dd/mm/yyyy'}); if(s2!=null) cell.s=s2; } d.cells[k2]=cell; }); }
     if(l==='b'){ H(); return toggleFmt('b'); } if(l==='i'){ H(); return toggleFmt('i'); } if(l==='u'){ H(); return toggleFmt('u'); }
     if(l==='a'){ H(); const u=usedBounds(sh.data); S.sh.a={r:0,c:0}; S.sh.f={r:u.mr,c:u.mc}; return drawSel(false); }
     if(k==='Enter'){ H(); return shStartEdit(); }
@@ -1813,8 +1875,9 @@ function sheetKey(e){
     case 'Tab': H(); return shStep(0,e.shiftKey?-1:1); case 'Enter': H(); return shStep(e.shiftKey?-1:1,0);
     case 'Home': H(); return shMoveTo(S.sh.a.r,0,e.shiftKey); case 'PageDown': H(); return shStep(20,0,e.shiftKey); case 'PageUp': H(); return shStep(-20,0,e.shiftKey);
     case 'F2': H(); return shStartEdit(); case 'Delete': H(); return clearRange(false); case 'Backspace': H(); return shStartEdit('');
-    case 'Escape': if(S.sh.clip){ S.sh.clip.marquee=false; drawSel(false); } return;
+    case 'Escape': if(S.sh.clip){ if(S.sh.clip.cut) S.sh.clip=null; else S.sh.clip.marquee=false; drawSel(false); } return;
   }
+  if(k===' '&&e.shiftKey){ H(); const r1=Math.min(S.sh.a.r,S.sh.f.r), r2=Math.max(S.sh.a.r,S.sh.f.r); S.sh.a={r:r1,c:0}; S.sh.f={r:r2,c:S.sh.NC-1}; return drawSel(false); }
   if(k.length===1&&!e.altKey){ H(); shStartEdit(k); }
 }
 function rangeData(d,rg){ const E=makeEval(d); const rows=[]; for(let r=rg[0];r<=rg[2];r++){ const row=[]; for(let c=rg[1];c<=rg[3];c++){ const cell=d.cells[r+','+c]; row.push(cell?{v:cell.v,s:cell.s!=null?d.st[cell.s]:null}:null); } rows.push(row); }
@@ -1822,13 +1885,16 @@ function rangeData(d,rg){ const E=makeEval(d); const rows=[]; for(let r=rg[0];r<
   return {rows,text:txt.join('\r\n')}; }
 const sheetFocused=()=>S.view.startsWith('sheet:')&&document.activeElement&&document.activeElement.id==='shw'&&!S.editor;
 document.addEventListener('copy',e=>{ if(!sheetFocused()) return; const sh=curSheet(), rg=expandRange(sh.data,selRange()), r=rangeData(sh.data,rg); e.clipboardData.setData('text/plain',r.text); try{ e.clipboardData.setData('text/html',rangeHTML(sh.data,rg)); }catch(_){} e.preventDefault(); S.sh.clip={...r,rg,sid:sh.id,marquee:true}; drawSel(false); toast('Copiado'); });
-document.addEventListener('cut',e=>{ if(!sheetFocused()) return; const sh=curSheet(), rg=expandRange(sh.data,selRange()), r=rangeData(sh.data,rg); e.clipboardData.setData('text/plain',r.text); e.preventDefault(); S.sh.clip={...r,rg,sid:sh.id,marquee:false}; shMut(d=>{ eachCell(d,rg,(rr,cc)=>{ delete d.cells[rr+','+cc]; }); }); });
+document.addEventListener('cut',e=>{ if(!sheetFocused()) return; const sh=curSheet(), rg=expandRange(sh.data,selRange()), r=rangeData(sh.data,rg); e.clipboardData.setData('text/plain',r.text); try{ e.clipboardData.setData('text/html',rangeHTML(sh.data,rg)); }catch(_){} e.preventDefault(); S.sh.clip={...r,rg,sid:sh.id,marquee:true,cut:true}; drawSel(false); });
 document.addEventListener('paste',e=>{ if(!sheetFocused()&&!(SHP.sel&&S.view.startsWith('sheet:'))) return; e.preventDefault();
   const ims=[...(e.clipboardData?.files||[])].filter(f=>f.type.startsWith('image/')); if(ims.length){ insertPics(ims); return; }
-  { const html=e.clipboardData.getData('text/html'), tx=e.clipboardData.getData('text/plain'), cl=S.sh.clip; if(html&&/<table/i.test(html)&&!(cl&&cl.text===tx)){ try{ if(pasteHTML(html)) return; }catch(err){ console.warn(err); } } } const text=e.clipboardData.getData('text/plain'); const a=S.sh.a, clip=S.sh.clip;
+  shPaste(e.clipboardData.getData('text/html'),e.clipboardData.getData('text/plain')); });
+function shPaste(html,text){
+  { const tx=text, cl=S.sh.clip; if(html&&/<table/i.test(html)&&!(cl&&cl.text===tx)){ try{ if(pasteHTML(html)) return; }catch(err){ console.warn(err); } } } const a=S.sh.a, clip=S.sh.clip;
+  if(clip&&clip.cut&&clip.text===text&&clip.sid===curSheet()?.id){ const g=clip.rg; S.sh.clip=null; S.sh.a={r:g[0],c:g[1]}; S.sh.f={r:g[2],c:g[3]}; return shMoveRange(g,a.r-g[0],a.c-g[1],false); }
   shMut(d=>{ if(clip&&clip.text===text){ const dr=a.r-clip.rg[0], dc=a.c-clip.rg[1]; clip.rows.forEach((row,i)=>row.forEach((cell,j)=>{ const k=(a.r+i)+','+(a.c+j); if(!cell){ delete d.cells[k]; return; } let v=cell.v; if(typeof v==='string'&&v[0]==='=') v='='+moveRefs(v.slice(1),dr,dc); const n={}; if(v!=null) n.v=v; if(cell.s){ const s=sidOf(d,cell.s); if(s!=null) n.s=s; } if(n.v==null&&n.s==null) delete d.cells[k]; else d.cells[k]=n; })); S.sh.f={r:a.r+clip.rows.length-1,c:a.c+clip.rows[0].length-1}; }
     else { const lines=parseTSV(text); lines.forEach((line,i)=>line.forEach((x,j)=>{ const k=(a.r+i)+','+(a.c+j); const p=parseInput(x); const cell=d.cells[k]||{}; if(p.v==null) delete cell.v; else cell.v=p.v; delete cell.cv; if(p.nf&&!styleOf(d,cell).nf){ const s=sidOf(d,{...styleOf(d,cell),nf:p.nf}); if(s!=null) cell.s=s; } if(cell.v==null&&cell.s==null) delete d.cells[k]; else d.cells[k]=cell; })); S.sh.f={r:a.r+lines.length-1,c:a.c+Math.max(...lines.map(l=>l.length))-1}; } });
-  if(clip) clip.marquee=false; });
+  }
 
 /* ---- pegar desde Excel / Google Sheets con formato ---- */
 const XLCOL={windowtext:'#000000',black:'#000000',white:'#FFFFFF',red:'#FF0000',blue:'#0000FF',green:'#008000',yellow:'#FFFF00',silver:'#C0C0C0',gray:'#808080',grey:'#808080',navy:'#000080',maroon:'#800000',purple:'#800080',teal:'#008080',olive:'#808000',lime:'#00FF00',aqua:'#00FFFF',fuchsia:'#FF00FF',orange:'#FFA500'};
@@ -2757,7 +2823,7 @@ async function pushRefresh(){ try{ if(!S.cloud||!ls.get('mgg.push.on',false)||!p
     await pushSave(sub); }catch(e){ console.warn('avisos',e); } }
 
 /* ---- actualización automática: si hay una versión nueva publicada, recarga ---- */
-const APP_VER='202611140234';
+const APP_VER='202611140240';
 async function checkUpdate(){ try{ if(!navigator.onLine||location.protocol==='file:') return; const r=await fetch(location.pathname+'?v='+Date.now(),{cache:'reload'}); if(!r.ok) return; const t=await r.text(); const m=t.match(/const APP_VER='(\d+)'/); if(!m||m[1]===APP_VER||m[1]<APP_VER) return;
   if(S.editor||S.modal||(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))){ toast('Hay una versión nueva: se aplicará al recargar'); return; }
   if(sessionStorage.getItem('mgg.upd')===m[1]) return; sessionStorage.setItem('mgg.upd',m[1]); location.reload(); }catch(e){} }
