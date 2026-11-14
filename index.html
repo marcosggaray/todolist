@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-r2Tn7bw7f5Oh5f3LQnVXeYuFPvppYNxVCNQsYs4EBgM=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-vWqGJQtury+bmTTQ3N/50/2IVBPvvcyYx67noHejIjw=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -202,6 +202,8 @@ table.grid{border-collapse:separate;border-spacing:0;table-layout:fixed;width:10
 .tb select{border:0;background:transparent;font-size:11.5px;outline:none;cursor:pointer;color:var(--ink);max-width:104px}
 .shw{flex:1;min-height:0;overflow:auto;position:relative;border:1px solid var(--line2);background:#fff;outline:none;-webkit-overflow-scrolling:touch}
 table.sh{border-collapse:collapse;table-layout:fixed;font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif;color:#000;font-weight:400;position:relative}
+.shctx{position:fixed;z-index:90;background:var(--surface,#fff);border:1px solid var(--line2);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.16);padding:4px;min-width:220px;display:flex;flex-direction:column}
+.shctx button{text-align:left;padding:7px 12px;font-size:12.5px;border-radius:5px;color:var(--ink)} .shctx button:hover{background:var(--hover,rgba(0,0,0,.06))} .shctx button.bad{color:var(--bad)} .shctx hr{border:0;border-top:1px solid var(--line);margin:4px 0}
 .sh th{position:sticky;background:#f3f3f3;color:#555;font-weight:400;font-size:11px;border:1px solid #d6d6d6;z-index:3;user-select:none;padding:0;font-family:var(--font)}
 .sh thead th{top:0;height:22px;cursor:s-resize}
 .sh tbody th{left:0;z-index:2;cursor:e-resize;text-align:center}
@@ -1754,6 +1756,12 @@ function bindSheet(sh){
     else if(S.drag.mode==='row'){ const th=e.target.closest('th[data-hr]'); if(th){ S.sh.f={r:+th.dataset.hr,c:S.sh.NC-1}; drawSel(false); } } });
   w.addEventListener('dblclick',e=>{ if(e.target.closest('td[data-r]')) shStartEdit(); });
   w.addEventListener('keydown',sheetKey);
+  w.addEventListener('contextmenu',e=>{ const td=e.target.closest('td[data-r]'), hc=e.target.closest('th[data-hc]'), hr=e.target.closest('th[data-hr]'); if(!td&&!hc&&!hr) return; e.preventDefault();
+    const [r1,c1,r2,c2]=selRange();
+    if(td){ const r=+td.dataset.r,c=+td.dataset.c; if(r<r1||r>r2||c<c1||c>c2){ S.sh.a={r,c}; S.sh.f={r,c}; drawSel(false); } }
+    if(hc){ const c=+hc.dataset.hc; if(!(c>=c1&&c<=c2&&r1===0&&r2===S.sh.NR-1)){ S.sh.a={r:0,c}; S.sh.f={r:S.sh.NR-1,c}; drawSel(false); } }
+    if(hr){ const r=+hr.dataset.hr; if(!(r>=r1&&r<=r2&&c1===0&&c2===S.sh.NC-1)){ S.sh.a={r,c:0}; S.sh.f={r,c:S.sh.NC-1}; drawSel(false); } }
+    shCtx(e.clientX,e.clientY,hc?'c':hr?'r':''); });
   w.addEventListener('scroll',()=>{ if(S.sh.raf) return; S.sh.raf=requestAnimationFrame(()=>{ S.sh.raf=0; const Y=S.sh.Y, wn=S.sh.win; if(!Y||!wn) return; const top=Math.max(0,w.scrollTop-(S.sh.hh||22)), vt=rowAtY(Y,top), vb=rowAtY(Y,top+w.clientHeight);
     if((wn[0]>0&&vt<wn[0]+6)||(wn[1]<S.sh.NR-1&&vb>wn[1]-6)){ if(S.editor) return; reTable(); } }); },{passive:true});
   $('#sfx').onclick=()=>shStartEdit();
@@ -1778,9 +1786,20 @@ function startResize(e,h){ const z=zoom(); const isC=h.dataset.rzc!=null, i=+(is
   S.drag={mode:'resize'}; const mv=ev=>{ cur=Math.max(isC?12:10,w0+((isC?ev.clientX:ev.clientY)-start)); if(isC){ col.style.width=cur+'px'; t.style.width=(tw0+cur-w0)+'px'; } else tr.style.height=cur+'px'; drawSel(false); };
   const up=()=>{ document.removeEventListener('mousemove',mv); document.removeEventListener('mouseup',up); S.drag=null; if(Math.abs(cur-w0)>1) shMut(d=>{ (isC?d.cw:d.rh)[i]=Math.round(cur/z); }); else if(S.dirty) scheduleRender(); };
   document.addEventListener('mousemove',mv); document.addEventListener('mouseup',up); }
+function shCtx(x,y,only){ $('.shctx')?.remove(); const [r1,c1,r2,c2]=selRange(), nr=r2-r1+1, nc=c2-c1+1;
+  const it=[]; if(only!=='c') it.push(['ra','Insertar fila arriba'],['rb','Insertar fila abajo'],['rd',nr>1?`Eliminar ${nr} filas`:'Eliminar fila',1]); if(only==='') it.push(null);
+  if(only!=='r') it.push(['ca','Insertar columna a la izquierda'],['cb','Insertar columna a la derecha'],['cd',nc>1?`Eliminar ${nc} columnas`:'Eliminar columna',1]);
+  const m=document.createElement('div'); m.className='shctx'; m.innerHTML=it.map(o=>o?`<button data-op="${o[0]}" class="${o[2]?'bad':''}">${o[1]}</button>`:'<hr>').join('');
+  document.body.appendChild(m); const W=m.offsetWidth,Hh=m.offsetHeight; m.style.left=Math.min(x,innerWidth-W-8)+'px'; m.style.top=Math.min(y,innerHeight-Hh-8)+'px';
+  const close=()=>{ m.remove(); document.removeEventListener('pointerdown',out,true); document.removeEventListener('keydown',esc_,true); $('#shw')?.focus({preventScroll:true}); };
+  const out=e=>{ if(!m.contains(e.target)) close(); }, esc_=e=>{ if(e.key==='Escape'){ e.stopPropagation(); close(); } };
+  setTimeout(()=>{ document.addEventListener('pointerdown',out,true); document.addEventListener('keydown',esc_,true); });
+  m.onclick=e=>{ const b=e.target.closest('[data-op]'); if(!b) return; close(); rowsCols(b.dataset.op); toast(b.textContent.replace(/^Insertar/,'Insertada').replace(/^Eliminar/,'Eliminado')+' · Ctrl+Z para deshacer'); }; }
 function sheetKey(e){
   if(S.editor||S.modal||S.pal) return; const k=e.key, ctrl=e.ctrlKey||e.metaKey, sh=curSheet(); const H=()=>{ e.preventDefault(); e.stopPropagation(); };
   if(ctrl){ const l=k.toLowerCase();
+    if(k==='-'||k==='+'||(k==='='&&e.shiftKey)){ H(); const [r1,c1,r2,c2]=selRange(), fullR=c1===0&&c2===S.sh.NC-1, fullC=r1===0&&r2===S.sh.NR-1; const del=k==='-';
+      if(fullR&&!fullC) return rowsCols(del?'rd':'ra'); if(fullC&&!fullR) return rowsCols(del?'cd':'ca'); const td=$(`#shw td[data-r="${S.sh.f.r}"][data-c="${S.sh.f.c}"]`)||$('.sh td.sel')||$('.sh td'); const rc=td?td.getBoundingClientRect():{left:200,bottom:200}; return shCtx(rc.left+10,rc.bottom,''); }
     if(l==='z'){ H(); return shUndo(e.shiftKey); } if(l==='y'){ H(); return shUndo(true); }
     if(l==='b'){ H(); return toggleFmt('b'); } if(l==='i'){ H(); return toggleFmt('i'); } if(l==='u'){ H(); return toggleFmt('u'); }
     if(l==='a'){ H(); const u=usedBounds(sh.data); S.sh.a={r:0,c:0}; S.sh.f={r:u.mr,c:u.mc}; return drawSel(false); }
@@ -2738,7 +2757,7 @@ async function pushRefresh(){ try{ if(!S.cloud||!ls.get('mgg.push.on',false)||!p
     await pushSave(sub); }catch(e){ console.warn('avisos',e); } }
 
 /* ---- actualización automática: si hay una versión nueva publicada, recarga ---- */
-const APP_VER='202611140218';
+const APP_VER='202611140234';
 async function checkUpdate(){ try{ if(!navigator.onLine||location.protocol==='file:') return; const r=await fetch(location.pathname+'?v='+Date.now(),{cache:'reload'}); if(!r.ok) return; const t=await r.text(); const m=t.match(/const APP_VER='(\d+)'/); if(!m||m[1]===APP_VER||m[1]<APP_VER) return;
   if(S.editor||S.modal||(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))){ toast('Hay una versión nueva: se aplicará al recargar'); return; }
   if(sessionStorage.getItem('mgg.upd')===m[1]) return; sessionStorage.setItem('mgg.upd',m[1]); location.reload(); }catch(e){} }
