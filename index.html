@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-RjiYF57uHeYgN/pw9uGApX1RtUHznkGBgcrrlHD++Y0=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-232cbIOF9w9SQV3OoFtLmjZzon7HbXlvywFOGR42L/k=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co https://cdn.jsdelivr.net; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -219,6 +219,30 @@ table.sh{border-collapse:collapse;table-layout:fixed;font-family:Calibri,Carlito
 .sh td.wr{white-space:pre-wrap;word-break:break-word}
 .sh td .cl{overflow:hidden}
 .sh td.err{color:#c00}
+.sh td.fzc{background:#fff} .sh td.fzb{box-shadow:inset -1px -1px 0 #e1e1e1,0 1px 0 #8a8a8a} .sh td.fzr{box-shadow:inset -1px -1px 0 #e1e1e1,1px 0 0 #8a8a8a} .sh td.fzb.fzr{box-shadow:inset -1px -1px 0 #e1e1e1,1px 1px 0 #8a8a8a}
+.sh th.fzb{box-shadow:0 1px 0 #8a8a8a} .sh th.fzr{box-shadow:1px 0 0 #8a8a8a}
+.sh td.hc{position:relative} .sh td.hc::after{content:'';position:absolute;top:0;right:0;border-style:solid;border-width:0 6px 6px 0;border-color:transparent #d0021b transparent transparent;z-index:1}
+.sh td.hc.fzc{position:sticky}
+#cmtip{position:fixed;z-index:95;max-width:260px;background:#fffbe6;border:1px solid #c9b458;box-shadow:2px 3px 8px rgba(0,0,0,.18);padding:7px 9px;font-size:12px;line-height:1.4;color:#222;pointer-events:none;white-space:normal;word-break:break-word}
+#cmtip b{display:block;font-size:10.5px;color:#7a6a1f;margin-bottom:2px;font-weight:600}
+.dvbtn{position:absolute;display:none;width:17px;align-items:center;justify-content:center;background:#f3f3f3;border:1px solid #bdbdbd;font-size:11px;color:#333;cursor:pointer;z-index:3;box-sizing:border-box}
+.dvbtn:hover{background:#e2e2e2}
+.dvm{max-height:280px;overflow:auto} .dvm button.on{font-weight:600} .dvm button.hl{background:var(--hover,rgba(0,0,0,.08))}
+.frp{position:fixed;right:22px;top:118px;z-index:70;width:330px;background:var(--surface,#fff);border:1px solid var(--line2);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.16);padding:10px 12px;display:flex;flex-direction:column;gap:7px}
+.frp:not(.rep) #fr_r,.frp:not(.rep) #fr_rep,.frp:not(.rep) #fr_repall{display:none}
+.frp .inp{padding:6px 9px;font-size:12.5px} .fro{gap:10px;font-size:12px;align-items:center} .fro label{display:flex;gap:4px;align-items:center} .fro select{width:auto;padding:4px 6px;font-size:12px}
+.frb{gap:6px} .frres{max-height:240px;overflow:auto;border-top:1px solid var(--line);display:flex;flex-direction:column}
+.frres button{text-align:left;padding:5px 4px;font-size:12px;border-bottom:1px solid var(--line);display:flex;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .frres button:hover{background:var(--hover,rgba(0,0,0,.05))} .frres .mut{flex:none;font-size:11px}
+@media (max-width:820px){ .frp{left:10px;right:10px;width:auto;top:auto;bottom:10px} }
+.shc{background:#fff;border:1px solid #d9d9d9;box-shadow:0 1px 3px rgba(0,0,0,.08)} .shc svg{display:block;pointer-events:none}
+.chprev{border:1px solid var(--line2);border-radius:8px;background:#fff;overflow:auto;text-align:center}
+.sh td.afh{position:relative} .sh td.afh.fzc{position:sticky} .sh td .afi{overflow:hidden;margin-right:16px}
+.afb{position:absolute;right:1px;bottom:1px;width:15px;height:15px;border:1px solid #b9b9b9;background:#fafafa;color:#444;font-style:normal;font-size:10px;line-height:13px;text-align:center;cursor:pointer;z-index:2;border-radius:2px}
+.afb:hover{background:#e6e6e6} .afb.on{color:#0b5cad;border-color:#0b5cad}
+.sh th[data-flt]{color:#0b5cad}
+.afm{width:250px;padding:6px} .afm .inp{padding:5px 8px;font-size:12px;margin:4px 0} .afl{max-height:230px;overflow:auto;border:1px solid var(--line);border-radius:6px;padding:4px 6px}
+.afl label{display:flex;gap:6px;align-items:center;font-size:12.5px;padding:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .afl .afa{border-bottom:1px solid var(--line);margin-bottom:2px}
+.tbsw{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px} .tbsw button{display:grid;grid-template-rows:repeat(4,7px);width:46px;border:2px solid transparent;border-radius:4px;padding:2px;background:#fff;box-shadow:0 0 0 1px var(--line2)} .tbsw button.on{border-color:var(--ink)} .tbsw i{display:block}
 .selbox{position:absolute;pointer-events:none;border:1px solid #000;background:rgba(20,20,20,.07);z-index:1}
 .actbox{position:absolute;pointer-events:none;border:2px solid #000;z-index:1}
 .copybox{position:absolute;pointer-events:none;border:1px dashed #000;z-index:1}
@@ -835,16 +859,19 @@ function buildNav(){
   tabs.innerHTML = lists().map(l=>`<button class="tab ${v==='list:'+l?'on':''}" data-v="list:${esc(l)}">${esc(l)}<small>${open(l)}</small></button>`).join('')
    + (sheets().length?`<span class="tsep"></span>`+sheets().map(s=>`<button class="tab ${v==='sheet:'+s.id?'on':''}" data-v="sheet:${s.id}">${esc(s.data.name)}</button>`).join(''):'')
    + `<span class="tsep"></span>`
-   + [['calendar','Calendario'],['notes','Notas'],['links','Links'],['vault','Contraseñas'],['finances','Finanzas'],['calc','Calculadora'],['conv','Conversor']].map(([k,l])=>`<button class="tab ${v===k?'on':''}" data-v="${k}">${l}</button>`).join('');
+   + [['calendar','Calendario'],['notes','Pizarra'],['nb','Notas'],['links','Links'],['vault','Contraseñas'],['finances','Finanzas'],['calc','Calculadora'],['conv','Conversor']].map(([k,l])=>`<button class="tab ${v===k?'on':''}" data-v="${k}">${l}</button>`).join('');
   tabs.scrollLeft=sl; $('#navset').classList.toggle('on',v==='settings');
 }
 document.addEventListener('click',e=>{ if(e.target.closest('#navsrch')) openSearch(); });
-function go(v){ S.bioTried=false; endEdit(false); closePicker(); closePal(); S.view=v; render(); $('#view').scrollTop=0; if(isMobile()) scrollTo(0,0); const t=$('#tabs .tab.on'); if(t){ const tb=$('#tabs'); tb.scrollLeft=t.offsetLeft-tb.clientWidth/2+t.offsetWidth/2; } }
+function go(v){ if(S.view==='nb'&&v!=='nb') window.NBX?.leave(); if(!String(v).startsWith('sheet:')){ $('#frp')?.remove(); cmTip(null,false); } S.bioTried=false; endEdit(false); closePicker(); closePal(); S.view=v; render(); $('#view').scrollTop=0; if(isMobile()) scrollTo(0,0); const t=$('#tabs .tab.on'); if(t){ const tb=$('#tabs'); tb.scrollLeft=t.offsetLeft-tb.clientWidth/2+t.offsetWidth/2; } }
+function rNb(){ if(window.NBX) return NBX.render(); const v=$('#view'); v.innerHTML='<p class="mut" style="padding:40px;text-align:center">Cargando Notas…</p>';
+  loadScript('notas.js?v='+APP_VER).then(()=>{ if(S.view==='nb'&&window.NBX) NBX.render(); }).catch(()=>{ if(S.view!=='nb') return; v.innerHTML='<p class="mut" style="padding:40px;text-align:center">No se pudo cargar Notas. <button class="btn sm" id="nbretry">Reintentar</button></p>'; $('#nbretry').onclick=()=>{ $('script[src^="notas.js"]')?.remove(); rNb(); }; }); }
 function render(){
   S.dirty=false; const v=S.view; buildNav();
   const view=$('#view'); view.onclick=null; view.className='';
   if(v.startsWith('list:')){ S.t.list=v.slice(5); if(!lists().includes(S.t.list)){ S.view='list:'+lists()[0]; return render(); } if(!isMobile()) view.classList.add('fill'); rTasks(); }
   else if(v==='notes'){ view.classList.add('fill','sheet'); rNotes(); }
+  else if(v==='nb'){ view.classList.add('fill'); rNb(); }
   else if(v.startsWith('sheet:')){ const id=v.slice(6); if(!sheets().some(x=>x.id===id)){ S.view='list:'+lists()[0]; return render(); } if(S.sh.id!==id){ S.sh.id=id; S.sh.a={r:0,c:0}; S.sh.f={r:0,c:0}; S.sh.clip=null; } view.classList.add('fill','sheet'); rSheets(); }
   else { const f={calendar:rCalendar,vault:rVault,finances:rFin,links:rLinks,calc:rCalc,conv:rConv,settings:rSettings}[v]; if(!f){ S.view='list:'+lists()[0]; return render(); } f(); }
   $('#fab').style.display=(v.startsWith('list:')||['notes','calendar','links'].includes(v))?'':'none';
@@ -1401,18 +1428,29 @@ function crit(c){ if(typeof c==='number') return v=>v===c; const s=String(c??'')
   const re=new RegExp('^'+rhs.replace(/[.+^${}()|[\]\\]/g,'\\$&').replace(/\*/g,'.*').replace(/\?/g,'.')+'$','i');
   return v=>{ if(isN&&typeof v==='number') return {'=':v===n,'<>':v!==n,'<':v<n,'>':v>n,'<=':v<=n,'>=':v>=n}[op]; const sv=toStr(v); if(op==='=') return re.test(sv); if(op==='<>') return !re.test(sv); return {'<':sv<rhs,'>':sv>rhs,'<=':sv<=rhs,'>=':sv>=rhs}[op]; }; }
 function makeEval(d){
-  const memo=new Map(), busyK=new Set();
+  const memo=new Map(), busyK=new Set(), spill=new Map(), spOwn=new Map(); let prepped=false, prepping=false;
+  const ARRF=/(^|[^A-Z.])(FILTER|FILTRAR|UNIQUE|UNICOS|ÚNICOS|SORT|ORDENAR|SEQUENCE|SECUENCIA|TRANSPOSE|TRANSPONER|XLOOKUP|BUSCARX)\s*\(/i;
+  const prep=()=>{ if(prepped||prepping) return; prepping=true; const ks=Object.keys(d.cells).filter(k=>{ const v=d.cells[k].v; return typeof v==='string'&&v[0]==='='; });
+    for(const pass of [1,2]) for(const k of ks){ const v=d.cells[k].v; if((pass===1)!==ARRF.test(v)) continue; const i=k.indexOf(','); cellVal(+k.slice(0,i),+k.slice(i+1)); } prepping=false; prepped=true; };
+  const arr2=v=>Array.isArray(v)?(v.length&&v[0].length?v:[[null]]):[[v]];
+  const eqv=(x,y)=>typeof x==='number'&&typeof y==='number'?x===y:toStr(x).toLowerCase()===toStr(y).toLowerCase();
+  const cmpv=(x,y)=>{ if(x==null&&y==null) return 0; if(x==null) return 1; if(y==null) return -1; const nx=typeof x==='number', ny=typeof y==='number'; if(nx&&ny) return x-y; if(nx) return -1; if(ny) return 1; return toStr(x).localeCompare(toStr(y),'es',{sensitivity:'base',numeric:true}); };
+  const ifsMask=(a,st,n)=>{ const ok=Array(n).fill(true); for(let i=st;i+1<a.length;i+=2){ const Rg=flat(ev(a[i])), f=crit(sc(ev(a[i+1]))); for(let j=0;j<n;j++) if(ok[j]&&!f(Rg[j])) ok[j]=false; } return ok; };
   const cellVal=(r,c)=>{ const k=r+','+c; if(memo.has(k)) return memo.get(k); const cell=d.cells[k]; const v=cell?cell.v:null;
     if(typeof v==='string'&&v[0]==='='){ if(busyK.has(k)) return {e:'#CIRC!'}; busyK.add(k); let res;
-      try{ let a=ASTC.get(v); if(!a){ a=fxParse(fxTok(v.slice(1))); ASTC.set(v,a); } res=ev(a); if(Array.isArray(res)) res=res[0]?.[0]??null; if(typeof res==='number'&&!isFinite(res)) res={e:'#NUM!'}; if(res&&res.e==='#NAME?'&&cell.cv!==undefined) res=cell.cv; }
+      try{ let a=ASTC.get(v); if(!a){ a=fxParse(fxTok(v.slice(1))); ASTC.set(v,a); } res=ev(a);
+        if(Array.isArray(res)){ const RR=res.length, CC=res[0]?res[0].length:0; if(RR*CC>1){ let block=false; for(let i=0;i<RR&&!block;i++) for(let j=0;j<CC;j++){ if(!i&&!j) continue; const kk=(r+i)+','+(c+j), x=d.cells[kk]; if((x&&x.v!=null&&x.v!=='')||(spOwn.has(kk)&&spOwn.get(kk)!==k)){ block=true; break; } }
+            if(block) res={e:'#SPILL!'}; else { for(let i=0;i<RR;i++) for(let j=0;j<CC;j++){ if(!i&&!j) continue; const kk=(r+i)+','+(c+j), v2=res[i][j]; spill.set(kk,v2==null?null:v2); spOwn.set(kk,k); } res=res[0][0]; } } else res=res[0]?.[0]??null; if(Array.isArray(res)) res=null; } if(typeof res==='number'&&!isFinite(res)) res={e:'#NUM!'}; if(res&&res.e==='#NAME?'&&cell.cv!==undefined) res=cell.cv; }
       catch(e){ res=cell.cv!==undefined?cell.cv:{e:'#ERROR'}; }
       busyK.delete(k); memo.set(k,res); return res; }
+    if(v==null){ if(!prepped&&!prepping) prep(); if(spill.has(k)){ const sv=spill.get(k); if(!prepping) memo.set(k,sv); return sv; } if(prepping) return null; }
     memo.set(k,v??null); return v??null; };
   const rng=ref=>{ const [a,b]=ref.split(':'); const A=parseRef(a), B=parseRef(b||a); if(!A||!B) return {e:'#REF!'}; const o=[]; for(let r=Math.min(A.r,B.r);r<=Math.max(A.r,B.r);r++){ const row=[]; for(let c=Math.min(A.c,B.c);c<=Math.max(A.c,B.c);c++) row.push(cellVal(r,c)); o.push(row); } return o; };
   const sc=v=>Array.isArray(v)?(v[0]?.[0]??null):v;
   const num=v=>toNum(sc(v));
   const nums=args=>{ const o=[]; for(const a of args){ const v=ev(a); if(Array.isArray(v)){ for(const x of v.flat()){ if(isE(x)) return x; if(typeof x==='number') o.push(x); } } else { const n=toNum(v); if(isE(n)) return n; o.push(n); } } return o; };
-  const bin=(o,l,r)=>{ l=sc(l); r=sc(r); if(isE(l)) return l; if(isE(r)) return r;
+  const bin=(o,l,r)=>{ if(Array.isArray(l)||Array.isArray(r)){ const L=arr2(l), Rr=arr2(r), rows=Math.max(L.length,Rr.length), cols=Math.max(L[0].length,Rr[0].length); if(rows*cols>100000) return {e:'#NUM!'}; const g=(A,i,j)=>(A[A.length===1?0:i]||[])[A[0].length===1?0:j]; const o2=[]; for(let i=0;i<rows;i++){ const row=[]; for(let j=0;j<cols;j++) row.push(bin1(o,g(L,i,j)??null,g(Rr,i,j)??null)); o2.push(row); } return o2; } return bin1(o,l,r); };
+  const bin1=(o,l,r)=>{ l=sc(l); r=sc(r); if(isE(l)) return l; if(isE(r)) return r;
     if(o==='&') return toStr(l)+toStr(r);
     if(['=','<>','<','>','<=','>='].includes(o)){ let a=l,b=r; if(typeof a!=='number'||typeof b!=='number'){ a=toStr(a).toLowerCase(); b=toStr(b).toLowerCase(); } return {'=':a===b,'<>':a!==b,'<':a<b,'>':a>b,'<=':a<=b,'>=':a>=b}[o]; }
     const A=toNum(l), B=toNum(r); if(isE(A)) return A; if(isE(B)) return B;
@@ -1441,17 +1479,89 @@ function makeEval(d){
     LEN:a=>toStr(sc(ev(a[0]))).length, UPPER:a=>toStr(sc(ev(a[0]))).toUpperCase(), LOWER:a=>toStr(sc(ev(a[0]))).toLowerCase(), TRIM:a=>toStr(sc(ev(a[0]))).trim().replace(/\s+/g,' '),
     LEFT:a=>toStr(sc(ev(a[0]))).slice(0,a[1]?num(ev(a[1])):1), RIGHT:a=>{ const s=toStr(sc(ev(a[0]))), n=a[1]?num(ev(a[1])):1; return n?s.slice(-n):''; },
     ISBLANK:a=>{ const v=sc(ev(a[0])); return v==null||v===''; },
-    VLOOKUP:a=>{ const k=sc(ev(a[0])), tb=ev(a[1]), ci=num(ev(a[2]))-1; if(!Array.isArray(tb)) return {e:'#N/A'}; const row=tb.find(r=>toStr(r[0]).toLowerCase()===toStr(k).toLowerCase()); return row?(row[ci]??null):{e:'#N/A'}; },
+    VLOOKUP:a=>{ const k=sc(ev(a[0])), tb=ev(a[1]), ci=num(ev(a[2]))-1; if(!Array.isArray(tb)) return {e:'#N/A'}; const approx=a[3]?truthy(sc(ev(a[3]))):false;
+      if(approx){ let best=null; for(const r of tb){ if(r[0]==null) continue; if(cmpv(r[0],k)<=0) best=r; else break; } return best?(best[ci]??null):{e:'#N/A'}; }
+      const f=typeof k==='string'&&/[*?]/.test(k)?crit(k):null; const row=tb.find(r=>f?f(r[0]):eqv(r[0],k)); return row?(row[ci]??null):{e:'#N/A'}; },
+    // ---- funciones añadidas ----
+    XLOOKUP:a=>{ const k=sc(ev(a[0])), LA=arr2(ev(a[1])), RA=arr2(ev(a[2])), vert=LA.length>1||LA[0].length===1, L=vert?LA.map(r=>r[0]):LA[0], mm=a[4]?num(ev(a[4])):0;
+      let i=-1; if(mm===2){ const f=crit(k); i=L.findIndex(v=>f(v)); } else { i=L.findIndex(v=>eqv(v,k)); if(i<0&&(mm===-1||mm===1)&&typeof k==='number'){ let best=null; L.forEach((v,j)=>{ if(typeof v!=='number') return; if(mm===-1?v<=k&&(best==null||v>L[best]):v>=k&&(best==null||v<L[best])) best=j; }); if(best!=null) i=best; } }
+      if(i<0) return a[3]?ev(a[3]):{e:'#N/A'}; return vert?[RA[i]||[null]]:RA.map(r=>[r[i]]); },
+    MATCH:a=>{ const k=sc(ev(a[0])), A=arr2(ev(a[1])), L=A.length>1?A.map(r=>r[0]):A[0], t=a[2]?num(ev(a[2])):1;
+      if(t===0){ const f=typeof k==='string'&&/[*?]/.test(k)?crit(k):null; const i=L.findIndex(v=>f?f(v):eqv(v,k)); return i<0?{e:'#N/A'}:i+1; }
+      let best=-1; L.forEach((v,j)=>{ if(v==null) return; if(t>0?cmpv(v,k)<=0:cmpv(v,k)>=0) best=j; }); return best<0?{e:'#N/A'}:best+1; },
+    INDEX:a=>{ const A=arr2(ev(a[0])); let r=a[1]?num(ev(a[1])):1, c=a[2]?num(ev(a[2])):1; if(A.length===1&&a[2]==null){ c=r; r=1; } if(r<1||c<1||!A[r-1]||c>A[r-1].length) return {e:'#REF!'}; return A[r-1][c-1]; },
+    HLOOKUP:a=>{ const k=sc(ev(a[0])), tb=arr2(ev(a[1])), ri=num(ev(a[2]))-1; const j=tb[0].findIndex(v=>eqv(v,k)); return j<0?{e:'#N/A'}:(tb[ri]?.[j]??null); },
+    FILTER:a=>{ const A=arr2(ev(a[0])), I=arr2(ev(a[1])); let out; if(I.length===A.length&&(I.length>1||I[0].length===1)) out=A.filter((r,i)=>truthy(I[i][0])); else if(I.length===1&&I[0].length===A[0].length) out=A.map(r=>r.filter((_,j)=>truthy(I[0][j]))).filter(r=>r.length); else return {e:'#VALUE!'};
+      return out.length?out:(a[2]?ev(a[2]):{e:'#CALC!'}); },
+    UNIQUE:a=>{ const A=arr2(ev(a[0])), seen=new Set(), out=[]; for(const r of A){ const k=JSON.stringify(r.map(v=>toStr(v).toLowerCase())); if(seen.has(k)) continue; seen.add(k); out.push(r); } return out; },
+    SORT:a=>{ const A=arr2(ev(a[0])).map(r=>[...r]), i=(a[1]?num(ev(a[1])):1)-1, o=a[2]?num(ev(a[2])):1; return A.sort((x,y)=>cmpv(x[i],y[i])*(o<0?-1:1)); },
+    SEQUENCE:a=>{ const R=num(ev(a[0])), C=a[1]?num(ev(a[1])):1, s=a[2]?num(ev(a[2])):1, st=a[3]?num(ev(a[3])):1; if(R*C>10000) return {e:'#NUM!'}; const o=[]; for(let r=0;r<R;r++){ const row=[]; for(let c=0;c<C;c++) row.push(s+(r*C+c)*st); o.push(row); } return o; },
+    TRANSPOSE:a=>{ const A=arr2(ev(a[0])); return A[0].map((_,j)=>A.map(r=>r[j])); },
+    TEXT:a=>{ const v=sc(ev(a[0])); let f=toStr(sc(ev(a[1]))); if(/0,0/.test(f)&&!/\./.test(f)) f=f.replace(/,/g,'·').replace(/·/g,'.'); else if(/#\.##0|0\.000/.test(f)&&/,/.test(f)) f=f.replace(/\./g,'§').replace(/,/g,'.').replace(/§/g,','); return fmtVal(typeof v==='number'?v:toNum(v),f); },
+    SUMPRODUCT:a=>{ const L=a.map(x=>flat(ev(x))); const n=L[0].length; let s=0; for(let i=0;i<n;i++){ let p=1; for(const l of L){ const v=l[i]; p*=typeof v==='number'?v:0; } s+=p; } return s; },
+    SUMIFS:a=>{ const S_=flat(ev(a[0])), ok=ifsMask(a,1,S_.length); return S_.reduce((s,v,i)=>s+(ok[i]&&typeof v==='number'?v:0),0); },
+    COUNTIFS:a=>{ const n=flat(ev(a[0])).length, ok=ifsMask(a,0,n); return ok.filter(Boolean).length; },
+    AVERAGEIF:a=>{ const f=crit(sc(ev(a[1]))), R=flat(ev(a[0])), Sm=a[2]?flat(ev(a[2])):R; const v=R.map((x,i)=>f(x)&&typeof Sm[i]==='number'?Sm[i]:null).filter(x=>x!=null); return v.length?v.reduce((s,x)=>s+x,0)/v.length:{e:'#DIV/0!'}; },
+    AVERAGEIFS:a=>{ const S_=flat(ev(a[0])), ok=ifsMask(a,1,S_.length), v=S_.filter((x,i)=>ok[i]&&typeof x==='number'); return v.length?v.reduce((s,x)=>s+x,0)/v.length:{e:'#DIV/0!'}; },
+    MAXIFS:a=>{ const S_=flat(ev(a[0])), ok=ifsMask(a,1,S_.length), v=S_.filter((x,i)=>ok[i]&&typeof x==='number'); return v.length?Math.max(...v):0; },
+    MINIFS:a=>{ const S_=flat(ev(a[0])), ok=ifsMask(a,1,S_.length), v=S_.filter((x,i)=>ok[i]&&typeof x==='number'); return v.length?Math.min(...v):0; },
+    IFS:a=>{ for(let i=0;i+1<a.length;i+=2){ const c=sc(ev(a[i])); if(isE(c)) return c; if(truthy(c)) return ev(a[i+1]); } return {e:'#N/A'}; },
+    SWITCH:a=>{ const x=sc(ev(a[0])); let i=1; for(;i+1<a.length;i+=2) if(eqv(sc(ev(a[i])),x)) return ev(a[i+1]); return i<a.length?ev(a[i]):{e:'#N/A'}; },
+    MID:a=>{ const s=toStr(sc(ev(a[0]))), st=num(ev(a[1])), n=num(ev(a[2])); return st<1?{e:'#VALUE!'}:s.substr(st-1,n); },
+    FIND:a=>{ const f=toStr(sc(ev(a[0]))), s=toStr(sc(ev(a[1]))), st=a[2]?num(ev(a[2])):1; const i=s.indexOf(f,st-1); return i<0?{e:'#VALUE!'}:i+1; },
+    SEARCH:a=>{ const f=toStr(sc(ev(a[0]))).toLowerCase(), s=toStr(sc(ev(a[1]))).toLowerCase(), st=a[2]?num(ev(a[2])):1; let i; if(/[*?]/.test(f)){ const re=new RegExp(f.replace(/[.+^${}()|[\]\\]/g,'\\$&').replace(/\*/g,'.*').replace(/\?/g,'.')); const m=re.exec(s.slice(st-1)); i=m?m.index+st-1:-1; } else i=s.indexOf(f,st-1); return i<0?{e:'#VALUE!'}:i+1; },
+    SUBSTITUTE:a=>{ const s=toStr(sc(ev(a[0]))), o=toStr(sc(ev(a[1]))), n=toStr(sc(ev(a[2]))); if(!o) return s; if(a[3]){ const k=num(ev(a[3])); let i=-1; for(let j=0;j<k;j++){ i=s.indexOf(o,i+1); if(i<0) return s; } return s.slice(0,i)+n+s.slice(i+o.length); } return s.split(o).join(n); },
+    REPLACE:a=>{ const s=toStr(sc(ev(a[0]))), st=num(ev(a[1])), n=num(ev(a[2])), t=toStr(sc(ev(a[3]))); return s.slice(0,st-1)+t+s.slice(st-1+n); },
+    TEXTJOIN:a=>{ const d=toStr(sc(ev(a[0]))), ig=truthy(sc(ev(a[1]))); const v=a.slice(2).flatMap(x=>flat(ev(x))).map(toStr); return (ig?v.filter(x=>x!==''):v).join(d); },
+    VALUE:a=>{ const v=sc(ev(a[0])); if(typeof v==='number') return v; const p=parseInput(toStr(v).trim()); return typeof p.v==='number'?p.v:{e:'#VALUE!'}; },
+    PROPER:a=>toStr(sc(ev(a[0]))).toLowerCase().replace(/(^|[^a-zà-ÿñ])([a-zà-ÿñ])/g,(m,p,c)=>p+c.toUpperCase()),
+    REPT:a=>toStr(sc(ev(a[0]))).repeat(Math.max(0,num(ev(a[1])))), EXACT:a=>toStr(sc(ev(a[0])))===toStr(sc(ev(a[1]))),
+    ISNUMBER:a=>typeof sc(ev(a[0]))==='number', ISTEXT:a=>typeof sc(ev(a[0]))==='string', ISERROR:a=>isE(sc(ev(a[0]))), ISNA:a=>{ const v=sc(ev(a[0])); return isE(v)&&v.e==='#N/A'; },
+    IFNA:a=>{ const v=sc(ev(a[0])); return isE(v)&&v.e==='#N/A'?ev(a[1]):v; }, NA:()=>({e:'#N/A'}),
+    EOMONTH:a=>{ const d=ser2date(num(ev(a[0]))), m=num(ev(a[1])); return date2ser(d.getUTCFullYear(),d.getUTCMonth()+2+m,0); },
+    EDATE:a=>{ const d=ser2date(num(ev(a[0]))), m=num(ev(a[1])); const y=d.getUTCFullYear(), mo=d.getUTCMonth()+1+m, last=new Date(Date.UTC(y,mo,0)).getUTCDate(); return date2ser(y,mo,Math.min(d.getUTCDate(),last)); },
+    NETWORKDAYS:a=>{ let s=Math.floor(num(ev(a[0]))), e=Math.floor(num(ev(a[1]))), sg=1; if(e<s){ [s,e]=[e,s]; sg=-1; } const H=new Set(a[2]?flat(ev(a[2])).filter(x=>typeof x==='number').map(Math.floor):[]); let n=0; for(let d=s;d<=e;d++){ const w=ser2date(d).getUTCDay(); if(w&&w!==6&&!H.has(d)) n++; } return n*sg; },
+    WORKDAY:a=>{ let d=Math.floor(num(ev(a[0]))), n=num(ev(a[1])); const H=new Set(a[2]?flat(ev(a[2])).filter(x=>typeof x==='number').map(Math.floor):[]), st=n<0?-1:1; while(n){ d+=st; const w=ser2date(d).getUTCDay(); if(w&&w!==6&&!H.has(d)) n-=st; } return d; },
+    DATEDIF:a=>{ const s=ser2date(num(ev(a[0]))), e=ser2date(num(ev(a[1]))), u=toStr(sc(ev(a[2]))).toUpperCase(); if(e<s) return {e:'#NUM!'};
+      const Y=e.getUTCFullYear()-s.getUTCFullYear(), M=Y*12+e.getUTCMonth()-s.getUTCMonth()-(e.getUTCDate()<s.getUTCDate()?1:0), D=Math.round((e-s)/864e5);
+      if(u==='D') return D; if(u==='M') return M; if(u==='Y') return Math.floor(M/12); if(u==='YM') return M%12; if(u==='MD'){ const t=new Date(Date.UTC(e.getUTCFullYear(),e.getUTCMonth()-(e.getUTCDate()<s.getUTCDate()?1:0),s.getUTCDate())); return Math.round((e-t)/864e5); }
+      if(u==='YD'){ const t=new Date(Date.UTC(e.getUTCFullYear()-((e.getUTCMonth()<s.getUTCMonth()||(e.getUTCMonth()===s.getUTCMonth()&&e.getUTCDate()<s.getUTCDate()))?1:0),s.getUTCMonth(),s.getUTCDate())); return Math.round((e-t)/864e5); } return {e:'#NUM!'}; },
+    DAYS:a=>Math.floor(num(ev(a[0])))-Math.floor(num(ev(a[1]))),
+    HOUR:a=>ser2date(num(ev(a[0]))).getUTCHours(), MINUTE:a=>ser2date(num(ev(a[0]))).getUTCMinutes(), SECOND:a=>ser2date(num(ev(a[0]))).getUTCSeconds(),
+    WEEKNUM:a=>{ const d=ser2date(num(ev(a[0]))), t=a[1]?num(ev(a[1])):1, j1=new Date(Date.UTC(d.getUTCFullYear(),0,1)), off=t===2?(j1.getUTCDay()+6)%7:j1.getUTCDay(); return Math.floor((Math.round((d-j1)/864e5)+off)/7)+1; },
+    ISOWEEKNUM:a=>{ const d=ser2date(num(ev(a[0]))), t=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())); const dn=(t.getUTCDay()+6)%7; t.setUTCDate(t.getUTCDate()-dn+3); const f=new Date(Date.UTC(t.getUTCFullYear(),0,4)); return 1+Math.round(((t-f)/864e5-3+((f.getUTCDay()+6)%7))/7); },
+    POWER:a=>Math.pow(num(ev(a[0])),num(ev(a[1]))), SQRT:a=>{ const n=num(ev(a[0])); return n<0?{e:'#NUM!'}:Math.sqrt(n); },
+    CEILING:a=>{ const n=num(ev(a[0])), s=a[1]?num(ev(a[1])):1; return s?Math.ceil(n/s)*s:0; }, FLOOR:a=>{ const n=num(ev(a[0])), s=a[1]?num(ev(a[1])):1; return s?Math.floor(n/s)*s:0; },
+    MEDIAN:a=>{ const n=nums(a); if(isE(n)) return n; if(!n.length) return {e:'#NUM!'}; const s=[...n].sort((x,y)=>x-y), m=s.length>>1; return s.length%2?s[m]:(s[m-1]+s[m])/2; },
+    LARGE:a=>{ const n=flat(ev(a[0])).filter(x=>typeof x==='number').sort((x,y)=>y-x), k=num(ev(a[1])); return n[k-1]??{e:'#NUM!'}; },
+    SMALL:a=>{ const n=flat(ev(a[0])).filter(x=>typeof x==='number').sort((x,y)=>x-y), k=num(ev(a[1])); return n[k-1]??{e:'#NUM!'}; },
+    RANK:a=>{ const v=num(ev(a[0])), n=flat(ev(a[1])).filter(x=>typeof x==='number'), o=a[2]?num(ev(a[2])):0; if(!n.includes(v)) return {e:'#N/A'}; return 1+n.filter(x=>o?x<v:x>v).length; },
+    SUBTOTAL:a=>{ const f=num(ev(a[0]))%100, fn={1:'AVERAGE',2:'COUNT',3:'COUNTA',4:'MAX',5:'MIN',9:'SUM'}[f]; if(!fn) return {e:'#VALUE!'};
+      if(!(d.af&&d.af.f&&Object.keys(d.af.f).length)) return F[fn](a.slice(1)); const Hd=afHidden(d,{val:cellVal}), vals=[];
+      for(const x of a.slice(1)){ if(x.k!=='r'){ vals.push(...flat(ev(x))); continue; } const [p1,p2]=x.v.split(':'), A=parseRef(p1), Bq=parseRef(p2||p1); if(!A||!Bq) return {e:'#REF!'};
+        for(let r=Math.min(A.r,Bq.r);r<=Math.max(A.r,Bq.r);r++){ if(Hd.has(r)) continue; for(let c=Math.min(A.c,Bq.c);c<=Math.max(A.c,Bq.c);c++) vals.push(cellVal(r,c)); } }
+      return F[fn]([{k:'l',v:[vals]}]); },
+    PI:()=>Math.PI, RAND:()=>Math.random(), RANDBETWEEN:a=>{ const lo=Math.ceil(num(ev(a[0]))), hi=Math.floor(num(ev(a[1]))); return lo+Math.floor(Math.random()*(hi-lo+1)); },
+    SIGN:a=>Math.sign(num(ev(a[0]))), TRUNC:a=>{ const n=num(ev(a[0])), f=Math.pow(10,a[1]?num(ev(a[1])):0); return Math.trunc(n*f)/f; },
+    CHOOSE:a=>{ const i=num(ev(a[0])); return a[i]?ev(a[i]):{e:'#VALUE!'}; },
+    ROWS:a=>arr2(ev(a[0])).length, COLUMNS:a=>arr2(ev(a[0]))[0].length,
+    ROW:a=>a[0]&&a[0].k==='r'?parseRef(a[0].v.split(':')[0]).r+1:{e:'#VALUE!'}, COLUMN:a=>a[0]&&a[0].k==='r'?parseRef(a[0].v.split(':')[0]).c+1:{e:'#VALUE!'},
   };
-  const AL={SUMA:'SUM',PROMEDIO:'AVERAGE',CONTAR:'COUNT',CONTARA:'COUNTA','CONTAR.BLANCO':'COUNTBLANK','CONTAR.SI':'COUNTIF','SUMAR.SI':'SUMIF',SI:'IF','SI.ERROR':'IFERROR',Y:'AND',O:'OR',NO:'NOT',REDONDEAR:'ROUND','REDONDEAR.MAS':'ROUNDUP','REDONDEAR.MENOS':'ROUNDDOWN',ENTERO:'INT',RESIDUO:'MOD',CONCATENAR:'CONCAT',CONCATENATE:'CONCAT','_XLFN.CONCAT':'CONCAT',HOY:'TODAY',AHORA:'NOW',FECHA:'DATE',DIA:'DAY',MES:'MONTH','AÑO':'YEAR',DIASEM:'WEEKDAY',LARGO:'LEN',MAYUSC:'UPPER',MINUSC:'LOWER',ESPACIOS:'TRIM',IZQUIERDA:'LEFT',DERECHA:'RIGHT',ESBLANCO:'ISBLANK',BUSCARV:'VLOOKUP'};
+  const AL={SUMA:'SUM',PROMEDIO:'AVERAGE',CONTAR:'COUNT',CONTARA:'COUNTA','CONTAR.BLANCO':'COUNTBLANK','CONTAR.SI':'COUNTIF','SUMAR.SI':'SUMIF',SI:'IF','SI.ERROR':'IFERROR',Y:'AND',O:'OR',NO:'NOT',REDONDEAR:'ROUND','REDONDEAR.MAS':'ROUNDUP','REDONDEAR.MENOS':'ROUNDDOWN',ENTERO:'INT',RESIDUO:'MOD',CONCATENAR:'CONCAT',CONCATENATE:'CONCAT','_XLFN.CONCAT':'CONCAT',HOY:'TODAY',AHORA:'NOW',FECHA:'DATE',DIA:'DAY',MES:'MONTH','AÑO':'YEAR',DIASEM:'WEEKDAY',LARGO:'LEN',MAYUSC:'UPPER',MINUSC:'LOWER',ESPACIOS:'TRIM',IZQUIERDA:'LEFT',DERECHA:'RIGHT',ESBLANCO:'ISBLANK',BUSCARV:'VLOOKUP','DÍA':'DAY',
+    BUSCARX:'XLOOKUP',COINCIDIR:'MATCH',INDICE:'INDEX','ÍNDICE':'INDEX',BUSCARH:'HLOOKUP',FILTRAR:'FILTER',UNICOS:'UNIQUE','ÚNICOS':'UNIQUE',ORDENAR:'SORT',SECUENCIA:'SEQUENCE',TRANSPONER:'TRANSPOSE',TEXTO:'TEXT',SUMAPRODUCTO:'SUMPRODUCT',
+    'SUMAR.SI.CONJUNTO':'SUMIFS','CONTAR.SI.CONJUNTO':'COUNTIFS','PROMEDIO.SI':'AVERAGEIF','PROMEDIO.SI.CONJUNTO':'AVERAGEIFS','MAX.SI.CONJUNTO':'MAXIFS','MIN.SI.CONJUNTO':'MINIFS','SI.CONJUNTO':'IFS',CAMBIAR:'SWITCH',
+    EXTRAE:'MID',ENCONTRAR:'FIND',HALLAR:'SEARCH',SUSTITUIR:'SUBSTITUTE',REEMPLAZAR:'REPLACE',UNIRCADENAS:'TEXTJOIN',VALOR:'VALUE',NOMPROPIO:'PROPER',REPETIR:'REPT',IGUAL:'EXACT',ESNUMERO:'ISNUMBER','ESNÚMERO':'ISNUMBER',ESTEXTO:'ISTEXT',ESERROR:'ISERROR',ESNOD:'ISNA','SI.ND':'IFNA',NOD:'NA',
+    'FIN.MES':'EOMONTH','FECHA.MES':'EDATE','DIAS.LAB':'NETWORKDAYS','DÍAS.LAB':'NETWORKDAYS','DIA.LAB':'WORKDAY','DÍA.LAB':'WORKDAY',SIFECHA:'DATEDIF',DIAS:'DAYS','DÍAS':'DAYS',HORA:'HOUR',MINUTO:'MINUTE',SEGUNDO:'SECOND','NUM.DE.SEMANA':'WEEKNUM','ISO.NUM.DE.SEMANA':'ISOWEEKNUM',
+    POTENCIA:'POWER',RAIZ:'SQRT','RAÍZ':'SQRT','MULTIPLO.SUPERIOR':'CEILING','MÚLTIPLO.SUPERIOR':'CEILING','MULTIPLO.INFERIOR':'FLOOR','MÚLTIPLO.INFERIOR':'FLOOR','CEILING.MATH':'CEILING','FLOOR.MATH':'FLOOR',MEDIANA:'MEDIAN','K.ESIMO.MAYOR':'LARGE','K.ESIMO.MENOR':'SMALL',
+    JERARQUIA:'RANK','JERARQUIA.EQV':'RANK','JERARQUÍA':'RANK','JERARQUÍA.EQV':'RANK','RANK.EQ':'RANK',SUBTOTALES:'SUBTOTAL',ALEATORIO:'RAND','ALEATORIO.ENTRE':'RANDBETWEEN',SIGNO:'SIGN',TRUNCAR:'TRUNC',ELEGIR:'CHOOSE',FILAS:'ROWS',COLUMNAS:'COLUMNS',FILA:'ROW',COLUMNA:'COLUMN'};
   function ev(n){ switch(n.k){
     case 'l': return n.v;
     case 'r': if(n.v.includes(':')) return rng(n.v); { const A=parseRef(n.v); return A?cellVal(A.r,A.c):{e:'#REF!'}; }
     case 'neg': { const x=num(ev(n.x)); return isE(x)?x:-x; }
     case 'pct': { const x=num(ev(n.x)); return isE(x)?x:x/100; }
     case 'b': return bin(n.o,ev(n.l),ev(n.r));
-    case 'f': { const f=F[AL[n.n]||n.n]; if(!f) return {e:'#NAME?'}; return f(n.a); } } }
-  return {val:cellVal};
+    case 'f': { const nm=n.n.replace(/^_XLFN\.(_XLWS\.)?/,''); const f=F[AL[nm]||AL[n.n]||nm]; if(!f) return {e:'#NAME?'}; return f(n.a); } } }
+  return {val:cellVal,sp:k=>{ prep(); return spill.has(k)?spill.get(k):undefined; }};
 }
 const DOW=['dom','lun','mar','mié','jue','vie','sáb'], DOWL=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'], MON=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const isDateFmt=nf=>{ if(!nf) return false; const p=nf.replace(/\[[^\]]*\]/g,'').replace(/"[^"]*"/g,'').replace(/\\./g,''); return /[dmyhs]/i.test(p)&&!/^[#0.,%\s]*$/.test(p); };
@@ -1548,9 +1658,10 @@ function rSheets(){
     <span class="tb" title="Formato de número"><select id="tnf">${NFS.map(([k,l])=>`<option value="${k}">${l}</option>`).join('')}<option value="__c" hidden>Personalizado</option></select></span>
     <span class="sep"></span>
     <span class="tb" title="Filas y columnas"><select id="trc"><option value="">Filas / columnas</option><option value="ra">Insertar fila arriba</option><option value="rb">Insertar fila abajo</option><option value="rd">Eliminar fila(s)</option><option value="ca">Insertar columna a la izquierda</option><option value="cb">Insertar columna a la derecha</option><option value="cd">Eliminar columna(s)</option></select></span>
-    <button class="tb txt" id="tcf" title="Formato condicional">Condicional</button><button class="tb txt" id="tclr" title="Borrar formato">Borrar formato</button>
+    <button class="tb txt" id="tcf" title="Formato condicional">Condicional</button><button class="tb txt" id="tdv" title="Validación de datos: lista desplegable">Lista</button><button class="tb txt" id="taf" title="Filtro y ordenar (Ctrl+Mayús+L)">Filtro</button><button class="tb txt" id="ttb" title="Dar formato como tabla (Ctrl+T)">Tabla</button>
+    <span class="tb" title="Inmovilizar filas o columnas"><select id="tfz"><option value="">Inmovilizar</option><option value="cell">Inmovilizar paneles (celda activa)</option><option value="row">Inmovilizar fila superior</option><option value="col">Inmovilizar primera columna</option><option value="none">Movilizar paneles</option></select></span><button class="tb txt" id="tclr" title="Borrar formato">Borrar formato</button>
     <span class="sep"></span>
-    <button class="tb" id="timg" title="Insertar imagen · también puedes pegarla con Ctrl+V">${I('cam')}</button><input type="file" id="timgf" accept="image/*" multiple hidden>
+    <button class="tb" id="timg" title="Insertar imagen · también puedes pegarla con Ctrl+V">${I('cam')}</button><input type="file" id="timgf" accept="image/*" multiple hidden><button class="tb txt" id="tch" title="Insertar gráfico con los datos seleccionados">Gráfico</button><button class="tb" id="tfind" title="Buscar y reemplazar (Ctrl+F · Ctrl+H)">${I('search')}</button>
     <span class="sep"></span>
     <button class="tb" id="tundo" title="Deshacer (Ctrl+Z)">↶</button><button class="tb" id="tredo" title="Rehacer (Ctrl+Y)">↷</button>
     <button class="tb" data-z="-1" title="Alejar">−</button><span class="tb txt" style="min-width:42px">${Math.round(zoom()*100)}%</span><button class="tb" data-z="1" title="Acercar">+</button>
@@ -1561,7 +1672,7 @@ function rSheets(){
 `;
   const w=$('#shw'); S.sh.pendTop=null; if(old){ w.scrollTop=old[0]; w.scrollLeft=old[1]; }
   drawSel(!old); if((hadFocus||S.sh.wantFocus)&&!isMobile()) w.focus({preventScroll:true}); S.sh.wantFocus=false;
-  bindSheet(sh); drawShPics(sh);
+  setHH(); bindSheet(sh); drawShPics(sh); drawSel(false);
   $('#timg').onclick=()=>$('#timgf').click(); $('#timgf').onchange=e=>{ insertPics([...e.target.files]); e.target.value=''; };
 }
 /* ---- imágenes flotantes en las chuletas (como en Excel) ---- */
@@ -1571,27 +1682,28 @@ function picPos(d,p,z){ let x=40, y=S.sh.hh||22; for(let c=0;c<p.c;c++) x+=shW(d
 function picAnchor(d,l,t,z){ let x=40,c=0; while(c<2000){ const w=shW(d,c,z); if(x+w>l) break; x+=w; c++; } let y=S.sh.hh||22,r=0; while(r<20000){ const h=shH(d,r,z); if(y+h>t) break; y+=h; r++; } return {r,c,x:Math.max(0,Math.round((l-x)/z)),y:Math.max(0,Math.round((t-y)/z))}; }
 function drawShPics(sh){ const w=$('#shw'); if(!w||!sh) return; let L=$('#shpics'); const d=sh.data, z=zoom(); S.sh.hh=$('#sht thead')?.offsetHeight||22;
   if(!L){ L=document.createElement('div'); L.id='shpics'; w.appendChild(L); bindShPics(L); }
-  if(SHP.sel&&!(d.pics||[]).some(p=>p.id===SHP.sel)) SHP.sel=null;
-  L.innerHTML=(d.pics||[]).map(p=>{ const q=picPos(d,p,z); return `<div class="shp ${SHP.sel===p.id?'on':''}" data-pic="${p.id}" style="left:${q.l}px;top:${q.t}px;width:${q.w}px;height:${q.h}px"><img data-src="${esc(p.path)}" alt="" draggable="false"><i class="h" data-h="1" title="Cambiar tamaño (Mayús: libre)"></i><button class="x" data-px title="Eliminar imagen">×</button></div>`; }).join('');
+  if(SHP.sel&&!(d.pics||[]).some(p=>p.id===SHP.sel)&&!(d.ch||[]).some(p=>p.id===SHP.sel)) SHP.sel=null;
+  L.innerHTML=(d.pics||[]).map(p=>{ const q=picPos(d,p,z); return `<div class="shp ${SHP.sel===p.id?'on':''}" data-pic="${p.id}" style="left:${q.l}px;top:${q.t}px;width:${q.w}px;height:${q.h}px"><img data-src="${esc(p.path)}" alt="" draggable="false"><i class="h" data-h="1" title="Cambiar tamaño (Mayús: libre)"></i><button class="x" data-px title="Eliminar imagen">×</button></div>`; }).join('')
+    +(d.ch||[]).map(ch=>{ const q=picPos(d,ch,z); return `<div class="shp shc ${SHP.sel===ch.id?'on':''}" data-pic="${ch.id}" data-chart="1" style="left:${q.l}px;top:${q.t}px;width:${q.w}px;height:${q.h}px" title="Doble clic para editar">${chartSVG(d,ch,Math.round(q.w),Math.round(q.h))}<i class="h" data-h="1" title="Cambiar tamaño"></i><button class="x" data-px title="Eliminar gráfico">×</button></div>`; }).join('');
   $$('[data-src]',L).forEach(async el=>{ const u=await mediaSrc(el.dataset.src); if(u) el.src=u; }); }
 function bindShPics(L){
   L.addEventListener('pointerdown',e=>{ const el=e.target.closest('.shp'); if(!el) return; e.stopPropagation(); e.preventDefault(); if(S.editor) endEdit(true);
     const id=el.dataset.pic; if(e.target.closest('[data-px]')) return delPic(id);
     const was=SHP.sel===id; SHP.sel=id; $$('.shp',L).forEach(x=>x.classList.toggle('on',x===el));
-    const sh=curSheet(), d=sh.data, z=zoom(), p=(d.pics||[]).find(x=>x.id===id); if(!p) return; const q=picPos(d,p,z), x0=e.clientX, y0=e.clientY, rs=!!e.target.closest('[data-h]'), ratio=q.w/q.h; let nl=q.l,nt=q.t,nw=q.w,nh=q.h,moved=false;
+    const sh=curSheet(), d=sh.data, z=zoom(), arr=(d.pics||[]).some(x=>x.id===id)?'pics':'ch', p=(d[arr]||[]).find(x=>x.id===id); if(!p) return; const q=picPos(d,p,z), x0=e.clientX, y0=e.clientY, rs=!!e.target.closest('[data-h]'), ratio=q.w/q.h; let nl=q.l,nt=q.t,nw=q.w,nh=q.h,moved=false;
     try{ el.setPointerCapture(e.pointerId); }catch(_){}
     const mv=ev=>{ const dx=ev.clientX-x0, dy=ev.clientY-y0; if(Math.abs(dx)+Math.abs(dy)>3) moved=true; if(!moved) return;
-      if(rs){ nw=Math.max(24,q.w+dx); nh=ev.shiftKey?Math.max(24,q.h+dy):nw/ratio; } else { nl=Math.max(40,q.l+dx); nt=Math.max(S.sh.hh,q.t+dy); }
+      if(rs){ nw=Math.max(arr==='ch'?160:24,q.w+dx); nh=(ev.shiftKey||arr==='ch')?Math.max(arr==='ch'?100:24,q.h+dy):nw/ratio; } else { nl=Math.max(40,q.l+dx); nt=Math.max(S.sh.hh,q.t+dy); }
       el.style.left=nl+'px'; el.style.top=nt+'px'; el.style.width=nw+'px'; el.style.height=nh+'px'; };
     const up=()=>{ el.removeEventListener('pointermove',mv); el.removeEventListener('pointerup',up); el.removeEventListener('pointercancel',up);
-      if(!moved){ if(was&&isMobile()) viewPic(id); return; }
-      const a=picAnchor(d,nl,nt,z); shMut(dd=>{ const pp=(dd.pics||[]).find(x=>x.id===id); if(!pp) return false; Object.assign(pp,a,{w:Math.round(nw/z),h:Math.round(nh/z)}); }); };
+      if(!moved){ if(was&&isMobile()) (arr==='ch'?openChart:viewPic)(id); return; }
+      const a=picAnchor(d,nl,nt,z); shMut(dd=>{ const pp=(dd[arr]||[]).find(x=>x.id===id); if(!pp) return false; Object.assign(pp,a,{w:Math.round(nw/z),h:Math.round(nh/z)}); }); };
     el.addEventListener('pointermove',mv); el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up); });
-  L.addEventListener('dblclick',e=>{ const el=e.target.closest('.shp'); if(el) viewPic(el.dataset.pic); });
+  L.addEventListener('dblclick',e=>{ const el=e.target.closest('.shp'); if(el) (el.dataset.chart?openChart:viewPic)(el.dataset.pic); });
 }
 document.addEventListener('pointerdown',e=>{ if(SHP.sel&&!e.target.closest('.shp')){ SHP.sel=null; $$('.shp.on').forEach(x=>x.classList.remove('on')); } },true);
 document.addEventListener('keydown',e=>{ if(!SHP.sel||!S.view.startsWith('sheet:')||S.modal||S.editor) return; if(e.key==='Delete'||e.key==='Backspace'){ e.preventDefault(); e.stopImmediatePropagation(); delPic(SHP.sel); } else if(e.key==='Escape'){ SHP.sel=null; $$('.shp.on').forEach(x=>x.classList.remove('on')); } },true);
-function delPic(id){ SHP.sel=null; shMut(d=>{ const n=(d.pics||[]).length; d.pics=(d.pics||[]).filter(p=>p.id!==id); if(d.pics.length===n) return false; }); }
+function delPic(id){ SHP.sel=null; shMut(d=>{ const n=(d.pics||[]).length+(d.ch||[]).length; d.pics=(d.pics||[]).filter(p=>p.id!==id); if(d.ch) d.ch=d.ch.filter(p=>p.id!==id); if(d.pics.length+(d.ch||[]).length===n) return false; }); }
 async function viewPic(id){ const p=(curSheet()?.data.pics||[]).find(x=>x.id===id); if(!p) return; const u=await mediaSrc(p.path);
   modal(`<div class="acts top"><span style="flex:1"></span><button class="btn" data-close>Cerrar</button></div><img src="${u||''}" alt="" style="display:block;max-width:100%;max-height:78vh;margin:0 auto;border-radius:8px">`,'wide'); }
 async function insertPics(files){ files=files.filter(f=>f&&f.type&&f.type.startsWith('image/')); if(!files.length) return; const a=S.sh.a||{r:0,c:0}; let k=0;
@@ -1603,14 +1715,17 @@ const SH_ROWS=1000, SH_COLS=100, SH_BUF=25;
 const _mc=document.createElement('canvas').getContext('2d');
 function txtW(t,st,z){ _mc.font=`${st.i?'italic ':''}${st.b?'700 ':''}${((st.fs||11)*96/72*z).toFixed(1)}px Calibri, Carlito, "Segoe UI", Arial, sans-serif`; let m=0; for(const l of String(t).split('\n')) m=Math.max(m,_mc.measureText(l).width); return m; }
 function rowAtY(Y,y){ let lo=0,hi=Y.length-2; while(lo<hi){ const m=(lo+hi+1)>>1; if(Y[m]<=y) lo=m; else hi=m-1; } return lo; }
-function reTable(){ const sh=curSheet(), t=$('#sht'); if(!sh||!t) return; t.outerHTML=sheetTable(sh,true); drawSel(false); }
+function setHH(){ const t=$('#sht'), th=$('#sht thead'); if(t&&th) t.style.setProperty('--hh',th.offsetHeight+'px'); }
+function reTable(){ const sh=curSheet(), t=$('#sht'); if(!sh||!t) return; t.outerHTML=sheetTable(sh,true); setHH(); drawSel(false); }
 function sheetTable(sh,tableOnly){
   const d=sh.data, z=zoom(), {anchor,cov}=mergeMap(d), E=makeEval(d);
   let mr=0,mc=0; for(const k in d.cells){ const i=k.indexOf(','), r=+k.slice(0,i), c=+k.slice(i+1); if(r>mr) mr=r; if(c>mc) mc=c; }
   for(const m of d.mg||[]){ mr=Math.max(mr,m[2]); mc=Math.max(mc,m[3]); }
   for(const pc of d.pics||[]){ mr=Math.max(mr,pc.r+8); mc=Math.max(mc,pc.c+4); }
+  for(const pc of d.ch||[]){ mr=Math.max(mr,pc.r+16); mc=Math.max(mc,pc.c+8); }
   const NR=Math.max(d.nr||0,mr+101,SH_ROWS), NC=Math.max(d.nc||0,mc+11,SH_COLS); S.sh.NR=NR; S.sh.NC=NC;
-  const W=c=>Math.round((d.cw[c]??d.dw??64)*z), H=r=>Math.round((d.rh[r]??d.dh??20)*z);
+  const HID=afHidden(d,E); S.sh.hid=HID; const afg=d.af?afRange(d):null, afOn=!!(d.af&&d.af.f&&Object.keys(d.af.f).length);
+  const W=c=>Math.round((d.cw[c]??d.dw??64)*z), H=r=>HID.has(r)?0:Math.round((d.rh[r]??d.dh??20)*z);
   const X=[0],Y=[0]; for(let c=0;c<NC;c++) X.push(X[c]+W(c)); for(let r=0;r<NR;r++) Y.push(Y[r]+H(r)); S.sh.X=X; S.sh.Y=Y;
   // solo se pintan las filas visibles (+ margen): así la hoja puede ser enorme sin ir lenta
   const wEl=$('#shw'), top=Math.max(0,(S.sh.pendTop!=null?S.sh.pendTop:wEl?wEl.scrollTop:0)-(S.sh.hh||22)), vh=wEl?wEl.clientHeight:innerHeight;
@@ -1618,35 +1733,44 @@ function sheetTable(sh,tableOnly){
   if(S.sh.a&&S.sh.forceA){ const ar=S.sh.a.r; if(ar<r0) r0=Math.max(0,ar-5); if(ar>r1) r1=Math.min(NR-1,ar+5); S.sh.forceA=false; }
   for(let k=0;k<3;k++) for(const m of d.mg||[]){ if(m[0]<r0&&m[2]>=r0) r0=m[0]; if(m[0]<=r1&&m[2]>r1) r1=m[2]; }
   S.sh.win=[r0,r1];
-  const cf=d.cf||[]; let tw=40; for(let c=0;c<NC;c++) tw+=W(c);
+  const cf=d.cf||[], cm=d.cm||{}, fz=d.fz||{r:0,c:0}; let tw=40; for(let c=0;c<NC;c++) tw+=W(c);
+  const fzCss=(r,c)=>{ let s='', z=0; if(r<fz.r){ s+=`top:calc(var(--hh,23px) + ${Y[r]}px);`; z++; } if(c<fz.c){ s+=`left:${40+X[c]}px;`; z++; } return s?`position:sticky;z-index:${z};`+s:''; };
+  const fzCls=(r,c)=>{ const a=[]; if(r<fz.r||c<fz.c) a.push('fzc'); if(fz.r&&r===fz.r-1) a.push('fzb'); if(fz.c&&c===fz.c-1) a.push('fzr'); return a; };
   let h=`<table class="sh" id="sht" style="width:${tw}px;font-size:${(11*96/72*z).toFixed(1)}px"><colgroup><col style="width:40px">${Array.from({length:NC},(_,c)=>`<col style="width:${W(c)}px">`).join('')}</colgroup>
-   <thead><tr><th class="corner"></th>${Array.from({length:NC},(_,c)=>`<th data-hc="${c}">${colName(c)}<i class="rz" data-rzc="${c}"></i></th>`).join('')}</tr></thead><tbody>`;
-  if(r0>0) h+=`<tr class="vsp" style="height:${Y[r0]}px"><th></th><td colspan="${NC}"></td></tr>`;
-  for(let r=r0;r<=r1;r++){
-    h+=`<tr style="height:${H(r)}px"><th data-hr="${r}">${r+1}<i class="rzr" data-rzr="${r}"></i></th>`;
+   <thead><tr><th class="corner"></th>${Array.from({length:NC},(_,c)=>`<th data-hc="${c}"${c<fz.c?` style="left:${40+X[c]}px;z-index:4"`:''}${fz.c&&c===fz.c-1?' class="fzr"':''}>${colName(c)}<i class="rz" data-rzc="${c}"></i></th>`).join('')}</tr></thead><tbody>`;
+  const fr=Math.min(fz.r,NR), rs0=Math.max(r0,fr), RR=[]; for(let r=0;r<fr;r++) RR.push(r); for(let r=rs0;r<=r1;r++) RR.push(r);
+  if(!fr&&r0>0) h+=`<tr class="vsp" style="height:${Y[r0]}px"><th></th><td colspan="${NC}"></td></tr>`;
+  for(const r of RR){
+    if(fr&&r===rs0&&Y[r]>Y[fr]) h+=`<tr class="vsp" style="height:${Y[r]-Y[fr]}px"><th></th><td colspan="${NC}"></td></tr>`;
+    if(HID.has(r)){ h+=`<tr style="display:none"></tr>`; continue; }
+    const flt=afOn&&r>afg[0]&&r<=afg[2];
+    h+=`<tr style="height:${H(r)}px"><th data-hr="${r}"${flt?' data-flt="1"':''}${r<fz.r?` style="top:calc(var(--hh,23px) + ${Y[r]}px);z-index:3"`:''}${fz.r&&r===fz.r-1?' class="fzb"':''}>${r+1}<i class="rzr" data-rzr="${r}"></i></th>`;
     for(let c=0;c<NC;c++){
       const k=r+','+c; if(cov.has(k)) continue;
       const cell=d.cells[k], m=anchor.get(k);
-      if(!cell&&!m){ h+=`<td data-r="${r}" data-c="${c}"></td>`; continue; }
-      let st=styleOf(d,cell);
+      const fc=fzCls(r,c); if(cm[k]) fc.push('hc'); const spv=cell?undefined:E.sp(k), tbl=tbAt(d,r,c);
+      const afb=afg&&r===afg[0]&&c>=afg[1]&&c<=afg[3]?`<i class="afb${d.af.f&&d.af.f[c-afg[1]]?' on':''}" data-afc="${c}" title="Filtrar / ordenar">${d.af.f&&d.af.f[c-afg[1]]?'⏷':'▾'}</i>`:''; if(afb) fc.push('afh');
+      if(!cell&&!m&&spv===undefined&&!tbl){ h+=fc.length?`<td data-r="${r}" data-c="${c}" class="${fc.join(' ')}" style="${fzCss(r,c)}">${afb}</td>`:`<td data-r="${r}" data-c="${c}"></td>`; continue; }
+      let st=styleOf(d,cell); if(tbl) st={...tbFmt(tbl,r,r-tbl.rg[0]),...st};
       if(m){ const tr=styleOf(d,d.cells[m[0]+','+m[3]]), bl=styleOf(d,d.cells[m[2]+','+m[1]]); if((tr.br&&!st.br)||(bl.bb&&!st.bb)) st={...st,br:st.br||tr.br,bb:st.bb||bl.bb}; }
-      const val=cell&&cell.v!=null?E.val(r,c):null;
+      const val=cell&&cell.v!=null?E.val(r,c):(spv!==undefined?spv:null);
       let cfs=null; for(const ru of cf){ const g=ru.rg; if(r>=g[0]&&r<=g[2]&&c>=g[1]&&c<=g[3]&&cfMatch(ru,val)) cfs={...(cfs||{}),...ru.fmt}; }
       const txt=fmtVal(val,st.nf), isNum=typeof val==='number', err=isE(val);
       let css=cssOf(st,z,cfs); if(!st.ha&&(isNum||err)) css+='text-align:right;'; if(!st.ha&&typeof val==='boolean') css+='text-align:center;';
-      const cls=[]; if(st.bg||(cfs&&cfs.bg)) cls.push('nb'); if(st.wr) cls.push('wr'); if(err) cls.push('err');
+      const cls=[...fc]; css+=fzCss(r,c); if(st.bg||(cfs&&cfs.bg)) cls.push('nb'); if(st.wr) cls.push('wr'); if(err) cls.push('err');
       let inner=esc(txt);
       if(txt&&!st.wr&&typeof val==='string'&&(!st.ha||st.ha==='left')&&!m){
-        let w=W(c), cc=c+1; while(cc<NC&&cc<c+30){ const kk=r+','+cc, nc=d.cells[kk]; if(cov.has(kk)||anchor.has(kk)||(nc&&nc.v!=null&&nc.v!=='')) break; w+=W(cc); cc++; }
+        let w=W(c), cc=c+1; while(cc<NC&&cc<c+30){ const kk=r+','+cc, nc=d.cells[kk]; if(cov.has(kk)||anchor.has(kk)||(nc&&nc.v!=null&&nc.v!=='')||E.sp(kk)!=null) break; w+=W(cc); cc++; }
         if(cc>c+1&&txtW(txt,st,z)>W(c)-6){ cls.push('ovf'); inner=`<div class="ov" style="width:${Math.min(w-7,Math.ceil(txtW(txt,st,z))+4)}px">${inner}</div>`; } }
       if(st.wr||m){ let hh=H(r); if(m){ hh=0; for(let i=m[0];i<=m[2];i++) hh+=H(i); } inner=`<div class="cl" style="max-height:${hh-1}px">${inner}</div>`; }
+      if(afb) inner=`<div class="afi">${inner}</div>`+afb;
       h+=`<td data-r="${r}" data-c="${c}"${m?` rowspan="${m[2]-m[0]+1}" colspan="${m[3]-m[1]+1}"`:''}${cls.length?` class="${cls.join(' ')}"`:''}${css?` style="${css}"`:''}>${inner}</td>`;
     }
     h+='</tr>';
   }
   if(r1<NR-1) h+=`<tr class="vsp" style="height:${Y[NR]-Y[r1+1]}px"><th></th><td colspan="${NC}"></td></tr>`;
   if(tableOnly) return h+'</tbody></table>';
-  return h+`</tbody></table><div class="selbox" id="selbox"></div><div class="actbox" id="actbox"></div><div class="copybox" id="copybox" style="display:none"></div><div class="mvbox" id="mvbox" style="display:none"></div><div class="fillh" id="fillh"></div>`;
+  return h+`</tbody></table><div class="selbox" id="selbox"></div><div class="actbox" id="actbox"></div><div class="copybox" id="copybox" style="display:none"></div><div class="mvbox" id="mvbox" style="display:none"></div><div class="fillh" id="fillh"></div><div class="dvbtn" id="dvbtn" title="Elegir de la lista (Alt+↓)">▾</div>`;
 }
 function tdAt(r,c){ const sh=curSheet(); if(!sh) return null; const m=(sh.data.mg||[]).find(m=>r>=m[0]&&r<=m[2]&&c>=m[1]&&c<=m[3]); if(m){ r=m[0]; c=m[1]; } return $(`#sht td[data-r="${r}"][data-c="${c}"]`); }
 function rectOf(r1,c1,r2,c2){ const a=tdAt(r1,c1), b=tdAt(r2,c2);
@@ -1665,7 +1789,8 @@ function drawSel(scroll){
   const shown=typeof raw==='number'?(isDateFmt(st.nf)?fmtVal(raw,st.nf):String(raw).replace('.',',')):raw===true?'VERDADERO':raw===false?'FALSO':String(raw);
   $('#sfx').innerHTML='<i>fx</i>'+esc(shown.replace(/\n/g,'  ⏎  ')); $('#sfx').title=shown;
   const url=typeof raw==='string'&&/^https?:\/\/\S+$/i.test(raw.trim())?raw.trim():null; const g=$('#sgo'); g.style.display=url?'':'none'; if(url) g.href=url;
-  if(scroll){ const w=$('#shw'), hh=24, hw=40; if(A.t-hh<w.scrollTop) w.scrollTop=A.t-hh; else if(A.t+A.h>w.scrollTop+w.clientHeight) w.scrollTop=A.t+A.h-w.clientHeight+4;
+  dvBtn(); if(isMobile()){ const ctd=(d.cm||{})[a.r+','+a.c]?tdAt(a.r,a.c):null; cmTip(ctd,!!ctd); }
+  if(scroll){ const w=$('#shw'), fz=d.fz||{r:0,c:0}, hh=24+(a.r>=fz.r&&S.sh.Y?S.sh.Y[fz.r]:0), hw=40+(a.c>=fz.c&&S.sh.X?S.sh.X[fz.c]:0); if(A.t-hh<w.scrollTop) w.scrollTop=A.t-hh; else if(A.t+A.h>w.scrollTop+w.clientHeight) w.scrollTop=A.t+A.h-w.clientHeight+4;
     if(A.l-hw<w.scrollLeft) w.scrollLeft=A.l-hw; else if(A.l+A.w>w.scrollLeft+w.clientWidth) w.scrollLeft=A.l+A.w-w.clientWidth+4; }
   updToolbar();
 }
@@ -1679,7 +1804,7 @@ function shMoveTo(r,c,extend){ const d=curSheet().data; r=Math.max(0,Math.min(S.
   if(extend) S.sh.f={r,c}; else { S.sh.a={r,c}; S.sh.f={r,c}; } drawSel(true); }
 function shStep(dr,dc,extend){ const d=curSheet().data; const base=extend?S.sh.f:S.sh.a; let {r,c}=base;
   if(!extend){ const m=(d.mg||[]).find(m=>m[0]===r&&m[1]===c); if(m){ if(dr>0) r=m[2]; if(dc>0) c=m[3]; } }
-  shMoveTo(r+dr,c+dc,extend); }
+  let nr=r+dr; const hid=S.sh.hid; if(dr&&hid&&hid.size){ while(hid.has(nr)&&nr>0&&nr<S.sh.NR-1) nr+=Math.sign(dr); } shMoveTo(nr,c+dc,extend); }
 function usedBounds(d){ let mr=0,mc=0; for(const k in d.cells){ if(d.cells[k].v==null) continue; const [r,c]=k.split(',').map(Number); if(r>mr) mr=r; if(c>mc) mc=c; } return {mr,mc}; }
 function shMut(fn){
   const sh=curSheet(); if(!sh) return; const before=JSON.stringify(sh.data); const d=JSON.parse(before);
@@ -1713,14 +1838,22 @@ function shiftAxis(d,ax,at,n){
   for(const pc of d.pics||[]){ const kk=ax==='r'?'r':'c'; if(n>0&&pc[kk]>=at) pc[kk]++; else if(n<0&&pc[kk]>at) pc[kk]--; }
   const fix=g=>{ const i0=ax==='r'?0:1, i1=ax==='r'?2:3; g=[...g]; if(n>0){ if(g[i0]>=at) g[i0]++; if(g[i1]>=at) g[i1]++; } else { if(g[i0]>at) g[i0]--; if(g[i1]>=at) g[i1]--; if(g[i1]<g[i0]) return null; } return g; };
   d.mg=(d.mg||[]).map(fix).filter(g=>g&&(g[0]!==g[2]||g[1]!==g[3])); d.cf=(d.cf||[]).map(r=>{ const g=fix(r.rg); return g?{...r,rg:g}:null; }).filter(Boolean);
+  d.dv=(d.dv||[]).map(x=>{ const g=fix(x.rg); return g?{...x,rg:g}:null; }).filter(Boolean);
+  if(d.tb) d.tb=d.tb.map(x=>{ const g=fix(x.rg); return g&&g[2]>g[0]?{...x,rg:g}:null; }).filter(Boolean);
+  if(d.af){ const g=fix(d.af.rg); if(g) d.af.rg=g; else delete d.af; }
+  for(const ch of d.ch||[]){ const kk=ax==='r'?'r':'c'; if(n>0&&ch[kk]>=at) ch[kk]++; else if(n<0&&ch[kk]>at) ch[kk]--; const g=fix(ch.rg); if(g) ch.rg=g; }
+  if(d.cm){ const o={}; for(const k in d.cm){ let [r,c]=k.split(',').map(Number); const x=ax==='r'?r:c; if(n<0&&x===at) continue; if(n>0&&x>=at){ ax==='r'?r++:c++; } else if(n<0&&x>at){ ax==='r'?r--:c--; } o[r+','+c]=d.cm[k]; } d.cm=o; }
+  if(d.fz&&at<d.fz[ax]) d.fz[ax]=Math.max(0,d.fz[ax]+(n>0?1:-1));
   if(ax==='r') d.nr=Math.max(1,(d.nr||0)+n); else d.nc=Math.max(1,(d.nc||0)+n);
 }
 function clearRange(fmtToo){ shMut(d=>{ eachCell(d,expandRange(d,selRange()),(r,c)=>{ const k=r+','+c, cell=d.cells[k]; if(!cell) return; if(fmtToo) delete cell.s; else { delete cell.v; delete cell.cv; } if(cell.v==null&&cell.s==null) delete d.cells[k]; }); }); }
 function shCommit(ed,txt){
+  { const sh=curSheet(); if(sh&&!dvCheck(sh.data,ed.r,ed.c,txt)){ toast('Valor no válido: elige uno de la lista (Alt+↓)'); return; } }
   shMut(d=>{ const k=ed.r+','+ed.c; const p=parseInput(txt); const cell=d.cells[k]||{}; const st=styleOf(d,cell);
     if(typeof cell.v==='number'&&isDateFmt(st.nf)&&p.nf&&p.v===cell.v) return false;
     if((cell.v??'')===(p.v??'')&&!p.nf) return false;
     if(p.v==null) delete cell.v; else cell.v=p.v; delete cell.cv;
+    if(p.v!=null) for(const t of d.tb||[]) if(!t.tot&&ed.r===t.rg[2]+1&&ed.c>=t.rg[1]&&ed.c<=t.rg[3]){ if(d.af&&d.af.rg[0]===t.rg[0]&&d.af.rg[1]===t.rg[1]) d.af.rg[2]=ed.r; t.rg=[t.rg[0],t.rg[1],ed.r,t.rg[3]]; }
     if(p.nf&&!st.nf){ const s=sidOf(d,{...st,nf:p.nf}); if(s!=null) cell.s=s; }
     if(cell.v==null&&cell.s==null) delete d.cells[k]; else d.cells[k]=cell; });
 }
@@ -1743,6 +1876,8 @@ function shStartEdit(initial){
 function bindSheet(sh){
   const w=$('#shw');
   w.addEventListener('mousedown',e=>{
+    if(e.target.closest('#dvbtn')){ e.preventDefault(); e.stopPropagation(); if(S.editor) endEdit(true); return dvOpen(); }
+    const afb=e.target.closest('[data-afc]'); if(afb){ e.preventDefault(); e.stopPropagation(); if(S.editor) endEdit(true); return afMenu(+afb.dataset.afc,afb); }
     const rz=e.target.closest('[data-rzc],[data-rzr]'); if(rz){ e.preventDefault(); if(e.detail>=2) return autoFit(rz); return startResize(e,rz); }
     if(e.button!==0) return;
     if(e.target.id==='fillh'){ e.preventDefault(); if(S.editor) endEdit(true); return shDragFill(e); }
@@ -1762,6 +1897,7 @@ function bindSheet(sh){
     else if(S.drag.mode==='col'){ const th=e.target.closest('th[data-hc]'); if(th){ S.sh.f={r:S.sh.NR-1,c:+th.dataset.hc}; drawSel(false); } }
     else if(S.drag.mode==='row'){ const th=e.target.closest('th[data-hr]'); if(th){ S.sh.f={r:+th.dataset.hr,c:S.sh.NC-1}; drawSel(false); } } });
   w.addEventListener('dblclick',e=>{ if(e.target.closest('td[data-r]')) shStartEdit(); });
+  if(!isMobile()){ w.addEventListener('mouseover',e=>{ const td=e.target.closest('td.hc'); cmTip(td,!!td); }); w.addEventListener('mouseleave',()=>cmTip(null,false)); }
   w.addEventListener('keydown',sheetKey);
   w.addEventListener('contextmenu',e=>{ const td=e.target.closest('td[data-r]'), hc=e.target.closest('th[data-hc]'), hr=e.target.closest('th[data-hr]'); if(!td&&!hc&&!hr) return; e.preventDefault();
     const [r1,c1,r2,c2]=selRange();
@@ -1769,7 +1905,7 @@ function bindSheet(sh){
     if(hc){ const c=+hc.dataset.hc; if(!(c>=c1&&c<=c2&&r1===0&&r2===S.sh.NR-1)){ S.sh.a={r:0,c}; S.sh.f={r:S.sh.NR-1,c}; drawSel(false); } }
     if(hr){ const r=+hr.dataset.hr; if(!(r>=r1&&r<=r2&&c1===0&&c2===S.sh.NC-1)){ S.sh.a={r,c:0}; S.sh.f={r,c:S.sh.NC-1}; drawSel(false); } }
     shCtx(e.clientX,e.clientY,hc?'c':hr?'r':''); });
-  w.addEventListener('scroll',()=>{ if(S.sh.raf) return; S.sh.raf=requestAnimationFrame(()=>{ S.sh.raf=0; const Y=S.sh.Y, wn=S.sh.win; if(!Y||!wn) return; const top=Math.max(0,w.scrollTop-(S.sh.hh||22)), vt=rowAtY(Y,top), vb=rowAtY(Y,top+w.clientHeight);
+  w.addEventListener('scroll',()=>{ cmTip(null,false); if(S.sh.raf) return; S.sh.raf=requestAnimationFrame(()=>{ S.sh.raf=0; const Y=S.sh.Y, wn=S.sh.win; if(!Y||!wn) return; if(curSheet()?.data.fz) drawSel(false); const top=Math.max(0,w.scrollTop-(S.sh.hh||22)), vt=rowAtY(Y,top), vb=rowAtY(Y,top+w.clientHeight);
     if((wn[0]>0&&vt<wn[0]+6)||(wn[1]<S.sh.NR-1&&vb>wn[1]-6)){ if(S.editor) return; reTable(); } }); },{passive:true});
   $('#sfx').onclick=()=>shStartEdit();
   const tool=$('#shtool');
@@ -1780,10 +1916,11 @@ function bindSheet(sh){
     if(b.dataset.va) return applyStyle({va:b.dataset.va==='bottom'?null:b.dataset.va});
     if(b.dataset.pal) return openPal(b,b.dataset.pal);
     if(b.dataset.z){ const z=Math.max(.4,Math.min(2,Math.round((zoom()+(+b.dataset.z)*.1)*10)/10)); ls.set(ZK(),z); return render(); }
-    if(b.id==='tmerge') return toggleMerge(); if(b.id==='tcf') return openCF(); if(b.id==='tclr') return clearRange(true);
+    if(b.id==='tmerge') return toggleMerge(); if(b.id==='tcf') return openCF(); if(b.id==='tdv') return openDV(); if(b.id==='taf') return afToggle(); if(b.id==='ttb') return openTable(); if(b.id==='tch') return openChart(null); if(b.id==='tfind') return openFR(false); if(b.id==='tclr') return clearRange(true);
     if(b.id==='tundo') return shUndo(false); if(b.id==='tredo') return shUndo(true); if(b.id==='tedit') return shStartEdit(); };
   $('#tfs').onchange=e=>{ const n=+e.target.value; applyStyle({fs:n===11?null:n}); };
   $('#tnf').onchange=e=>{ if(e.target.value!=='__c') applyStyle({nf:e.target.value==='General'?null:e.target.value}); };
+  $('#tfz').onchange=e=>{ const v=e.target.value; e.target.value=''; if(v) setFreeze(v); };
   $('#tbd').onchange=e=>{ const v=e.target.value; e.target.value=''; if(v) setBorders(v); };
   $('#trc').onchange=e=>{ const v=e.target.value; e.target.value=''; if(!v) return; if(v.endsWith('d')) confirm2(v==='rd'?'Eliminar fila(s)':'Eliminar columna(s)','Se ajustan las fórmulas que apunten a ellas.',()=>rowsCols(v)); else rowsCols(v); };
 }
@@ -1815,6 +1952,7 @@ function shMoveRange(rg,dr,dc,copy){ const [r1,c1,r2,c2]=rg; shMut(d=>{ const sr
     d.mg=(d.mg||[]).filter(m=>m[2]<t1||m[0]>t2||m[3]<u1||m[1]>u2);
     for(const k in src){ const [r,c]=k.split(',').map(Number), cell=src[k]; if(copy&&typeof cell.v==='string'&&cell.v[0]==='='){ cell.v='='+moveRefs(cell.v.slice(1),dr,dc); delete cell.cv; } d.cells[(r+dr)+','+(c+dc)]=cell; }
     for(const m of mgs) d.mg.push([m[0]+dr,m[1]+dc,m[2]+dr,m[3]+dc]);
+    if(d.cm){ const mv={}; for(const k in d.cm){ const [r,c]=k.split(',').map(Number); if(r>=r1&&r<=r2&&c>=c1&&c<=c2){ mv[(r+dr)+','+(c+dc)]={...d.cm[k]}; if(!copy) delete d.cm[k]; } } Object.assign(d.cm,mv); }
     if(!copy){ const inS=(r,c)=>r>=r1&&r<=r2&&c>=c1&&c<=c2; for(const k in d.cells){ const cell=d.cells[k]; if(typeof cell.v!=='string'||cell.v[0]!=='=') continue; const nv='='+mapFormula(cell.v.slice(1),(dcf,cl,drf,rw)=>{ let c=colIdx(cl), r=rw-1; if(inS(r,c)){ r+=dr; c+=dc; } return dcf+colName(c)+drf+(r+1); }); if(nv!==cell.v){ cell.v=nv; delete cell.cv; } } }
     S.sh.a={r:S.sh.a.r+dr,c:S.sh.a.c+dc}; S.sh.f={r:S.sh.f.r+dr,c:S.sh.f.c+dc}; }); }
 function shDragFill(e){ const sh=curSheet(); const [r1,c1,r2,c2]=expandRange(sh.data,selRange()); let to=null;
@@ -1841,8 +1979,223 @@ function autoFit(h){ const sh=curSheet(), d=sh.data, z=zoom(); const isC=h.datas
   shMut(d=>{ if(!isC){ delete d.rh[i]; return; } const E=makeEval(d); let mx=0; for(const k in d.cells){ const [r,c]=k.split(',').map(Number); if(c!==i) continue; if((d.mg||[]).some(m=>m[0]<=r&&m[2]>=r&&m[1]<=c&&m[3]>=c&&m[3]>m[1])) continue; const cell=d.cells[k]; if(cell.v==null) continue; const st=styleOf(d,cell); let t; try{ t=fmtVal(E.val(r,c),st.nf); }catch(_){ t=String(cell.v); } const wpx=txtW(String(t).split('\n').reduce((a,b)=>a.length>b.length?a:b,''),st,1); if(wpx>mx) mx=wpx; }
     if(!mx) return false; d.cw[i]=Math.min(800,Math.ceil(mx+10)); }); }
 function shFillDir(dir){ const [r1,c1,r2,c2]=expandRange(curSheet().data,selRange()); if(dir==='d'){ if(r2>r1) shFill([r1,c1,r1,c2],[r1,c1,r2,c2],'copy'); else if(r1>0) shFill([r1-1,c1,r1-1,c2],[r1-1,c1,r1,c2],'copy'); } else { if(c2>c1) shFill([r1,c1,r2,c1],[r1,c1,r2,c2],'copy'); else if(c1>0) shFill([r1,c1-1,r2,c1-1],[r1,c1-1,r2,c1],'copy'); } }
+/* ---- validación de datos (listas desplegables) ---- */
+const inRg=(g,r,c)=>r>=g[0]&&r<=g[2]&&c>=g[1]&&c<=g[3];
+function dvAt(d,r,c){ const L=d.dv||[]; for(let i=L.length-1;i>=0;i--) if(inRg(L[i].rg,r,c)) return L[i]; return null; }
+function dvItems(d,rule){ if(rule.ref){ const g=parseRange(rule.ref); if(!g) return []; const E=makeEval(d), out=[]; for(let r=g[0];r<=g[2];r++) for(let c=g[1];c<=g[3];c++){ const cell=d.cells[r+','+c]; if(!cell||cell.v==null) continue; const t=fmtVal(E.val(r,c),styleOf(d,cell).nf); if(t!==''&&!out.includes(t)) out.push(t); } return out; } return rule.items||[]; }
+function dvCheck(d,r,c,txt){ const rule=dvAt(d,r,c); if(!rule||!rule.strict||txt==='') return true; const it=dvItems(d,rule), t=String(txt).trim().toLowerCase(); return it.some(x=>String(x).trim().toLowerCase()===t); }
+function dvBtn(){ const b=$('#dvbtn'), sh=curSheet(); if(!b||!sh) return; const a=S.sh.a, rule=dvAt(sh.data,a.r,a.c); if(!rule||S.editor){ b.style.display='none'; return; } const A=rectOf(a.r,a.c,a.r,a.c); if(!A){ b.style.display='none'; return; }
+  Object.assign(b.style,{display:'flex',left:A.l+A.w+1+'px',top:A.t+'px',height:Math.max(16,A.h)+'px'}); }
+function dvOpen(){ const sh=curSheet(); if(!sh) return; const d=sh.data, a=S.sh.a, rule=dvAt(d,a.r,a.c); if(!rule) return; const items=dvItems(d,rule); if(!items.length) return toast('La lista está vacía');
+  $('.shctx')?.remove(); const cur=d.cells[a.r+','+a.c]; const curT=cur&&cur.v!=null?fmtVal(makeEval(d).val(a.r,a.c),styleOf(d,cur).nf):'';
+  const m=document.createElement('div'); m.className='shctx dvm'; m.innerHTML=items.map((x,i)=>`<button data-dvi="${i}" class="${String(x)===curT?'on':''}">${esc(x)}</button>`).join(''); document.body.appendChild(m);
+  const td=tdAt(a.r,a.c), rc=td?td.getBoundingClientRect():{left:200,bottom:200,width:100}; m.style.minWidth=Math.max(120,rc.width+16)+'px'; m.style.left=Math.min(rc.left,innerWidth-m.offsetWidth-8)+'px'; m.style.top=(rc.bottom+m.offsetHeight>innerHeight-8?Math.max(8,rc.top-m.offsetHeight):rc.bottom)+'px';
+  let hi=Math.max(0,items.findIndex(x=>String(x)===curT)); const hl=()=>$$('button',m).forEach((b,i)=>b.classList.toggle('hl',i===hi)); hl(); $$('button',m)[hi]?.scrollIntoView({block:'nearest'});
+  const close=()=>{ m.remove(); document.removeEventListener('pointerdown',out,true); document.removeEventListener('keydown',key,true); $('#shw')?.focus({preventScroll:true}); };
+  const pick=i=>{ close(); const v=String(items[i]); shMut(dd=>{ const k=a.r+','+a.c, cell=dd.cells[k]||{}, p=parseInput(v); if(p.v==null) delete cell.v; else cell.v=p.v; delete cell.cv; if(p.nf&&!styleOf(dd,cell).nf){ const s=sidOf(dd,{...styleOf(dd,cell),nf:p.nf}); if(s!=null) cell.s=s; } dd.cells[k]=cell; }); };
+  const out=e=>{ if(!m.contains(e.target)) close(); }, key=e=>{ if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); close(); } else if(e.key==='ArrowDown'||e.key==='ArrowUp'){ e.preventDefault(); e.stopPropagation(); hi=Math.max(0,Math.min(items.length-1,hi+(e.key==='ArrowDown'?1:-1))); hl(); $$('button',m)[hi]?.scrollIntoView({block:'nearest'}); } else if(e.key==='Enter'){ e.preventDefault(); e.stopPropagation(); pick(hi); } };
+  setTimeout(()=>{ document.addEventListener('pointerdown',out,true); document.addEventListener('keydown',key,true); });
+  m.onclick=e=>{ const b=e.target.closest('[data-dvi]'); if(b) pick(+b.dataset.dvi); }; }
+function openDV(){ const sh=curSheet(), d=sh.data, g=expandRange(d,selRange()), cur=dvAt(d,g[0],g[1]);
+  modal(`<h2>Validación de datos</h2><p class="mut up" style="font-size:10.5px;margin:0">${esc(d.name)}</p>
+   ${(d.dv||[]).length?`<div class="cfl" style="margin-top:14px">${d.dv.map((r,i)=>`<div><span style="flex:1">${rangeTxt(r.rg)} · ${r.ref?'Rango '+esc(r.ref):esc((r.items||[]).slice(0,6).join(', '))+((r.items||[]).length>6?'…':'')}${r.strict?'':' · <i>solo aviso</i>'}</span><button class="ib sm" data-dvdel="${i}" title="Quitar">${I('trash')}</button></div>`).join('')}</div>`:''}
+   <h3 class="sec" style="margin-top:20px">${cur?'Cambiar':'Nueva'} lista desplegable</h3>
+   <label class="f">Aplicar a</label><input class="inp" id="dv_rg" value="${rangeTxt(g)}">
+   <div class="row" style="gap:16px;margin:12px 0 4px"><label class="row" style="font-size:12.5px"><input type="radio" name="dvs" value="l" ${cur&&cur.ref?'':'checked'}> Escribir los valores</label><label class="row" style="font-size:12.5px"><input type="radio" name="dvs" value="r" ${cur&&cur.ref?'checked':''}> Coger de un rango</label></div>
+   <textarea class="inp" id="dv_it" rows="5" placeholder="Uno por línea (o separados por ;)&#10;OK&#10;Pendiente&#10;KO">${esc((cur&&cur.items||[]).join('\n'))}</textarea>
+   <input class="inp" id="dv_ref" placeholder="p. ej. H1:H10" value="${esc(cur&&cur.ref||'')}" style="display:none">
+   <label class="row" style="font-size:12.5px;margin-top:12px"><input type="checkbox" id="dv_st" ${!cur||cur.strict?'checked':''}> No dejar escribir valores que no estén en la lista</label>
+   <div class="acts">${cur?'<button class="btn ghost" id="dv_rm">Quitar validación del rango</button>':''}<span style="flex:1"></span><button class="btn" data-close>Cancelar</button><button class="btn pri" id="dv_ok">Guardar</button></div>`);
+  const sw=()=>{ const r=$('[name=dvs]:checked').value==='r'; $('#dv_it').style.display=r?'none':''; $('#dv_ref').style.display=r?'':'none'; }; $$('[name=dvs]').forEach(x=>x.onchange=sw); sw();
+  $$('[data-dvdel]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.dvdel; closeModal(); shMut(dd=>{ dd.dv.splice(i,1); }); openDV(); });
+  const strip=(dd,rg)=>{ dd.dv=(dd.dv||[]).filter(x=>!(x.rg[0]>=rg[0]&&x.rg[2]<=rg[2]&&x.rg[1]>=rg[1]&&x.rg[3]<=rg[3])); };
+  $('#dv_rm')&&($('#dv_rm').onclick=()=>{ const rg=parseRange($('#dv_rg').value); if(!rg) return toast('Rango no válido'); closeModal(); shMut(dd=>{ const n=(dd.dv||[]).length; dd.dv=(dd.dv||[]).filter(x=>!(x.rg[0]<=rg[2]&&x.rg[2]>=rg[0]&&x.rg[1]<=rg[3]&&x.rg[3]>=rg[1])); if(dd.dv.length===n) return false; }); });
+  $('#dv_ok').onclick=()=>{ const rg=parseRange($('#dv_rg').value); if(!rg) return toast('Rango no válido'); const isR=$('[name=dvs]:checked').value==='r'; const rule={rg,strict:$('#dv_st').checked};
+    if(isR){ const ref=$('#dv_ref').value.trim().toUpperCase().replace(/^=/,'').replace(/\$/g,''); if(!parseRange(ref)) return toast('Rango de la lista no válido'); rule.ref=ref; }
+    else { const it=$('#dv_it').value.split(/\n|;/).map(x=>x.trim()).filter(Boolean); if(!it.length) return toast('Escribe al menos un valor'); rule.items=[...new Set(it)]; }
+    closeModal(); shMut(dd=>{ strip(dd,rg); (dd.dv ||= []).push(rule); }); toast('Lista desplegable creada · Alt+↓ para abrirla'); };
+}
+
+/* ---- inmovilizar paneles ---- */
+function setFreeze(kind){ shMut(d=>{ const a=S.sh.a; if(kind==='none'){ if(!d.fz) return false; delete d.fz; return; }
+  d.fz=kind==='row'?{r:1,c:0}:kind==='col'?{r:0,c:1}:{r:a.r,c:a.c}; if(!d.fz.r&&!d.fz.c) delete d.fz; }); }
+
+/* ---- comentarios ---- */
+function cmEdit(){ const sh=curSheet(); if(!sh) return; const a=S.sh.a, k=a.r+','+a.c, cur=(sh.data.cm||{})[k];
+  modal(`<h2>${cur?'Editar':'Nuevo'} comentario · ${addr(a.r,a.c)}</h2><textarea class="inp" id="cm_t" rows="5" style="margin-top:12px" placeholder="Escribe el comentario">${esc(cur?cur.t:'')}</textarea>
+   <div class="acts">${cur?'<button class="btn ghost" id="cm_del">Eliminar</button>':''}<span style="flex:1"></span><button class="btn" data-close>Cancelar</button><button class="btn pri" id="cm_ok">Guardar</button></div>`);
+  setTimeout(()=>$('#cm_t').focus(),30);
+  $('#cm_t').onkeydown=e=>{ if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){ e.preventDefault(); $('#cm_ok').click(); } };
+  $('#cm_ok').onclick=()=>{ const t=$('#cm_t').value.trim(); closeModal(); shMut(d=>{ d.cm ||= {}; if(!t){ if(!d.cm[k]) return false; delete d.cm[k]; } else d.cm[k]={t,at:new Date().toISOString()}; }); };
+  $('#cm_del')&&($('#cm_del').onclick=()=>{ closeModal(); cmDel(); }); }
+function cmDel(){ const a=S.sh.a, k=a.r+','+a.c; shMut(d=>{ if(!d.cm||!d.cm[k]) return false; delete d.cm[k]; }); }
+function cmTip(td,show){ let t=$('#cmtip'); if(!show){ if(t) t.style.display='none'; return; } const sh=curSheet(); if(!sh) return; const k=td.dataset.r+','+td.dataset.c, c=(sh.data.cm||{})[k]; if(!c) return;
+  if(!t){ t=document.createElement('div'); t.id='cmtip'; document.body.appendChild(t); } t.innerHTML=`<b>${addr(+td.dataset.r,+td.dataset.c)}</b>${esc(c.t).replace(/\n/g,'<br>')}`; t.style.display='block';
+  const rc=td.getBoundingClientRect(); t.style.left=Math.min(rc.right+6,innerWidth-t.offsetWidth-8)+'px'; t.style.top=Math.min(rc.top,innerHeight-t.offsetHeight-8)+'px'; }
+
+/* ---- buscar y reemplazar ---- */
+const FR={q:'',rep:'',mc:false,wh:false,all:false};
+function frMatcher(){ const q=FR.q; if(!q) return null; if(FR.wh) return s=>FR.mc?s===q:s.toLowerCase()===q.toLowerCase(); return s=>FR.mc?s.includes(q):s.toLowerCase().includes(q.toLowerCase()); }
+const rawTxt=v=>typeof v==='number'?String(v).replace('.',','):v===true?'VERDADERO':v===false?'FALSO':String(v);
+function frFind(){ const m=frMatcher(); if(!m) return []; const cur=curSheet(), list=FR.all?sheets():[cur], out=[];
+  for(const sh of list){ if(!sh) continue; const d=sh.data, E=makeEval(d), arr=[]; for(const k in d.cells){ const cell=d.cells[k]; if(cell.v==null) continue; const [r,c]=k.split(',').map(Number); const raw=rawTxt(cell.v); let disp=''; try{ disp=fmtVal(E.val(r,c),styleOf(d,cell).nf); }catch(e){}
+      if(m(raw)||m(String(disp))) arr.push({sid:sh.id,r,c,raw,disp:String(disp)}); } arr.sort((a,b)=>a.r-b.r||a.c-b.c); out.push(...arr); }
+  return out; }
+function frGo(x){ const cur=curSheet(); S.sh.forceA=true;
+  if(!cur||x.sid!==cur.id){ go('sheet:'+x.sid); S.sh.a={r:x.r,c:x.c}; S.sh.f={r:x.r,c:x.c}; S.sh.forceA=true; render(); drawSel(true); }
+  else { S.sh.a={r:x.r,c:x.c}; S.sh.f={r:x.r,c:x.c}; reTable(); drawSel(true); } }
+function frStep(dir){ const L=frFind(); if(!L.length){ frMsg('No se encuentra «'+FR.q+'»'); return null; } const cur=curSheet(), so=s=>sheets().findIndex(x=>x.id===s), a=S.sh.a;
+  const key=x=>[so(x.sid),x.r,x.c], cmp=(p,q)=>p[0]-q[0]||p[1]-q[1]||p[2]-q[2], here=[so(cur.id),a.r,a.c];
+  let x; if(dir>0) x=L.find(y=>cmp(key(y),here)>0)||L[0]; else x=[...L].reverse().find(y=>cmp(key(y),here)<0)||L[L.length-1];
+  frGo(x); frMsg(`${L.indexOf(x)+1} de ${L.length}`); return x; }
+function frMsg(t){ const e=$('#fr_msg'); if(e) e.textContent=t; }
+function frNew(raw){ if(FR.wh) return FR.rep; const re=new RegExp(FR.q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),FR.mc?'g':'gi'); return raw.replace(re,()=>FR.rep); }
+function frApply(d,k){ const cell=d.cells[k]; if(!cell||cell.v==null) return false; const raw=rawTxt(cell.v), nv=frNew(raw); if(nv===raw) return false; const p=parseInput(nv); if(p.v==null) delete cell.v; else cell.v=p.v; delete cell.cv; if(cell.v==null&&cell.s==null) delete d.cells[k]; return true; }
+function frReplace(){ const m=frMatcher(), sh=curSheet(); if(!m||!sh) return; const a=S.sh.a, cell=sh.data.cells[a.r+','+a.c];
+  if(cell&&cell.v!=null&&m(rawTxt(cell.v))) shMut(d=>{ if(!frApply(d,a.r+','+a.c)) return false; }); frStep(1); }
+function frReplaceAll(){ const L=frFind().filter(x=>frMatcher()(x.raw)); if(!L.length) return frMsg('Nada que reemplazar'); const by={}; L.forEach(x=>(by[x.sid] ||= []).push(x.r+','+x.c)); let n=0; const cur=curSheet();
+  for(const sid in by){ if(cur&&sid===cur.id){ shMut(d=>{ let k=0; by[sid].forEach(kk=>{ if(frApply(d,kk)) k++; }); n+=k; if(!k) return false; }); }
+    else { const sh=S.items.get(sid); const d=JSON.parse(JSON.stringify(sh.data)); let k=0; by[sid].forEach(kk=>{ if(frApply(d,kk)) k++; }); if(k){ sh.data=d; put(sh); n+=k; } } }
+  frMsg(`${n} reemplazo${n===1?'':'s'}`); toast(`${n} celda${n===1?'':'s'} reemplazada${n===1?'':'s'}`); }
+function frList(){ const L=frFind(), el=$('#fr_res'); if(!el) return; frMsg(L.length?`${L.length} resultado${L.length>1?'s':''}`:'No se encuentra');
+  el.innerHTML=L.slice(0,300).map((x,i)=>`<button data-fri="${i}"><span class="mut">${FR.all?esc(S.items.get(x.sid)?.data.name||'')+' · ':''}${addr(x.r,x.c)}</span>${esc(x.disp||x.raw)}</button>`).join(''); el.style.display=L.length?'':'none';
+  el.onclick=e=>{ const b=e.target.closest('[data-fri]'); if(b) frGo(L[+b.dataset.fri]); }; }
+function openFR(rep){ let p=$('#frp');
+  if(!p){ p=document.createElement('div'); p.id='frp'; p.className='frp'; p.innerHTML=`<div class="row"><b style="font-size:12.5px">Buscar y reemplazar</b><span style="flex:1"></span><button class="ib sm" id="fr_x" title="Cerrar (Esc)">✕</button></div>
+     <input class="inp" id="fr_q" placeholder="Buscar" autocomplete="off" spellcheck="false"><input class="inp" id="fr_r" placeholder="Reemplazar con" autocomplete="off" spellcheck="false">
+     <div class="row wrap fro"><label><input type="checkbox" id="fr_mc"> Mayúsculas</label><label><input type="checkbox" id="fr_wh"> Celda completa</label><select class="inp" id="fr_sc"><option value="s">Esta chuleta</option><option value="a">Todas las chuletas</option></select></div>
+     <div class="row wrap frb"><button class="btn sm" id="fr_prev" title="Anterior (Mayús+Enter)">↑</button><button class="btn pri sm" id="fr_next" title="Siguiente (Enter)">Buscar siguiente</button><button class="btn sm" id="fr_all">Buscar todos</button><button class="btn sm" id="fr_rep">Reemplazar</button><button class="btn sm" id="fr_repall">Reemplazar todos</button></div>
+     <div class="mut" id="fr_msg" style="font-size:11.5px;min-height:15px"></div><div class="frres" id="fr_res" style="display:none"></div>`;
+    document.body.appendChild(p);
+    const rd=()=>{ FR.q=$('#fr_q').value; FR.rep=$('#fr_r').value; FR.mc=$('#fr_mc').checked; FR.wh=$('#fr_wh').checked; FR.all=$('#fr_sc').value==='a'; };
+    p.addEventListener('input',()=>{ rd(); $('#fr_res').style.display='none'; frMsg(''); }); p.addEventListener('change',()=>{ rd(); $('#fr_res').style.display='none'; });
+    $('#fr_x').onclick=closeFR; $('#fr_next').onclick=()=>{ rd(); frStep(1); }; $('#fr_prev').onclick=()=>{ rd(); frStep(-1); }; $('#fr_all').onclick=()=>{ rd(); frList(); };
+    $('#fr_rep').onclick=()=>{ rd(); frReplace(); }; $('#fr_repall').onclick=()=>{ rd(); frReplaceAll(); };
+    p.addEventListener('keydown',e=>{ if(e.key==='Escape'){ e.preventDefault(); closeFR(); } else if(e.key==='Enter'&&e.target.tagName==='INPUT'&&e.target.type!=='checkbox'){ e.preventDefault(); rd(); if(e.target.id==='fr_r'&&(e.ctrlKey||e.metaKey)) frReplaceAll(); else frStep(e.shiftKey?-1:1); } }); }
+  $('#fr_q').value=FR.q; $('#fr_r').value=FR.rep; $('#fr_mc').checked=FR.mc; $('#fr_wh').checked=FR.wh; $('#fr_sc').value=FR.all?'a':'s';
+  p.classList.toggle('rep',!!rep); setTimeout(()=>{ const i=rep&&FR.q?$('#fr_r'):$('#fr_q'); i.focus(); i.select(); },20); }
+function closeFR(){ $('#frp')?.remove(); $('#shw')?.focus({preventScroll:true}); }
+
+/* ---- gráficos ---- */
+const CHC=['#4472c4','#ed7d31','#a5a5a5','#ffc000','#5b9bd5','#70ad47','#264478','#9e480e','#636363','#997300'];
+const CHT={col:'Columnas',bar:'Barras',line:'Líneas',pie:'Circular'};
+function chData(d,ch){ const g=ch.rg, E=makeEval(d), V=[], T=[]; for(let r=g[0];r<=g[2];r++){ const row=[], tr=[]; for(let c=g[1];c<=g[3];c++){ const cell=d.cells[r+','+c]; let v=null,t=''; if(cell&&cell.v!=null){ try{ v=E.val(r,c); t=fmtVal(v,styleOf(d,cell).nf); }catch(e){} } row.push(isE(v)?null:v); tr.push(String(t)); } V.push(row); T.push(tr); }
+  const num=v=>typeof v==='number'&&isFinite(v), nc=V[0]?V[0].length:0;
+  const hdr=V.length>1&&V[0].some((v,j)=>v!=null&&!num(v)&&(nc===1||j>0||V[0].slice(1).every(x=>x==null||!num(x))));
+  const body=V.slice(hdr?1:0), tb=T.slice(hdr?1:0); const catCol=nc>1&&body.some(row=>row[0]!=null&&!num(row[0]));
+  const cats=catCol?tb.map(r=>r[0]):body.map((r,i)=>String(i+1)); const series=[];
+  for(let j=catCol?1:0;j<nc;j++){ const vals=body.map(r=>num(r[j])?r[j]:null); if(vals.every(v=>v==null)) continue; series.push({name:hdr?(T[0][j]||`Serie ${series.length+1}`):`Serie ${series.length+1}`,vals}); }
+  return {cats,series}; }
+function niceTicks(min,max){ if(min===max){ if(min===0){ max=1; } else if(min>0) min=0; else max=0; } const span=max-min, raw=span/5, mag=10**Math.floor(Math.log10(raw)), e=raw/mag, step=(e>=7.5?10:e>=3.5?5:e>=1.5?2:1)*mag; const lo=Math.floor(min/step+1e-9)*step, hi=Math.ceil(max/step-1e-9)*step; const t=[]; for(let v=lo;v<=hi+step/2;v+=step) t.push(+v.toPrecision(12)); return t; }
+const chN=v=>Math.abs(v)>=1e6?(v/1e6).toLocaleString('es-ES',{maximumFractionDigits:1})+' M':v.toLocaleString('es-ES',{maximumFractionDigits:2});
+function chartSVG(d,ch,W,H){ const {cats,series}=chData(d,ch); const fs=11, tx=(x,y,s,a='middle',ex='')=>`<text x="${x}" y="${y}" font-size="${fs}" text-anchor="${a}" fill="#595959" ${ex}>${esc(s)}</text>`;
+  let svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="Calibri,Carlito,Segoe UI,Arial,sans-serif">`; let top=8;
+  if(ch.title){ svg+=`<text x="${W/2}" y="22" font-size="15" text-anchor="middle" fill="#404040">${esc(ch.title)}</text>`; top=34; }
+  if(!series.length) return svg+tx(W/2,H/2,'Sin datos numéricos en '+rangeTxt(ch.rg))+'</svg>';
+  const pie=ch.type==='pie', legN=pie?cats.length:series.length, leg=legN>1||pie; const legH=leg?22:0;
+  if(leg){ const items=pie?cats:series.map(s=>s.name); let w=0; const ws=items.map(s=>Math.min(140,String(s).length*6.2+22)); w=ws.reduce((a,b)=>a+b,0); let x=Math.max(6,(W-w)/2); items.forEach((s,i)=>{ if(x>W-20) return; svg+=`<rect x="${x}" y="${H-15}" width="9" height="9" fill="${CHC[i%CHC.length]}"/>`+tx(x+13,H-7,String(s).slice(0,20),'start'); x+=ws[i]; }); }
+  if(pie){ const vals=series[0].vals.map(v=>v>0?v:0), tot=vals.reduce((a,b)=>a+b,0); if(!tot) return svg+'</svg>'; const cx=W/2, cy=top+(H-top-legH)/2, R=Math.max(10,Math.min(W/2-12,(H-top-legH)/2-6)); let a0=-Math.PI/2;
+    vals.forEach((v,i)=>{ if(!v) return; const a1=a0+v/tot*2*Math.PI, lg=a1-a0>Math.PI?1:0; const p=(a)=>`${cx+R*Math.cos(a)},${cy+R*Math.sin(a)}`; svg+=v===tot?`<circle cx="${cx}" cy="${cy}" r="${R}" fill="${CHC[i%CHC.length]}"/>`:`<path d="M${cx},${cy} L${p(a0)} A${R},${R} 0 ${lg} 1 ${p(a1)} Z" fill="${CHC[i%CHC.length]}" stroke="#fff" stroke-width="1.5"/>`;
+      if(v/tot>.05){ const am=(a0+a1)/2; svg+=`<text x="${cx+R*.62*Math.cos(am)}" y="${cy+R*.62*Math.sin(am)+4}" font-size="${fs}" text-anchor="middle" fill="#fff">${Math.round(v/tot*100)}%</text>`; } a0=a1; }); return svg+'</svg>'; }
+  const all_=series.flatMap(s=>s.vals).filter(v=>v!=null); let mn=Math.min(...all_), mx=Math.max(...all_); if(ch.type!=='line'){ mn=Math.min(0,mn); mx=Math.max(0,mx); } const T=niceTicks(mn,mx), lo=T[0], hi=T[T.length-1];
+  const horiz=ch.type==='bar', labW=horiz?Math.min(W*.35,Math.max(...cats.map(c=>String(c).length))*6.2+8):Math.max(...T.map(t=>chN(t).length))*6.2+8;
+  const L=Math.max(28,labW+4), R_=W-12, B=H-legH-(horiz?20:22), Tp=top+4, n=cats.length;
+  if(horiz){ const sx=v=>L+(v-lo)/(hi-lo)*(R_-L); T.forEach(t=>{ const x=sx(t); svg+=`<line x1="${x}" y1="${Tp}" x2="${x}" y2="${B}" stroke="#d9d9d9"/>`+tx(x,B+14,chN(t)); });
+    const gh=(B-Tp)/n, bw=gh*.7/series.length; cats.forEach((c,i)=>{ const y0=Tp+gh*i+gh*.15; svg+=tx(L-6,Tp+gh*(i+.5)+4,String(c).slice(0,28),'end'); series.forEach((s,j)=>{ const v=s.vals[i]; if(v==null) return; const x0=sx(Math.max(lo,Math.min(0,v))), x1=sx(Math.max(0,v)); svg+=`<rect x="${Math.min(sx(0),sx(v))}" y="${y0+bw*j}" width="${Math.abs(sx(v)-sx(0))}" height="${Math.max(1,bw-1)}" fill="${CHC[j%CHC.length]}"><title>${esc(s.name)} · ${esc(c)}: ${chN(v)}</title></rect>`; }); });
+    svg+=`<line x1="${sx(0)}" y1="${Tp}" x2="${sx(0)}" y2="${B}" stroke="#bfbfbf"/>`; return svg+'</svg>'; }
+  const sy=v=>B-(v-lo)/(hi-lo)*(B-Tp); T.forEach(t=>{ const y=sy(t); svg+=`<line x1="${L}" y1="${y}" x2="${R_}" y2="${y}" stroke="#d9d9d9"/>`+tx(L-6,y+4,chN(t),'end'); });
+  const gw=(R_-L)/n, every=Math.max(1,Math.ceil(n/Math.max(1,Math.floor((R_-L)/Math.max(30,Math.min(110,Math.max(...cats.map(c=>String(c).length))*6.2+8))))));
+  cats.forEach((c,i)=>{ if(i%every) return; svg+=tx(L+gw*(i+.5),B+15,String(c).slice(0,Math.max(4,Math.floor(gw*every/6.2)))); });
+  if(ch.type==='line'){ series.forEach((s,j)=>{ const col=CHC[j%CHC.length]; let dp='', pts=''; s.vals.forEach((v,i)=>{ if(v==null){ dp+=' '; return; } const x=L+gw*(i+.5), y=sy(v); dp+=(dp.trim()&&!dp.endsWith(' ')?' L':' M')+x.toFixed(1)+','+y.toFixed(1); if(n<=40) pts+=`<circle cx="${x}" cy="${y}" r="3" fill="${col}"><title>${esc(s.name)} · ${esc(cats[i])}: ${chN(v)}</title></circle>`; }); svg+=`<path d="${dp.trim()}" fill="none" stroke="${col}" stroke-width="2.2" stroke-linejoin="round"/>`+pts; }); }
+  else { const bw=gw*.7/series.length; cats.forEach((c,i)=>{ const x0=L+gw*i+gw*.15; series.forEach((s,j)=>{ const v=s.vals[i]; if(v==null) return; svg+=`<rect x="${x0+bw*j}" y="${Math.min(sy(v),sy(0))}" width="${Math.max(1,bw-1)}" height="${Math.abs(sy(v)-sy(0))}" fill="${CHC[j%CHC.length]}"><title>${esc(s.name)} · ${esc(c)}: ${chN(v)}</title></rect>`; }); }); }
+  svg+=`<line x1="${L}" y1="${sy(Math.max(lo,Math.min(0,hi)))}" x2="${R_}" y2="${sy(Math.max(lo,Math.min(0,hi)))}" stroke="#bfbfbf"/>`; return svg+'</svg>'; }
+function curRegion(d,r,c){ const has=(r,c)=>{ const x=d.cells[r+','+c]; return x&&x.v!=null&&x.v!==''; }; if(!has(r,c)) return [r,c,r,c]; let g=[r,c,r,c], ch=true;
+  while(ch){ ch=false; const [a,b,e,f]=g; const rowHas=rr=>{ for(let cc=Math.max(0,b-1);cc<=f+1;cc++) if(has(rr,cc)) return true; return false; }, colHas=cc=>{ for(let rr=Math.max(0,a-1);rr<=e+1;rr++) if(has(rr,cc)) return true; return false; };
+    if(a>0&&rowHas(a-1)){ g[0]--; ch=true; } if(rowHas(e+1)){ g[2]++; ch=true; } if(b>0&&colHas(b-1)){ g[1]--; ch=true; } if(colHas(f+1)){ g[3]++; ch=true; } if(g[2]-g[0]>2000||g[3]-g[1]>200) break; } return g; }
+function openChart(id){ const sh=curSheet(), d=sh.data, cur=id?(d.ch||[]).find(x=>x.id===id):null; let g=cur?cur.rg:expandRange(d,selRange()); if(!cur&&g[0]===g[2]&&g[1]===g[3]) g=curRegion(d,g[0],g[1]);
+  const st={type:cur?cur.type:'col',rg:rangeTxt(g),title:cur?cur.title||'':''};
+  modal(`<h2>${cur?'Editar':'Insertar'} gráfico</h2>
+   <div class="row wrap" style="gap:6px;margin:12px 0" id="chtp">${Object.entries(CHT).map(([k,l])=>`<button class="btn sm ${st.type===k?'pri':''}" data-cht="${k}">${l}</button>`).join('')}</div>
+   <div class="g2"><div><label class="f">Datos</label><input class="inp" id="ch_rg" value="${esc(st.rg)}"></div><div><label class="f">Título</label><input class="inp" id="ch_t" value="${esc(st.title)}" placeholder="(sin título)"></div></div>
+   <p class="mut" style="font-size:11.5px;margin:6px 0 10px">La primera columna de texto son las categorías y la primera fila, los nombres de las series. Se actualiza solo al cambiar los datos.</p>
+   <div class="chprev" id="ch_pv"></div>
+   <div class="acts">${cur?'<button class="btn ghost" id="ch_del">Eliminar</button>':''}<span style="flex:1"></span><button class="btn" data-close>Cancelar</button><button class="btn pri" id="ch_ok">${cur?'Guardar':'Insertar'}</button></div>`,'wide');
+  const pv=()=>{ const rg=parseRange($('#ch_rg').value); $('#ch_pv').innerHTML=rg?chartSVG(d,{type:st.type,rg,title:$('#ch_t').value.trim()},560,300):'<p class="mut">Rango no válido</p>'; };
+  $('#chtp').onclick=e=>{ const b=e.target.closest('[data-cht]'); if(!b) return; st.type=b.dataset.cht; $$('[data-cht]').forEach(x=>x.classList.toggle('pri',x===b)); pv(); }; $('#ch_rg').oninput=pv; $('#ch_t').oninput=pv; pv();
+  $('#ch_del')&&($('#ch_del').onclick=()=>{ closeModal(); delPic(id); });
+  $('#ch_ok').onclick=()=>{ const rg=parseRange($('#ch_rg').value); if(!rg) return toast('Rango no válido'); const t=$('#ch_t').value.trim(); closeModal();
+    if(cur) shMut(dd=>{ const x=(dd.ch||[]).find(y=>y.id===id); if(x) Object.assign(x,{type:st.type,rg,title:t}); });
+    else { const nid=uuid(); shMut(dd=>{ (dd.ch ||= []).push({id:nid,r:rg[0],c:rg[3]+2,x:4,y:4,w:440,h:270,type:st.type,rg,title:t}); }); SHP.sel=nid; } }; }
+
+/* ---- autofiltro y ordenar ---- */
+const cellTxt=(d,E,r,c)=>{ const cell=d.cells[r+','+c]; if(!cell||cell.v==null) return ''; try{ return String(fmtVal(E.val(r,c),styleOf(d,cell).nf)); }catch(e){ return String(cell.v); } };
+function afRange(d){ const g=[...d.af.rg]; const has=r=>{ for(let c=g[1];c<=g[3];c++){ const x=d.cells[r+','+c]; if(x&&x.v!=null&&x.v!=='') return true; } return false; }; let n=0; while(has(g[2]+1)&&n<20000){ g[2]++; n++; } return g; }
+function afHidden(d,E){ const H=new Set(); if(!d.af||!d.af.f||!Object.keys(d.af.f).length) return H; const g=afRange(d);
+  const tots=new Set((d.tb||[]).filter(t=>t.tot).map(t=>t.rg[2]));
+  for(let r=g[0]+1;r<=g[2];r++){ if(tots.has(r)) continue; for(const j in d.af.f){ const t=cellTxt(d,E,r,g[1]+ +j); if(!d.af.f[j].vals.includes(t)){ H.add(r); break; } } } return H; }
+function afToggle(){ const sh=curSheet(); if(!sh) return; if(sh.data.af){ shMut(d=>{ delete d.af; }); return toast('Filtro quitado'); }
+  const d=sh.data, t=tbAt(d,S.sh.a.r,S.sh.a.c); let g=t?t.rg:expandRange(d,selRange()); if(!t&&g[0]===g[2]&&g[1]===g[3]) g=curRegion(d,g[0],g[1]); if(g[0]===g[2]) return toast('Selecciona una tabla con cabecera y datos');
+  shMut(dd=>{ dd.af={rg:g,f:{}}; }); toast('Filtro activado · usa las flechas de la cabecera'); }
+function afSort(c,dir){ shMut(d=>{ if(!d.af) return false; const g=afRange(d), E=makeEval(d), rows=[]; const tot=(d.tb||[]).find(t=>t.tot&&t.rg[0]===g[0]&&t.rg[1]===g[1]); const last=tot?Math.min(g[2],tot.rg[2]-1):g[2];
+  for(let r=g[0]+1;r<=last;r++){ const cells={}, cms={}; for(let cc=g[1];cc<=g[3];cc++){ const k=r+','+cc; if(d.cells[k]) cells[cc]=d.cells[k]; if(d.cm&&d.cm[k]) cms[cc]=d.cm[k]; } let v=null; try{ const x=d.cells[r+','+c]; v=x&&x.v!=null?E.val(r,c):null; }catch(e){} rows.push({r,cells,cms,v:isE(v)?null:v}); }
+  const cmp=(x,y)=>{ const a=x.v,b=y.v, ea=a==null||a==='', eb=b==null||b===''; if(ea&&eb) return 0; if(ea) return 1; if(eb) return -1; const na=typeof a==='number', nb=typeof b==='number'; let o; if(na&&nb) o=a-b; else if(na) o=-1; else if(nb) o=1; else o=toStr(a).localeCompare(toStr(b),'es',{sensitivity:'base',numeric:true}); return o*dir; };
+  const sorted=[...rows].sort((x,y)=>cmp(x,y)||x.r-y.r); if(sorted.every((x,i)=>x.r===rows[i].r)) return false;
+  for(const x of rows) for(let cc=g[1];cc<=g[3];cc++){ delete d.cells[x.r+','+cc]; if(d.cm) delete d.cm[x.r+','+cc]; }
+  sorted.forEach((x,i)=>{ const r=g[0]+1+i, dr=r-x.r; for(const cc in x.cells){ const cell=x.cells[cc]; if(dr&&typeof cell.v==='string'&&cell.v[0]==='='){ cell.v='='+moveRefs(cell.v.slice(1),dr,0); delete cell.cv; } d.cells[r+','+cc]=cell; } for(const cc in x.cms){ (d.cm ||= {})[r+','+cc]=x.cms[cc]; } }); }); }
+function afMenu(c,btn){ const sh=curSheet(); if(!sh||!sh.data.af) return; const d=sh.data, E=makeEval(d), g=afRange(d), j=c-g[1], cur=(d.af.f||{})[j];
+  const other={...d.af.f}; delete other[j]; const vals=new Map(); let blank=false;
+  for(let r=g[0]+1;r<=g[2];r++){ let hid=false; for(const jj in other){ if(!other[jj].vals.includes(cellTxt(d,E,r,g[1]+ +jj))){ hid=true; break; } } if(hid) continue; const t=cellTxt(d,E,r,c); if(t==='') blank=true; else if(!vals.has(t)){ const x=d.cells[r+','+c]; let v=null; try{ v=x?E.val(r,c):null; }catch(e){} vals.set(t,v); } }
+  const L=[...vals.entries()].sort((a,b)=>{ const x=a[1],y=b[1]; if(typeof x==='number'&&typeof y==='number') return x-y; if(typeof x==='number') return -1; if(typeof y==='number') return 1; return a[0].localeCompare(b[0],'es',{sensitivity:'base',numeric:true}); }).map(x=>x[0]); if(blank) L.push('');
+  const on=t=>!cur||cur.vals.includes(t);
+  $('.shctx')?.remove(); const m=document.createElement('div'); m.className='shctx afm'; const hdr=cellTxt(d,E,g[0],c)||colName(c);
+  m.innerHTML=`<button data-afs="1">Ordenar de A a Z</button><button data-afs="-1">Ordenar de Z a A</button><hr>${cur?`<button data-afx>Borrar filtro de «${esc(hdr)}»</button><hr>`:''}
+   <input class="inp" id="af_q" placeholder="Buscar" autocomplete="off"><div class="afl"><label class="afa"><input type="checkbox" id="af_all" ${L.every(on)?'checked':''}> (Seleccionar todo)</label>${L.map((t,i)=>`<label data-t="${esc(t.toLowerCase())}"><input type="checkbox" data-afi="${i}" ${on(t)?'checked':''}> ${t===''?'<i>(Vacías)</i>':esc(t)}</label>`).join('')}</div>
+   <div class="row" style="gap:6px;justify-content:flex-end;padding:6px 4px 2px"><button class="btn sm" data-afc0>Cancelar</button><button class="btn pri sm" data-afok>Aceptar</button></div>`;
+  document.body.appendChild(m); const rc=btn.getBoundingClientRect(); m.style.left=Math.max(8,Math.min(rc.right-m.offsetWidth,innerWidth-m.offsetWidth-8))+'px'; m.style.top=Math.min(rc.bottom+2,innerHeight-m.offsetHeight-8)+'px';
+  const close=()=>{ m.remove(); document.removeEventListener('pointerdown',out,true); document.removeEventListener('keydown',key,true); $('#shw')?.focus({preventScroll:true}); };
+  const out=e=>{ if(!m.contains(e.target)) close(); }, key=e=>{ if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); close(); } else if(e.key==='Enter'){ e.preventDefault(); e.stopPropagation(); m.querySelector('[data-afok]').click(); } };
+  setTimeout(()=>{ document.addEventListener('pointerdown',out,true); document.addEventListener('keydown',key,true); $('#af_q').focus(); });
+  const boxes=()=>$$('[data-afi]',m), vis=b=>b.closest('label').style.display!=='none';
+  $('#af_q').oninput=e=>{ const q=e.target.value.trim().toLowerCase(); boxes().forEach(b=>{ const l=b.closest('label'); const sh_=!q||l.dataset.t.includes(q); l.style.display=sh_?'':'none'; if(q) b.checked=sh_; }); $('#af_all').checked=boxes().filter(vis).every(b=>b.checked); };
+  $('#af_all').onchange=e=>boxes().filter(vis).forEach(b=>b.checked=e.target.checked);
+  m.addEventListener('change',e=>{ if(e.target.dataset.afi!=null) $('#af_all').checked=boxes().filter(vis).every(b=>b.checked); });
+  m.onclick=e=>{ const s=e.target.closest('[data-afs]'); if(s){ close(); return afSort(c,+s.dataset.afs); }
+    if(e.target.closest('[data-afx]')){ close(); return shMut(dd=>{ delete dd.af.f[j]; }); }
+    if(e.target.closest('[data-afc0]')) return close();
+    if(e.target.closest('[data-afok]')){ const q=$('#af_q').value.trim(); const sel=boxes().filter(b=>b.checked&&(!q||vis(b))).map(b=>L[+b.dataset.afi]); close();
+      if(!sel.length) return toast('Marca al menos un valor'); shMut(dd=>{ dd.af.rg=afRange(dd); dd.af.f ||= {}; if(sel.length===L.length) delete dd.af.f[j]; else dd.af.f[j]={vals:sel}; }); } }; }
+
+/* ---- dar formato como tabla ---- */
+const TBS={azul:['#4472c4','#d9e1f2','#8ea9db'],verde:['#70ad47','#e2efda','#a9d08e'],naranja:['#ed7d31','#fce4d6','#f4b084'],gris:['#7f7f7f','#ededed','#c9c9c9'],dorado:['#bf8f00','#fff2cc','#ffd966'],oscuro:['#203764','#d9e1f2','#8ea9db'],rojo:['#c00000','#fbe2e2','#f4a5a5'],morado:['#7030a0','#e8dcf2','#c2a3dc']};
+function tbAt(d,r,c){ return (d.tb||[]).find(t=>inRg(t.rg,r,c))||null; }
+function tbFmt(t,r,vis){ const [C0,C1,C2]=TBS[t.sty]||TBS.azul; if(r===t.rg[0]) return {bg:C0,fc:'#ffffff',b:1,bb:'1px solid '+C0};
+  if(t.tot&&r===t.rg[2]) return {b:1,bt:'2px solid '+C0,bb:'1px solid '+C2}; const o={bb:'1px solid '+C2}; if(t.band!==false&&vis%2===1) o.bg=C1; return o; }
+function openTable(){ const sh=curSheet(); if(!sh) return; const d=sh.data, a=S.sh.a, cur=tbAt(d,a.r,a.c); let g=cur?cur.rg:expandRange(d,selRange()); if(!cur&&g[0]===g[2]&&g[1]===g[3]) g=curRegion(d,g[0],g[1]);
+  let sty=cur?cur.sty:'azul';
+  modal(`<h2>${cur?'Diseño de tabla':'Dar formato como tabla'}</h2>
+   <label class="f" style="margin-top:12px">Estilo</label><div class="tbsw" id="tb_sw">${Object.entries(TBS).map(([k,c])=>`<button data-tbs="${k}" class="${k===sty?'on':''}" title="${k}"><i style="background:${c[0]}"></i><i style="background:${c[1]}"></i><i style="background:#fff"></i><i style="background:${c[1]}"></i></button>`).join('')}</div>
+   ${cur?'':`<label class="f">Rango</label><input class="inp" id="tb_rg" value="${rangeTxt(g)}"><label class="row" style="font-size:12.5px;margin-top:10px"><input type="checkbox" id="tb_h" checked> La tabla tiene encabezados</label>`}
+   <label class="row" style="font-size:12.5px;margin-top:10px"><input type="checkbox" id="tb_b" ${!cur||cur.band!==false?'checked':''}> Filas con bandas</label>
+   <label class="row" style="font-size:12.5px;margin-top:6px"><input type="checkbox" id="tb_t" ${cur&&cur.tot?'checked':''}> Fila de totales</label>
+   <label class="row" style="font-size:12.5px;margin-top:6px"><input type="checkbox" id="tb_f" ${!cur||(d.af&&d.af.rg[0]===cur.rg[0]&&d.af.rg[1]===cur.rg[1])?'checked':''}> Botones de filtro</label>
+   <div class="acts">${cur?'<button class="btn ghost" id="tb_rm">Convertir en rango normal</button>':''}<span style="flex:1"></span><button class="btn" data-close>Cancelar</button><button class="btn pri" id="tb_ok">${cur?'Guardar':'Crear tabla'}</button></div>`);
+  $('#tb_sw').onclick=e=>{ const b=e.target.closest('[data-tbs]'); if(!b) return; sty=b.dataset.tbs; $$('[data-tbs]').forEach(x=>x.classList.toggle('on',x===b)); };
+  $('#tb_rm')&&($('#tb_rm').onclick=()=>{ closeModal(); shMut(dd=>{ dd.tb=(dd.tb||[]).filter(t=>t!==tbAt(dd,a.r,a.c)); if(dd.af&&dd.af.rg[0]===cur.rg[0]&&dd.af.rg[1]===cur.rg[1]) delete dd.af; }); toast('La tabla es ahora un rango normal'); });
+  $('#tb_ok').onclick=()=>{ const band=$('#tb_b').checked, tot=$('#tb_t').checked, flt=$('#tb_f').checked; let rg=cur?cur.rg:parseRange($('#tb_rg').value); if(!rg) return toast('Rango no válido'); const hdr=cur?true:$('#tb_h').checked; closeModal();
+    shMut(dd=>{ let t=cur?(dd.tb||[]).find(x=>x.rg[0]===cur.rg[0]&&x.rg[1]===cur.rg[1]):null;
+      if(!t){ if(!hdr){ shiftAxis(dd,'r',rg[0],1); rg=[rg[0],rg[1],rg[2]+1,rg[3]]; for(let c=rg[1];c<=rg[3];c++) dd.cells[rg[0]+','+c]={v:'Columna'+(c-rg[1]+1)}; }
+        dd.tb=(dd.tb||[]).filter(x=>!(x.rg[0]<=rg[2]&&x.rg[2]>=rg[0]&&x.rg[1]<=rg[3]&&x.rg[3]>=rg[1])); t={rg:[...rg],sty,band,tot:false}; dd.tb.push(t); }
+      t.sty=sty; t.band=band;
+      if(tot&&!t.tot){ const R=t.rg[2]+1, k0=[t.rg[0],t.rg[1]]; shiftAxis(dd,'r',R,1); t=dd.tb.find(x=>x.rg[0]===k0[0]&&x.rg[1]===k0[1]); const E=makeEval(dd); for(let c=t.rg[1];c<=t.rg[3];c++){ let numCol=false; for(let r=t.rg[0]+1;r<=t.rg[2];r++){ const x=dd.cells[r+','+c]; if(x&&x.v!=null){ try{ if(typeof E.val(r,c)==='number'){ numCol=true; break; } }catch(e){} } }
+          if(c===t.rg[1]&&!numCol) dd.cells[R+','+c]={v:'Total'}; else if(numCol) dd.cells[R+','+c]={v:`=SUBTOTAL(109,${addr(t.rg[0]+1,c)}:${addr(t.rg[2],c)})`}; } t.rg=[t.rg[0],t.rg[1],R,t.rg[3]]; t.tot=true; }
+      else if(!tot&&t.tot){ for(let c=t.rg[1];c<=t.rg[3];c++) delete dd.cells[t.rg[2]+','+c]; t.rg=[t.rg[0],t.rg[1],t.rg[2]-1,t.rg[3]]; t.tot=false; }
+      const isAf=dd.af&&dd.af.rg[0]===t.rg[0]&&dd.af.rg[1]===t.rg[1];
+      if(flt&&!isAf){ dd.af={rg:[...t.rg],f:{}}; } else if(flt&&isAf){ dd.af.rg=[...t.rg]; } else if(!flt&&isAf) delete dd.af; });
+    toast(cur?'Tabla actualizada':'Tabla creada'); }; }
+
 function shCtx(x,y,only){ $('.shctx')?.remove(); const [r1,c1,r2,c2]=selRange(), nr=r2-r1+1, nc=c2-c1+1;
-  const it=[['cut','Cortar','','Ctrl+X'],['copy','Copiar','','Ctrl+C'],['paste','Pegar','','Ctrl+V'],['clr','Borrar contenido','','Supr'],null]; if(only!=='c') it.push(['ra','Insertar fila arriba'],['rb','Insertar fila abajo'],['rd',nr>1?`Eliminar ${nr} filas`:'Eliminar fila',1]); if(only==='') it.push(null);
+  const it=[['cut','Cortar','','Ctrl+X'],['copy','Copiar','','Ctrl+C'],['paste','Pegar','','Ctrl+V'],['clr','Borrar contenido','','Supr'],null];
+  if(only===''){ const hasC=!!(curSheet()?.data.cm||{})[S.sh.a.r+','+S.sh.a.c]; it.push(['cmt',hasC?'Editar comentario':'Nuevo comentario','','Mayús+F2']); if(hasC) it.push(['cmd','Eliminar comentario']); it.push(['dvx','Lista desplegable…'],null); } if(only!=='c') it.push(['ra','Insertar fila arriba'],['rb','Insertar fila abajo'],['rd',nr>1?`Eliminar ${nr} filas`:'Eliminar fila',1]); if(only==='') it.push(null);
   if(only!=='r') it.push(['ca','Insertar columna a la izquierda'],['cb','Insertar columna a la derecha'],['cd',nc>1?`Eliminar ${nc} columnas`:'Eliminar columna',1]);
   const m=document.createElement('div'); m.className='shctx'; m.innerHTML=it.map(o=>o?`<button data-op="${o[0]}" class="${o[2]?'bad':''}">${o[1]}${o[3]?`<kbd>${o[3]}</kbd>`:''}</button>`:'<hr>').join('');
   document.body.appendChild(m); const W=m.offsetWidth,Hh=m.offsetHeight; m.style.left=Math.min(x,innerWidth-W-8)+'px'; m.style.top=Math.min(y,innerHeight-Hh-8)+'px';
@@ -1851,7 +2204,7 @@ function shCtx(x,y,only){ $('.shctx')?.remove(); const [r1,c1,r2,c2]=selRange(),
   setTimeout(()=>{ document.addEventListener('pointerdown',out,true); document.addEventListener('keydown',esc_,true); });
   m.onclick=async e=>{ const b=e.target.closest('[data-op]'); if(!b) return; close(); const op=b.dataset.op;
     if(op==='copy'||op==='cut'){ if(!document.execCommand(op)) toast('Usa '+(op==='cut'?'Ctrl+X':'Ctrl+C')); return; }
-    if(op==='clr') return clearRange(false);
+    if(op==='clr') return clearRange(false); if(op==='cmt') return cmEdit(); if(op==='cmd') return cmDel(); if(op==='dvx') return openDV();
     if(op==='paste'){ try{ let html='',text=''; if(navigator.clipboard.read){ for(const ci of await navigator.clipboard.read()){ if(ci.types.includes('text/html')) html=await (await ci.getType('text/html')).text(); if(ci.types.includes('text/plain')) text=await (await ci.getType('text/plain')).text(); } } else text=await navigator.clipboard.readText(); shPaste(html,text); }catch(_){ toast('El navegador no deja pegar desde el menú: usa Ctrl+V'); } return; }
     rowsCols(op); toast(b.textContent.replace(/^Insertar/,'Insertada').replace(/^Eliminar/,'Eliminado')+' · Ctrl+Z para deshacer'); }; }
 function sheetKey(e){
@@ -1859,6 +2212,7 @@ function sheetKey(e){
   if(ctrl){ const l=k.toLowerCase();
     if(k==='-'||k==='+'||(k==='='&&e.shiftKey)){ H(); const [r1,c1,r2,c2]=selRange(), fullR=c1===0&&c2===S.sh.NC-1, fullC=r1===0&&r2===S.sh.NR-1; const del=k==='-';
       if(fullR&&!fullC) return rowsCols(del?'rd':'ra'); if(fullC&&!fullR) return rowsCols(del?'cd':'ca'); const td=$(`#shw td[data-r="${S.sh.f.r}"][data-c="${S.sh.f.c}"]`)||$('.sh td.sel')||$('.sh td'); const rc=td?td.getBoundingClientRect():{left:200,bottom:200}; return shCtx(rc.left+10,rc.bottom,''); }
+    if(l==='l'&&e.shiftKey){ H(); return afToggle(); } if(l==='t'&&!e.shiftKey){ H(); return openTable(); }
     if(l==='z'){ H(); return shUndo(e.shiftKey); } if(l==='y'){ H(); return shUndo(true); }
     if(l==='d'&&!e.shiftKey){ H(); return shFillDir('d'); } if(l==='r'&&!e.shiftKey){ H(); return shFillDir('r'); }
     if(k===' '){ H(); const c1=Math.min(S.sh.a.c,S.sh.f.c), c2=Math.max(S.sh.a.c,S.sh.f.c); S.sh.a={r:0,c:c1}; S.sh.f={r:S.sh.NR-1,c:c2}; return drawSel(false); }
@@ -1869,12 +2223,13 @@ function sheetKey(e){
     if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(k)){ H(); const u=usedBounds(sh.data), b=e.shiftKey?S.sh.f:S.sh.a; const t={ArrowUp:[0,b.c],ArrowDown:[u.mr,b.c],ArrowLeft:[b.r,0],ArrowRight:[b.r,u.mc]}[k]; return shMoveTo(t[0],t[1],e.shiftKey); }
     if(k==='Home'){ H(); return shMoveTo(0,0,e.shiftKey); } if(k==='End'){ H(); const u=usedBounds(sh.data); return shMoveTo(u.mr,u.mc,e.shiftKey); }
     return; }
+  if(e.altKey&&k==='ArrowDown'){ H(); return dvOpen(); }
   switch(k){
     case 'ArrowUp': H(); return shStep(-1,0,e.shiftKey); case 'ArrowDown': H(); return shStep(1,0,e.shiftKey);
     case 'ArrowLeft': H(); return shStep(0,-1,e.shiftKey); case 'ArrowRight': H(); return shStep(0,1,e.shiftKey);
     case 'Tab': H(); return shStep(0,e.shiftKey?-1:1); case 'Enter': H(); return shStep(e.shiftKey?-1:1,0);
     case 'Home': H(); return shMoveTo(S.sh.a.r,0,e.shiftKey); case 'PageDown': H(); return shStep(20,0,e.shiftKey); case 'PageUp': H(); return shStep(-20,0,e.shiftKey);
-    case 'F2': H(); return shStartEdit(); case 'Delete': H(); return clearRange(false); case 'Backspace': H(); return shStartEdit('');
+    case 'F2': H(); return e.shiftKey?cmEdit():shStartEdit(); case 'Delete': H(); return clearRange(false); case 'Backspace': H(); return shStartEdit('');
     case 'Escape': if(S.sh.clip){ if(S.sh.clip.cut) S.sh.clip=null; else S.sh.clip.marquee=false; drawSel(false); } return;
   }
   if(k===' '&&e.shiftKey){ H(); const r1=Math.min(S.sh.a.r,S.sh.f.r), r2=Math.max(S.sh.a.r,S.sh.f.r); S.sh.a={r:r1,c:0}; S.sh.f={r:r2,c:S.sh.NC-1}; return drawSel(false); }
@@ -2268,7 +2623,8 @@ function searchAll(q){
   for(const sh of sheets()){ const d=sh.data, E=makeEval(d); for(const k in d.cells){ const c=d.cells[k]; if(c.v==null) continue; let v=c.v; if(typeof v==='string'&&v[0]==='='){ try{ v=E.val(...k.split(',').map(Number)); }catch(e){ continue; } } const txt=typeof v==='number'?fmtVal(v,styleOf(d,c).nf):String(v); if(!hit(txt)) continue; const [r,cc]=k.split(',').map(Number);
       out.push({g:'Chuletas',ic:'▦',t:cut(txt),s:`${d.name} · ${addr(r,cc)}`,go:()=>{ go('sheet:'+sh.id); S.sh.a={r,c:cc}; S.sh.f={r,c:cc}; S.sh.forceA=true; render(); drawSel(true); }}); } }
   for(const l of all('link')){ const d=l.data; if(!hit([d.title,d.url,d.group].join(' '))) continue; out.push({g:'Links',ic:'↗',t:cut(d.title||d.url),s:`${d.group||'General'} · ${cut(d.url,60)}`,go:()=>window.open(d.url,'_blank','noopener')}); }
-  for(const n of all('note')){ const d=n.data; if(!hit(d.text||'')) continue; out.push({g:'Notas',ic:'▢',t:cut((d.text||'').split('\n')[0]||'(nota)'),s:snip(d.text),go:()=>{ go('notes'); setTimeout(()=>{ const el=$(`[data-note="${n.id}"]`); if(el){ el.scrollIntoView({block:'center',inline:'center'}); el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1600); } },80); }}); }
+  for(const n of all('nbook')){ const d=n.data; if(!hit(d.title||'')) continue; out.push({g:'Notas',ic:'✎',t:cut(d.title||'Sin título'),s:`${d.n||1} pág.${d.folder?' · '+d.folder:''}`,go:()=>{ S.nbOpen=n.id; go('nb'); }}); }
+  for(const n of all('note')){ const d=n.data; if(!hit(d.text||'')) continue; out.push({g:'Pizarra',ic:'▢',t:cut((d.text||'').split('\n')[0]||'(nota)'),s:snip(d.text),go:()=>{ go('notes'); setTimeout(()=>{ const el=$(`[data-note="${n.id}"]`); if(el){ el.scrollIntoView({block:'center',inline:'center'}); el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1600); } },80); }}); }
   const toCal=day=>()=>{ const dd=pD(day); S.cal.y=dd.getFullYear(); S.cal.m=dd.getMonth(); S.cal.sel=day; S.cal.sel2=null; go('calendar'); };
   for(const e of all('event')){ const d=e.data; if(hit([d.title,d.type,d.notes].join(' '))) out.push({g:'Calendario',ic:'◷',t:cut(d.title),s:`${d.type} · ${fD(d.date)}`,go:toCal(d.date)}); }
   for(const e of all('trip')){ const d=e.data; if(hit([d.from,d.to,d.mode,d.note,'viaje'].join(' '))) out.push({g:'Calendario',ic:'✈',t:`${d.from} → ${d.to}`,s:`Viaje · ${fD(d.date)}${d.time?' '+d.time:''} · ${d.booked?'reservado':'sin reservar'}`,go:toCal(d.date)}); }
@@ -2282,7 +2638,7 @@ function openSearch(){
   modal(`<div class="srow">${I('search')}<input id="gq" placeholder="Buscar en tareas, chuletas, links, notas, calendario…" autocomplete="off" spellcheck="false"><kbd>Esc</kbd></div><div id="gres" class="gres"><p class="mut ghint">Escribe para buscar. ↑↓ para moverte, Enter para abrir.</p></div>`,'srch');
   const inp=$('#gq'), box=$('#gres'); let res=[], sel=0, tm;
   const draw=()=>{ if(!inp.value.trim()){ box.innerHTML='<p class="mut ghint">Escribe para buscar. ↑↓ para moverte, Enter para abrir.</p>'; res=[]; return; }
-    const all_=searchAll(inp.value); const G=['Tareas','Chuletas','Links','Notas','Calendario','Contraseñas']; res=[]; let h='';
+    const all_=searchAll(inp.value); const G=['Tareas','Chuletas','Links','Notas','Pizarra','Calendario','Contraseñas']; res=[]; let h='';
     for(const g of G){ const xs=all_.filter(x=>x.g===g).sort((a,b)=>(a.rank||0)-(b.rank||0)); if(!xs.length) continue; const lim=g==='Tareas'?12:8;
       h+=`<div class="gg">${g} <span>${xs.length}</span></div>`; for(const x of xs.slice(0,lim)){ h+=`<div class="gi ${x.lock?'lk':''}" data-i="${res.length}"><span class="gic">${x.ic}</span><div><b>${hlq(esc(x.t),inp.value)}</b>${x.s?`<small>${hlq(esc(x.s),inp.value)}</small>`:''}</div></div>`; res.push(x); }
       if(xs.length>lim) h+=`<div class="gmore">+${xs.length-lim} más · afina la búsqueda</div>`; }
@@ -2391,7 +2747,7 @@ async function pushDisable(){ const sub=await pushSub(); if(sub){ await S.cloud?
 async function pushPrefsSave(p){ const pr={...pushPrefs(),...p}; ls.set('mgg.push.prefs',pr); if(!S.cloud) return; const sub=await pushSub().catch(()=>null); if(sub) await pushSave(sub).catch(e=>toast(e.message)); await S.cloud.from('push_subs').update({prefs:pr,hour:pr.hour}).eq('user_id',S.uid).then(()=>{},()=>{}); }
 async function pushPull(){ if(!S.cloud||S.pushPulled) return; S.pushPulled=true; try{ const {data}=await S.cloud.from('push_subs').select('prefs,hour').eq('user_id',S.uid).limit(1); if(data&&data[0]&&data[0].prefs&&Object.keys(data[0].prefs).length){ ls.set('mgg.push.prefs',{...data[0].prefs,hour:data[0].hour}); pushBox(); } }catch(e){} }
 async function pushTest(){ const {data,error}=await S.cloud.functions.invoke('avisos',{body:{test:true}}); if(error) throw new Error(error.message); const sent=(data&&data.sent)||[]; if(!sent.length) throw new Error('No hay dispositivos con avisos activados'); if(sent.some(x=>x.error)) throw new Error('Algún dispositivo falló ('+sent.filter(x=>x.error).map(x=>x.error).join(', ')+')'); }
-async function pushBox(){ const el=$('#pushbox'); if(!el) return; pushPull(); const pr=pushPrefs(); const sub=await pushSub().catch(()=>null); const on=!!sub&&Notification.permission==='granted';
+async function pushBox(){ const el=$('#pushbox'); if(!el) return; pushPull(); const pr=pushPrefs(); const sub=await pushSub().catch(()=>null); if(!el.isConnected) return; const on=!!sub&&Notification.permission==='granted';
   const why=!pushOK()?(isIOS&&!isStandalone()?'En iPhone los avisos solo funcionan con la app instalada en la pantalla de inicio: ábrela desde el icono y actívalos ahí.':'Este navegador no admite avisos.'):Notification.permission==='denied'?'Los avisos están bloqueados para esta web: permítelos en los ajustes del navegador (o del iPhone: Ajustes → Notificaciones → To Do List).':'';
   const chips=(key,opts,lbl=x=>x)=>opts.map(o=>{ const sel=pr[key]; const isOn=key==='statuses'?(sel||[]).includes(o):!sel||!sel.length?false:sel.includes(o); return `<button class="chip ${isOn?'on':''}" data-pk="${key}" data-pv="${esc(o)}">${esc(lbl(o))}</button>`; }).join('');
   const prjs=[...new Set(all('task').filter(t=>t.data.status!=='Finished'&&t.data.project).map(t=>t.data.project))].sort();
@@ -2704,6 +3060,7 @@ function closeModal(){ if(S.modalClean){ S.modalClean(); S.modalClean=null; } if
 function confirm2(title,sub,ok,lbl='Eliminar'){ modal(`<h2>${esc(title)}</h2><p class="mut" style="font-size:12.5px;white-space:pre-wrap">${esc(String(sub||'').slice(0,200))}</p><div class="acts"><button class="btn" data-close>Cancelar</button><button class="btn pri" id="cf_ok2">${esc(lbl)}</button></div>`); $('#cf_ok2').focus(); $('#cf_ok2').onclick=()=>{ closeModal(); ok(); }; }
 function prompt2(title,ph,ok,val=''){ modal(`<h2>${esc(title)}</h2><input class="inp" id="pr_v" placeholder="${esc(ph)}" value="${esc(val)}" style="margin-top:14px"><div class="acts"><button class="btn" data-close>Cancelar</button><button class="btn pri" id="pr_ok">Aceptar</button></div>`); const i=$('#pr_v'); i.focus(); i.select(); const f=()=>{ const v=i.value; closeModal(); ok(v); }; $('#pr_ok').onclick=f; i.onkeydown=e=>{ if(e.key==='Enter') f(); }; }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&S.modal) closeModal(); });
+document.addEventListener('keydown',e=>{ if(!(e.ctrlKey||e.metaKey)||e.altKey||S.modal||!S.view.startsWith('sheet:')) return; const l=e.key.toLowerCase(); if(l!=='f'&&l!=='h') return; e.preventDefault(); e.stopPropagation(); if(S.editor) endEdit(true); openFR(l==='h'); },true);
 
 /* =====================================================================
    AUTH + BOOT
@@ -2766,7 +3123,7 @@ function mfaScreen(done){
 }
 document.addEventListener('visibilitychange',async()=>{ if(document.visibilityState!=='visible'||!S.cloud||!S.uid||S.uid==='local') return; if(await mfaNeeded()) mfaScreen(()=>location.reload()); });
 async function mfaBox(){ const el=$('#mfabox'); if(!el) return; if(!S.cloud){ el.innerHTML='<p class="mut" style="font-size:12px">Necesitas estar conectado a tu cuenta.</p>'; return; }
-  const {data}=await S.cloud.auth.mfa.listFactors(); const fa=(data&&data.totp||[]).find(x=>x.status==='verified');
+  const {data}=await S.cloud.auth.mfa.listFactors(); if(!el.isConnected) return; const fa=(data&&data.totp||[]).find(x=>x.status==='verified');
   el.innerHTML=fa?`<div class="row" style="margin-top:4px"><span style="color:var(--ok);font-size:12.5px">● Activada</span><button class="btn sm" id="mf_off">Desactivar</button></div><p class="mut" style="font-size:11.5px;margin:6px 0 0">Te pide el código solo al entrar en un dispositivo nuevo o tras cerrar sesión.</p>`
     :`<button class="btn sm" id="mf_on" style="margin-top:4px">Activar</button><p class="mut" style="font-size:11.5px;margin:6px 0 0">Con Google Authenticator, Microsoft Authenticator o la app Contraseñas del iPhone.</p>`;
   $('#mf_off')&&($('#mf_off').onclick=()=>confirm2('Desactivar verificación en dos pasos','Volverás a entrar solo con email y contraseña.',async()=>{ const {error}=await S.cloud.auth.mfa.unenroll({factorId:fa.id}); if(error) toast(error.message); else toast('Desactivada'); mfaBox(); },'Desactivar'));
@@ -2793,7 +3150,7 @@ async function bkSave(name){ const b=await bkDownload(name); dl(`todolist_copia_
 async function bkRestore(txt){ const o=JSON.parse(txt); if(o.type!=='mgg-backup'||!Array.isArray(o.items)) throw new Error('No es una copia de To Do List'); let n=0;
   for(const it of o.items){ if(!it.id||!it.kind) continue; put({id:it.id,kind:it.kind,data:it.data,deleted:false}); n++; } render(); return n; }
 async function bkBox(){ const el=$('#bkbox'); if(!el) return; if(!S.cloud){ el.innerHTML='<p class="mut" style="font-size:12px">Necesitas estar conectado a tu cuenta.</p>'; return; }
-  let list=[]; try{ list=await bkList(); }catch(e){ el.innerHTML=`<p class="mut">${esc(e.message)}</p>`; return; }
+  let list=[]; try{ list=await bkList(); }catch(e){ el.innerHTML=`<p class="mut">${esc(e.message)}</p>`; return; } if(!el.isConnected) return;
   const last=ls.get('mgg.bk.dl',null);
   el.innerHTML=`<p>Cada domingo se guarda sola una copia de todo en tu Supabase (las 8 últimas). Contraseñas y Finanzas van cifradas. Las fotos y audios no entran en la copia.${last?` Última descarga a este dispositivo: ${fD(last)}.`:''}</p>
    <div class="bkl">${list.map(f=>`<div class="lrow"><b>${fD(f.name.slice(0,10))}</b><span class="mut" style="font-size:11px">${Math.round((f.metadata?.size||0)/1024)} KB</span><span style="flex:1"></span><button class="btn sm" data-bkd="${esc(f.name)}">Descargar</button><button class="btn ghost sm" data-bkr="${esc(f.name)}">Restaurar</button></div>`).join('')||'<p class="mut" style="font-size:12px">Aún no hay copias.</p>'}</div>
@@ -2823,7 +3180,7 @@ async function pushRefresh(){ try{ if(!S.cloud||!ls.get('mgg.push.on',false)||!p
     await pushSave(sub); }catch(e){ console.warn('avisos',e); } }
 
 /* ---- actualización automática: si hay una versión nueva publicada, recarga ---- */
-const APP_VER='202611140240';
+const APP_VER='202611151709';
 async function checkUpdate(){ try{ if(!navigator.onLine||location.protocol==='file:') return; const r=await fetch(location.pathname+'?v='+Date.now(),{cache:'reload'}); if(!r.ok) return; const t=await r.text(); const m=t.match(/const APP_VER='(\d+)'/); if(!m||m[1]===APP_VER||m[1]<APP_VER) return;
   if(S.editor||S.modal||(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))){ toast('Hay una versión nueva: se aplicará al recargar'); return; }
   if(sessionStorage.getItem('mgg.upd')===m[1]) return; sessionStorage.setItem('mgg.upd',m[1]); location.reload(); }catch(e){} }
