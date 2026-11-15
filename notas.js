@@ -50,14 +50,21 @@ const r1=v=>Math.round(v*10)/10;
 
 /* ---------- ficheros (IndexedDB + Supabase) ---------- */
 async function getBlob(path){ let b=await IDB.get(path); if(!b&&S.cloud){ const {data,error}=await S.cloud.storage.from(BUCKET).download(path); if(!error&&data){ b=data; IDB.put(path,b); } } return b; }
-async function putFile(path,blob){ await IDB.put(path,blob); if(S.cloud){ const q=upq(); if(!q.includes(path)) ls.set('mgg.upq.'+S.uid,[...q,path]); processUploads(); } }
+async function putFile(path,blob){ try{ await IDB.put(path,blob); }catch(e){}
+  if(!S.cloud) return; for(let i=0;i<3;i++){ try{ const {error}=await S.cloud.storage.from(BUCKET).upload(path,blob,{contentType:blob.type||'application/octet-stream',upsert:true}); if(!error){ ls.set('mgg.upq.'+S.uid,upq().filter(p=>p!==path)); return; } console.warn('subida',error); }catch(e){ console.warn('subida',e); } await new Promise(r=>setTimeout(r,800*(i+1))); }
+  const q=upq(); if(!q.includes(path)) ls.set('mgg.upq.'+S.uid,[...q,path]); toast('Sin conexión: se subirá más tarde'); }
 async function rmFiles(paths){ paths=paths.filter(Boolean); for(const p of paths){ IDB.del(p); } ls.set('mgg.upq.'+S.uid,upq().filter(p=>!paths.includes(p))); if(S.cloud&&paths.length){ try{ await S.cloud.storage.from(BUCKET).remove(paths); }catch(e){} } }
 async function loadDoc(id){ const m=meta(id); const path=docPath(id); let doc=null; const b=await IDB.get(path); if(b){ try{ doc=JSON.parse(await b.text()); }catch(e){} }
   if((!doc||(m&&(m.data.rev||0)>(doc.rev||0)))&&S.cloud){ const {data,error}=await S.cloud.storage.from(BUCKET).download(path); if(!error&&data){ try{ const d2=JSON.parse(await data.text()); if(!doc||(d2.rev||0)>=(doc.rev||0)){ doc=d2; IDB.put(path,data); } }catch(e){} } }
+  if(!doc&&m&&m.data.src){ try{ const lib=await needPdf(); const b=await getBlob(m.data.src); if(b){ const d=await lib.getDocument({data:new Uint8Array(await b.arrayBuffer()),standardFontDataUrl:LIB.fonts,cMapUrl:LIB.cmaps,cMapPacked:true,isEvalSupported:false}).promise; const pages=[];
+      for(let i=0;i<d.numPages;i++){ const vp=(await d.getPage(i+1)).getViewport({scale:1}); pages.push({id:uuid(),w:r1(vp.width),h:r1(vp.height),bg:{t:'pdf',file:m.data.src,n:i},els:[]}); } doc={rev:m.data.rev||0,pages,recs:[],sizes:{[m.data.src]:b.size}}; NB.pdfs.set(m.data.src,Promise.resolve(d)); } }catch(e){ console.warn(e); } }
+  if(!doc&&m&&(m.data.rev||0)>0) throw new Error('missing');
   if(!doc) doc={rev:0,pages:[{id:uuid(),w:A4[0],h:A4[1],bg:{t:'tpl',tpl:'blank',paper:'w'},els:[]}],recs:[]};
   doc.recs ||= []; for(const p of doc.pages) p.els ||= []; return doc; }
-async function writeDoc(id,doc,extra={}){ doc.rev=(doc.rev||0)+1; const json=JSON.stringify(doc); await putFile(docPath(id),new Blob([json],{type:'application/json'}));
-  const fb=docFilesBytes(doc); update(id,{rev:doc.rev,updated:new Date().toISOString(),n:doc.pages.length,bytes:json.length+fb,...extra}); }
+const WQ=new Map();
+function writeDoc(id,doc,extra={}){ doc.rev=(doc.rev||0)+1; const json=JSON.stringify(doc), rev=doc.rev; const prev=WQ.get(id)||Promise.resolve(); const p=prev.then(()=>writeDoc1(id,doc,json,rev,extra)); WQ.set(id,p.catch(()=>{})); return p; }
+async function writeDoc1(id,doc,json,rev,extra){ await putFile(docPath(id),new Blob([json],{type:'application/json'}));
+  const fb=docFilesBytes(doc); if(meta(id)) update(id,{rev,updated:new Date().toISOString(),n:doc.pages.length,bytes:json.length+fb,...extra}); }
 function docFiles(doc){ const s=new Set(); for(const p of doc.pages){ if(p.bg.file) s.add(p.bg.file); if(p.bg.path) s.add(p.bg.path); for(const e of p.els) if(e.t==='im') s.add(e.path); } for(const r of doc.recs||[]) s.add(r.path); return [...s]; }
 function docFilesBytes(doc){ let n=0; const sz=doc.sizes||{}; for(const f of docFiles(doc)) n+=sz[f]||0; return n; }
 
@@ -89,7 +96,7 @@ function drawTpl(c,pg,k,W,H){ const bg=pg.bg; c.fillStyle=PAPER[bg.paper||'w']||
   c.restore(); }
 async function pdfDoc(file){ let p=NB.pdfs.get(file); if(p) return p; p=(async()=>{ const lib=await needPdf(); const b=await getBlob(file); if(!b) throw new Error('No se encuentra el PDF'); return lib.getDocument({data:new Uint8Array(await b.arrayBuffer()),standardFontDataUrl:LIB.fonts,cMapUrl:LIB.cmaps,cMapPacked:true,isEvalSupported:false}).promise; })(); NB.pdfs.set(file,p); p.catch(()=>NB.pdfs.delete(file)); return p; }
 async function renderBg(c,pg,k,W,H,tok){ const bg=pg.bg;
-  if(bg.t==='pdf'){ c.fillStyle='#fff'; c.fillRect(0,0,W,H); const d=await pdfDoc(bg.file); if(tok&&tok.dead) return; const page=await d.getPage(bg.n+1); if(tok&&tok.dead) return; const vp=page.getViewport({scale:k}); const task=page.render({canvasContext:c,viewport:vp}); if(tok) tok.task=task; try{ await task.promise; }catch(e){} return; }
+  if(bg.t==='pdf'){ c.fillStyle='#fff'; c.fillRect(0,0,W,H); const d=await pdfDoc(bg.file); if(tok&&tok.dead) return; const page=await d.getPage(bg.n+1); if(tok&&tok.dead) return; const vp=page.getViewport({scale:k}); const task=page.render({canvasContext:c,viewport:vp}); if(tok) tok.task=task; try{ await task.promise; }catch(e){ if(e&&e.name==='RenderingCancelledException') return; throw e; } return; }
   if(bg.t==='img'){ c.fillStyle='#fff'; c.fillRect(0,0,W,H); const im=await imgReady(bg.path); if(im&&!(tok&&tok.dead)) c.drawImage(im,0,0,W,H); return; }
   drawTpl(c,pg,k,W,H); }
 
@@ -138,7 +145,7 @@ async function importFiles(files){ if(!files.length) return; const pdfs=files.fi
   try{ for(const f of pdfs){ toast('Importando '+f.name+'…'); const lib=await needPdf(); const bytes=new Uint8Array(await f.arrayBuffer()); const d=await lib.getDocument({data:bytes.slice(),standardFontDataUrl:LIB.fonts,cMapUrl:LIB.cmaps,cMapPacked:true,isEvalSupported:false}).promise;
       const file=newFile('pdf'), pages=[]; for(let i=0;i<d.numPages;i++){ const pg=await d.getPage(i+1); const vp=pg.getViewport({scale:1}); pages.push({id:uuid(),w:r1(vp.width),h:r1(vp.height),bg:{t:'pdf',file,n:i},els:[]}); }
       await putFile(file,new Blob([bytes],{type:'application/pdf'})); NB.pdfs.set(file,Promise.resolve(d)); const doc={rev:0,pages,recs:[],sizes:{[file]:bytes.length}};
-      const it=create('nbook',{title:f.name.replace(/\.pdf$/i,''),folder:NB.folder.length>1&&NB.folder!=='★'&&NB.folder!=='*'?NB.folder:'',fav:false,tpl:'pdf',created:new Date().toISOString(),updated:new Date().toISOString(),n:pages.length,rev:0});
+      const it=create('nbook',{title:f.name.replace(/\.pdf$/i,''),folder:NB.folder.length>1&&NB.folder!=='★'&&NB.folder!=='*'?NB.folder:'',fav:false,tpl:'pdf',src:file,created:new Date().toISOString(),updated:new Date().toISOString(),n:pages.length,rev:0});
       await writeDoc(it.id,doc,{thumb:await thumbOf(pages[0])}); if(pdfs.length===1&&!imgs.length) return openNb(it.id,doc); }
     if(imgs.length){ const pages=[], sizes={}; for(const f of imgs){ const b=await shrinkImage(f); const bm=await createImageBitmap(b); const path=newFile(b.type.includes('png')?'png':'jpg'); await putFile(path,b); sizes[path]=b.size; pages.push({id:uuid(),w:595,h:r1(595*bm.height/bm.width),bg:{t:'img',path},els:[]}); }
       const doc={rev:0,pages,recs:[],sizes}; const it=create('nbook',{title:imgs.length===1?imgs[0].name.replace(/\.[^.]+$/,''):'Imágenes',folder:'',fav:false,tpl:'img',created:new Date().toISOString(),updated:new Date().toISOString(),n:pages.length,rev:0});
@@ -166,7 +173,7 @@ function popMenu(btn,items,cb){ $('.nbpop')?.remove(); const m=document.createEl
 /* ---------- editor ---------- */
 async function openNb(id,doc){ const m=meta(id); if(!m) return; NB.mode='ed'; NB.id=id; NB.doc=null; NB.undo=[]; NB.redo=[]; NB.sel=null; NB.cur=0; NB.zoom=1; NB.rendered.clear();
   const v=$('#view'); v.classList.add('nbv'); v.innerHTML='<div id="nbroot" class="nbr ed"><div class="nbload">Abriendo…</div></div>';
-  try{ NB.doc=doc||await loadDoc(id); }catch(e){ toast('No se pudo abrir'); NB.mode='lib'; return renderLib(); } if(NB.id!==id||S.view!=='nb') return; buildEditor(); }
+  try{ NB.doc=doc||await loadDoc(id); }catch(e){ NB.mode='lib'; renderLib(); if(e.message==='missing') return confirm2('No se encuentra el contenido','Esta libreta no se terminó de subir desde el dispositivo donde se creó. Ábrela allí con conexión para que se suba, o vuelve a importarla.',()=>{},'Entendido'); return toast('No se pudo abrir: '+(e.message||e)); } if(NB.id!==id||S.view!=='nb') return; buildEditor(); }
 function closeNb(){ saveNow(); stopRec(); if(NB.au){ NB.au.el.pause(); NB.au=null; } const id=NB.id, doc=NB.doc; NB.mode='lib'; NB.doc=null; NB.sel=null; if(NB.io) NB.io.disconnect();
   if(id&&doc) thumbOf(doc.pages[0]).then(t=>{ if(t&&meta(id)) update(id,{thumb:t}); }); renderLib(); }
 function toolBtn(t,i,title){ return `<button class="nbt ${NB.tool===t?'on':''}" data-tool="${t}" title="${title}">${ic(i)}</button>`; }
@@ -222,7 +229,7 @@ function paintVisible(){ if(!NB.doc||gest) return; const dpr=Math.min(2.5,device
     const r=NB.rendered.get(pid); if(r&&r.key===key){ if(r.inkDirty){ paintInk(d,p); r.inkDirty=false; } continue; }
     if(r&&r.tok) r.tok.dead=true; const tok={}; NB.rendered.set(pid,{key,tok}); const k=NB.s*dpr, W=Math.round(p.w*k), H=Math.round(p.h*k);
     const bg=d.querySelector('.bg'), ink=d.querySelector('.ink'); const tmp=document.createElement('canvas'); tmp.width=W; tmp.height=H;
-    renderBg(tmp.getContext('2d'),p,k,W,H,tok).then(()=>{ if(tok.dead) return; bg.width=W; bg.height=H; bg.getContext('2d').drawImage(tmp,0,0); }).catch(e=>{ console.warn(e); });
+    renderBg(tmp.getContext('2d'),p,k,W,H,tok).then(()=>{ if(tok.dead) return; bg.width=W; bg.height=H; bg.getContext('2d').drawImage(tmp,0,0); }).catch(e=>{ console.warn(e); if(tok.dead) return; bg.width=W; bg.height=H; const c=bg.getContext('2d'); c.fillStyle='#fff'; c.fillRect(0,0,W,H); c.fillStyle='#c00'; c.font=`${14*k}px sans-serif`; c.fillText('No se pudo mostrar esta página: '+String(e&&e.message||e).slice(0,80),20*k,40*k); if(!NB.errShown){ NB.errShown=1; toast('No se pudo mostrar el PDF: '+String(e&&e.message||e).slice(0,80)); } });
     ink.width=W; ink.height=H; paintInk(d,p); painted++; }
   curPage(); }
 function paintInk(d,p,skip){ const ink=d.querySelector('.ink'); if(!ink||ink.width<2) return; const c=ink.getContext('2d'), k=ink.width/p.w; c.setTransform(1,0,0,1,0,0); c.clearRect(0,0,ink.width,ink.height); renderInk(c,p,k,{skip}); }
