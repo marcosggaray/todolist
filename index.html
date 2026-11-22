@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-RpJ7/Bx5DbdszvHWrr94jKrf2gBXl5hQB6DDIKikWlU=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co https://cdn.jsdelivr.net; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-X4ia+zjKQOpib07nmUUJ//QniVi6zrrcKkum5NFRrEY=' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://vbzckbybbaavhckvtjtn.supabase.co wss://vbzckbybbaavhckvtjtn.supabase.co https://cdn.jsdelivr.net; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -3111,6 +3111,7 @@ function mfaScreen(done){
    <input class="inp" id="m_c" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456" style="font-size:24px;letter-spacing:.3em;text-align:center">
    <p id="m_err" style="color:var(--bad);font-size:12px;min-height:16px"></p>
    <button class="btn pri" id="m_ok" style="width:100%;justify-content:center">Verificar</button>
+   <div id="m_mail" style="margin-top:12px;font-size:12.5px"><a href="#" id="m_send" style="color:inherit">¿No tienes el móvil? Recibir un código por email</a></div>
    <button class="btn ghost sm" id="m_out" style="margin-top:14px">Cerrar sesión</button></div>`;
   document.body.appendChild(a);
   const go_=async()=>{ const code=$('#m_c').value.replace(/\D/g,''); if(code.length!==6) return; $('#m_err').textContent='';
@@ -3119,7 +3120,22 @@ function mfaScreen(done){
     a.remove(); done(); };
   $('#m_ok').onclick=go_; $('#m_c').oninput=()=>{ if($('#m_c').value.replace(/\D/g,'').length===6) go_(); };
   $('#m_out').onclick=async()=>{ await S.cloud.auth.signOut(); location.reload(); };
+  $('#m_send').onclick=e=>{ e.preventDefault(); mfaMail(a,done); };
   setTimeout(()=>$('#m_c').focus(),50);
+}
+/* rescate por email: contraseña (ya entrada) + código enviado al email de la cuenta → quita la verificación en dos pasos */
+async function mfaMail(a,done){ const box=$('#m_mail'), err=t=>$('#m_err').textContent=t||''; err('');
+  const call=async body=>{ const {data,error}=await S.cloud.functions.invoke('rescate',{body}); if(error){ let m=error.message; try{ const j=await error.context.json(); if(j&&j.error) m=j.error; }catch(_){} throw new Error(m); } return data; };
+  box.innerHTML='<span class="mut">Enviando…</span>';
+  try{ await call({action:'send'}); }catch(e){ box.innerHTML='<a href="#" id="m_send" style="color:inherit">Volver a intentar el envío por email</a>'; $('#m_send').onclick=ev=>{ ev.preventDefault(); mfaMail(a,done); }; return err(e.message); }
+  box.innerHTML=`<p style="margin:0 0 6px">Te he enviado un código a tu email. Escríbelo aquí (sirve una hora):</p>
+    <input class="inp" id="m_ec" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="Código del email" style="text-align:center;letter-spacing:.2em">
+    <button class="btn sm" id="m_ev" style="width:100%;justify-content:center;margin-top:8px">Entrar con el código del email</button>
+    <p class="mut" style="font-size:11px;margin:6px 0 0">Al entrar así se desactiva la verificación en dos pasos; vuelve a activarla en Ajustes.</p>`;
+  $('#m_ec').focus();
+  $('#m_ev').onclick=async function(){ const code=$('#m_ec').value.replace(/\D/g,''); if(code.length<6) return err('Código incompleto'); this.disabled=true; err('');
+    try{ await call({action:'verify',code}); await S.cloud.auth.refreshSession(); a.remove(); done(); toast('Verificación en dos pasos desactivada. Vuelve a activarla en Ajustes.'); }
+    catch(e){ this.disabled=false; err(e.message); } };
 }
 document.addEventListener('visibilitychange',async()=>{ if(document.visibilityState!=='visible'||!S.cloud||!S.uid||S.uid==='local') return; if(await mfaNeeded()) mfaScreen(()=>location.reload()); });
 async function mfaBox(){ const el=$('#mfabox'); if(!el) return; if(!S.cloud){ el.innerHTML='<p class="mut" style="font-size:12px">Necesitas estar conectado a tu cuenta.</p>'; return; }
@@ -3180,7 +3196,7 @@ async function pushRefresh(){ try{ if(!S.cloud||!ls.get('mgg.push.on',false)||!p
     await pushSave(sub); }catch(e){ console.warn('avisos',e); } }
 
 /* ---- actualización automática: si hay una versión nueva publicada, recarga ---- */
-const APP_VER='202611151723';
+const APP_VER='202611221850';
 async function checkUpdate(){ try{ if(!navigator.onLine||location.protocol==='file:') return; const r=await fetch(location.pathname+'?v='+Date.now(),{cache:'reload'}); if(!r.ok) return; const t=await r.text(); const m=t.match(/const APP_VER='(\d+)'/); if(!m||m[1]===APP_VER||m[1]<APP_VER) return;
   if(S.editor||S.modal||(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))){ toast('Hay una versión nueva: se aplicará al recargar'); return; }
   if(sessionStorage.getItem('mgg.upd')===m[1]) return; sessionStorage.setItem('mgg.upd',m[1]); location.reload(); }catch(e){} }
